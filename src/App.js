@@ -9,7 +9,7 @@ const App = () => {
     const ctx = canvas.getContext('2d');
 
     const roughCanvas = rough.canvas(canvas);
-    roughCanvas.rectangle(10, 10, 50, 50)
+    roughCanvas.rectangle(10, 10, 250, 250)
   });
   
   return (
