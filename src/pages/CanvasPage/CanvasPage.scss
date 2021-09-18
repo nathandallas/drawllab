@@ -1,0 +1,11 @@
+@use '../../partials/typography' as *;
+@import "../../partials/mixins";
+@import "../../partials/partials";
+
+canvas {
+  border: solid 1px black;
+}
+
+.toolbar {
+  position: fixed;
+}
