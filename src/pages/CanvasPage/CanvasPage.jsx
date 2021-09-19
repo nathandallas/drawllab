@@ -4,13 +4,13 @@ import rough from 'roughjs/bundled/rough.esm';
 
 const generator = rough.generator();
 
-function createElement(x1, y1, x2, y2, type) {
+function createElement(id, x1, y1, x2, y2, type) {
 	const roughElement =
 		type === "line"
 			? generator.line(x1, y1, x2, y2)
 			: generator.rectangle(x1, y1, x2 - x1, y2 - y1);
 		// generator.circle(80, 120, 50);;
-  return {x1, y1, x2, y2, type, roughElement};
+  return {id, x1, y1, x2, y2, type, roughElement};
 }
 
 const isWithinElement = (x, y, element) => {
@@ -36,11 +36,31 @@ const getElementAtPosition = (x, y, elements) => {
 	return elements.find(element => isWithinElement(x, y, element));
 };
 
-const CanvasPage = () => {
+const adjustElementCoordinates = element => {
+  const { type, x1, y1, x2, y2 } = element;
+  if (type === "rectangle") {
+    const minX = Math.min(x1, x2);
+    const maxX = Math.max(x1, x2);
+    const minY = Math.min(y1, y2);
+    const maxY = Math.max(y1, y2);
+    return { x1: minX, y1: minY, x2: maxX, y2: maxY };
+  } else {
+    if (x1 < x2 || (x1 === x2 && y1 < y2)) {
+      return { x1, y1, x2, y2 };
+    } else {
+      return { x1: x2, y1: y2, x2: x1, y2: y1 };
+    }
+  }
+};
 
+// ----- PAGE -----
+
+const CanvasPage = () => {
+	// ----- Set State -----
   const [elements, setElements] = useState([]);
 	const [action, setAction] = useState("none");
-	const [tool, setTool] = useState("line")
+	const [tool, setTool] = useState("line");
+	const [selectedElement, setSelectedElement] = useState(null);
 
   useLayoutEffect(() => {
     const canvas = document.getElementById("canvas");
@@ -50,7 +70,15 @@ const CanvasPage = () => {
     const roughCanvas = rough.canvas(canvas);
 
     elements.forEach(({roughElement}) => roughCanvas.draw(roughElement));
-  }, [elements]);
+	}, [elements]);
+	
+	const updateElement = (id, x1, y1, x2, y2, type) => {
+		const updatedElement = createElement(id, x1, y1, x2, y2, type);
+
+		const elementsCopy = [...elements];
+		elementsCopy[id] = updatedElement;
+		setElements(elementsCopy);
+	};
   
 	const handleMouseDown = (e) => {
     const { clientX, clientY } = e;
@@ -58,10 +86,14 @@ const CanvasPage = () => {
 		if (tool === "select") {
 			const element = getElementAtPosition(clientX, clientY, elements)
 			if (element) {
+				const offsetX = clientX - element.x1;
+				const offsetY = clientY - element.y1;
+				setSelectedElement({...element, offsetX, offsetY})
 				setAction("moving");
 			}
 		} else {
-    const element = createElement(clientX, clientY, clientX, clientY, tool);
+			const id = elements.length;
+    const element = createElement(id, clientX, clientY, clientX, clientY, tool);
 		setElements((prevState) => [...prevState, element]);
 			
 		setAction("drawing");
@@ -69,21 +101,36 @@ const CanvasPage = () => {
 		}
   };
   
-  const handleMouseMove = (e) => {
+	const handleMouseMove = (e) => {
+		const { clientX, clientY } = e;
+		if (tool === "select") {
+			e.target.style.cursor = getElementAtPosition(clientX, clientY, elements) ? "move" : "default";
+		}
+
 		if (action === "drawing") {
-			const { clientX, clientY } = e;
 			const index = elements.length - 1;
 			const { x1, y1 } = elements[index];
-			const updatedElement = createElement(x1, y1, clientX, clientY, tool);
-
-			const elementsCopy = [...elements];
-			elementsCopy[index] = updatedElement;
-			setElements(elementsCopy);
+			updateElement(index, x1, y1, clientX, clientY, tool);
+		} else if (action === "moving") {
+			const { id, x1, y1, x2, y2, type, offsetX, offsetY } = selectedElement;
+			const width = x2 - x1;
+			const height = y2 - y1;
+			const nexX1 = clientX - offsetX;
+			const nexY1 = clientY - offsetY;
+			updateElement(id, nexX1, nexY1, nexX1 + width, nexY1 + height, tool);
+		
 		}
   };
   
-  const handleMouseUp = () => {
-    setAction("none");
+	const handleMouseUp = () => {
+		const index = elements.length - 1;
+		const { id, type } = elements[index];
+		if (action === "drawing") {
+			const { x1, y1, x2, y2 } = adjustElementCoordinates(elements[index]);
+			updateElement(id, x1, y1, x2, y2, type);
+		}
+		setAction("none");
+		setSelectedElement(null);
   };
 
   return (

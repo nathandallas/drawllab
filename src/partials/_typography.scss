@@ -4,6 +4,7 @@
     url("../assets/fonts/Cookie-Regular.woff") format("woff");
   font-weight: normal;
   font-style: normal;
+  font-display: swap;
 }
 
 @font-face {
@@ -12,6 +13,7 @@
     url("../assets/fonts/Lato-Light.woff") format("woff");
   font-weight: 300;
   font-style: normal;
+  font-display: swap;
 }
 
 @font-face {
@@ -20,6 +22,7 @@
     url("../assets/fonts/Lato-LightItalic.woff") format("woff");
   font-weight: 300;
   font-style: italic;
+  font-display: swap;
 }
 
 @font-face {
@@ -28,6 +31,7 @@
     url("../assets/fonts/Lato-BoldItalic.woff") format("woff");
   font-weight: bold;
   font-style: italic;
+  font-display: swap;
 }
 
 @font-face {
@@ -36,4 +40,5 @@
     url("../assets/fonts/Lato-Bold.woff") format("woff");
   font-weight: bold;
   font-style: normal;
+  font-display: swap;
 }
