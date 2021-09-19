@@ -1,5 +1,6 @@
 import './CanvasPage.scss';
 import React, { useLayoutEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
 import rough from 'roughjs/bundled/rough.esm';
 
 // ----- icons for toolbar -----
@@ -7,6 +8,8 @@ import paintbrush from '../../assets/images/paintbrush.png';
 import line from '../../assets/images/diagonal-line.png';
 import square from '../../assets/images/square.png';
 import selection from '../../assets/images/selection.png';
+import home from '../../assets/images/home.png';
+import about from '../../assets/images/about.png';
 
 const generator = rough.generator();
 
@@ -152,7 +155,6 @@ const CanvasPage = () => {
 				/>
 				<label
 					htmlFor="line"
-					for="line"
 					className="tool__label"
 				>
 					<img src={line} alt="line icon" className="toolbar__logo"/>
@@ -166,7 +168,6 @@ const CanvasPage = () => {
 				/>
 				<label
 					htmlFor="rectangle"
-					for="rectangle"
 					className="tool__label"
 				>
 					<img src={square} alt="rectangle icon" className="toolbar__logo"/>
@@ -180,12 +181,23 @@ const CanvasPage = () => {
 				/>
 				<label
 					htmlFor="select"
-					for="select"
 					className="tool__label"
 				>
 					<img src={selection} alt="selection icon" className="toolbar__logo"/>
 				</label>
 			</div>
+
+			<nav className="nav">
+				<Link to="/">
+					<img src={home} alt="home icon" className="nav__icon"/>
+				</Link>
+				<Link to="/about">
+					<img src={about} alt="about icon" className="nav__icon"/>
+				</Link>
+			</nav>
+
+
+
 			{/* Canvas Component */}
       <canvas
         id="canvas"
