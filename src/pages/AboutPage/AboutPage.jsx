@@ -10,7 +10,7 @@ export default function AboutPage() {
             <h1>About Drawllab</h1>
             <p className="about__text">Drawllab is a browser based whiteboard and drawing application. Multiple users can use Drawllab to work on the same canvas simultaneously.</p>
 
-            <h1>Key</h1>
+            <h3>Key</h3>
             <div className="key">
                 <ul className="key__ul">
                     <li className="key__li">
@@ -76,7 +76,7 @@ export default function AboutPage() {
                 <div className="nav__link--canvas">
                 <Link to="/canvas" className="nav__link">
                     <img src={back} alt="back button" className="nav__icon" />
-                    <h3 className="nav__h3">Back to Canvas</h3>
+                    <h2 className="nav__h2">Back to Canvas</h2>
                 </Link>
                 </div>
                 <div className="nav__link--home">
