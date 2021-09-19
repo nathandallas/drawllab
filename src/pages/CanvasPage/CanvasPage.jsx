@@ -1,6 +1,20 @@
 import './CanvasPage.scss';
 import React, { useLayoutEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
 import rough from 'roughjs/bundled/rough.esm';
+import ColorPicker from '../../components/ColorPicker/ColorPicker';
+
+// ----- icons for toolbar -----
+import paintbrush from '../../assets/images/paintbrush.png';
+import line from '../../assets/images/diagonal-line.png';
+import square from '../../assets/images/square.png';
+import selection from '../../assets/images/selection.png';
+import home from '../../assets/images/home.png';
+import about from '../../assets/images/about.png';
+import deleteicon from '../../assets/images/delete.png';
+import circle from '../../assets/images/circle.png';
+
+// ----- Functionality for Tools -----
 
 const generator = rough.generator();
 
@@ -61,11 +75,13 @@ const CanvasPage = () => {
 	const [action, setAction] = useState("none");
 	const [tool, setTool] = useState("line");
 	const [selectedElement, setSelectedElement] = useState(null);
+	const [color, setColor] = useState("black");
 
   useLayoutEffect(() => {
     const canvas = document.getElementById("canvas");
     const context = canvas.getContext("2d");
-    context.clearRect(0, 0, canvas.width, canvas.height);
+		// clears canvas on refresh 
+		context.clearRect(0, 0, canvas.width, canvas.height);
 
     const roughCanvas = rough.canvas(canvas);
 
@@ -139,6 +155,19 @@ const CanvasPage = () => {
 			<div className="toolbar">
 				<input
 					type="radio"
+					id="colorpick"
+					checked={tool === "colorpick"}
+					onChange={() => setTool("colorpick")}
+					className="tool"
+				/>
+				<label
+					htmlFor="colorpick"
+					className="tool__label"
+				>
+					<img src={circle} alt="colorpick icon" className="toolbar__logo"/>
+				</label>
+				<input
+					type="radio"
 					id="line"
 					checked={tool === "line"}
 					onChange={() => setTool("line")}
@@ -148,7 +177,7 @@ const CanvasPage = () => {
 					htmlFor="line"
 					className="tool__label"
 				>
-					Line
+					<img src={line} alt="line icon" className="toolbar__logo"/>
 				</label>
 				<input
 					type="radio"
@@ -161,7 +190,7 @@ const CanvasPage = () => {
 					htmlFor="rectangle"
 					className="tool__label"
 				>
-					Rectangle
+					<img src={square} alt="rectangle icon" className="toolbar__logo"/>
 				</label>
 				<input
 					type="radio"
@@ -174,9 +203,36 @@ const CanvasPage = () => {
 					htmlFor="select"
 					className="tool__label"
 				>
-					Select
+					<img src={selection} alt="selection icon" className="toolbar__logo"/>
+				</label>
+				<input
+					type="radio"
+					id="delete"
+					checked={tool === "delete"}
+					onChange={() => setTool("delete")}
+					className="tool"
+				/>
+				<label
+					htmlFor="delete"
+					className="tool__label"
+				>
+					<img src={deleteicon} alt="delete icon" className="toolbar__logo"/>
 				</label>
 			</div>
+
+			{/* Nav Bar Component */}
+
+			<nav className="nav">
+				<Link to="/">
+					<img src={home} alt="home icon" className="nav__icon"/>
+				</Link>
+				<Link to="/about">
+					<img src={about} alt="about icon" className="nav__icon"/>
+				</Link>
+			</nav>
+
+
+
 			{/* Canvas Component */}
       <canvas
         id="canvas"

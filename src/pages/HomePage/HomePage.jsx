@@ -7,8 +7,8 @@ export default function HomePage() {
     return (
         <div className="home">
             <img src={logo} alt="" className="home__logo" />
-            <h1>a collaborative drawing application.</h1>
-            
+            <h2>a collaborative drawing application.</h2>
+
             <div className="home__button-container">
                 <Link to="/canvas">
                     <button className="home__canvas">

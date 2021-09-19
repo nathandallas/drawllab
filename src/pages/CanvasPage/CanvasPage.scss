@@ -1,11 +1,36 @@
-@use '../../partials/typography' as *;
+@import "../../partials/typography";
 @import "../../partials/mixins";
 @import "../../partials/partials";
 
 canvas {
   border: solid 1px black;
+  background-color: $offwhite;
 }
 
 .toolbar {
   position: fixed;
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  background-color: $lightgray;
+  &__logo {
+    max-width: 3rem;
+    margin: 0.5rem;
+  }
+}
+
+.tool {
+  display: none;
+}
+
+.nav {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  display: flex;
+  flex-direction: column;
+  &__icon {
+    max-width: 3rem;
+    margin: 0.5rem;
+  }
 }
