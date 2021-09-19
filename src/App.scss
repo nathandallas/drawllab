@@ -1,4 +1,4 @@
-@use 'partials/typography' as *;
+@import "partials/typography";
 @import "partials/mixins";
 @import "partials/partials";
 
@@ -10,7 +10,24 @@
   padding: 0;
 }
 
-h1 {
-  font-family: "Cookie";
+h1,
+h2,
+h3,
+button,
+p {
+  font-family: "Lato";
   font-weight: normal;
+  color: $graphite;
+}
+
+h1 {
+  font-size: 3rem;
+}
+
+h2 {
+  font-size: 1.5rem;
+}
+
+p {
+  font-size: 1.5rem;
 }
