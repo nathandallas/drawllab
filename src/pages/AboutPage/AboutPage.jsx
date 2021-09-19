@@ -73,15 +73,15 @@ export default function AboutPage() {
                 </div>
 
             
-                <div className="nav__link--canvas">
-                <Link to="/canvas" className="nav__link">
-                    <img src={back} alt="back button" className="nav__icon" />
-                    <h2 className="nav__h2">Back to Canvas</h2>
+                <div className="about-nav__link--canvas">
+                <Link to="/canvas" className="about-nav__link">
+                    <img src={back} alt="back button" className="about-nav__icon" />
+                    <h2 className="about-nav__h2">Back to Canvas</h2>
                 </Link>
                 </div>
-                <div className="nav__link--home">
+                <div className="about-nav__link--home">
                 <Link to="/">
-                    <img src={home} alt="home button" className="nav__icon" />
+                    <img src={home} alt="home button" className="about-nav__icon" />
                 </Link>
                 </div>
         </div>
