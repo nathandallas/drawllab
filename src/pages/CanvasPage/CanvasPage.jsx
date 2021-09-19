@@ -2,6 +2,12 @@ import './CanvasPage.scss';
 import React, { useLayoutEffect, useState } from 'react';
 import rough from 'roughjs/bundled/rough.esm';
 
+// ----- icons for toolbar -----
+import paintbrush from '../../assets/images/paintbrush.png';
+import line from '../../assets/images/diagonal-line.png';
+import square from '../../assets/images/square.png';
+import selection from '../../assets/images/selection.png';
+
 const generator = rough.generator();
 
 function createElement(id, x1, y1, x2, y2, type) {
@@ -146,9 +152,10 @@ const CanvasPage = () => {
 				/>
 				<label
 					htmlFor="line"
+					for="line"
 					className="tool__label"
 				>
-					Line
+					<img src={line} alt="line icon" className="toolbar__logo"/>
 				</label>
 				<input
 					type="radio"
@@ -159,9 +166,10 @@ const CanvasPage = () => {
 				/>
 				<label
 					htmlFor="rectangle"
+					for="rectangle"
 					className="tool__label"
 				>
-					Rectangle
+					<img src={square} alt="rectangle icon" className="toolbar__logo"/>
 				</label>
 				<input
 					type="radio"
@@ -172,9 +180,10 @@ const CanvasPage = () => {
 				/>
 				<label
 					htmlFor="select"
+					for="select"
 					className="tool__label"
 				>
-					Select
+					<img src={selection} alt="selection icon" className="toolbar__logo"/>
 				</label>
 			</div>
 			{/* Canvas Component */}

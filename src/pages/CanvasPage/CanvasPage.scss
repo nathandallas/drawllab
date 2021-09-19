@@ -4,8 +4,20 @@
 
 canvas {
   border: solid 1px black;
+  background-color: $offwhite;
 }
 
 .toolbar {
   position: fixed;
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  background-color: $lightgray;
+  &__logo {
+    max-width: 4rem;
+  }
+}
+
+.tool {
+  display: none;
 }

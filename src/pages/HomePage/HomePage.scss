@@ -4,10 +4,25 @@
 @import "../../App";
 
 body {
-  background-color: $lightestgray;
+  background: linear-gradient(
+    360deg,
+    #e0ddea,
+    #e0dfec,
+    #dfe0ed,
+    #dfe2ee,
+    #dfe3f0,
+    #dfe5f1,
+    #dfe7f2,
+    #dfe8f2,
+    #dfeaf3,
+    #e0ebf4,
+    #e0edf4,
+    #e1eef5
+  );
   display: flex;
   justify-content: center;
   align-items: center;
+  height: 100vh;
 }
 
 h1 {
