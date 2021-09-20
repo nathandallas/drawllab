@@ -4,7 +4,8 @@ import { Link } from 'react-router-dom';
 import rough from 'roughjs/bundled/rough.esm';
 
 // ----- icons for toolbar -----
-import paintbrush from '../../assets/images/paintbrush.png';
+
+import paintbrush from '../../assets/images/paintbrush.svg';
 import line from '../../assets/images/draw-line.svg';
 import square from '../../assets/images/rectangle.svg';
 import selection from '../../assets/images/select.svg';
@@ -69,8 +70,8 @@ const adjustElementCoordinates = element => {
 // ----- PAGE -----
 
 const CanvasPage = () => {
-	// ----- Set State -----
-  const [elements, setElements] = useState([]);
+	// ----- Set State Hooks -----
+  	const [elements, setElements] = useState([]);
 	const [action, setAction] = useState("none");
 	const [tool, setTool] = useState("line");
 	const [selectedElement, setSelectedElement] = useState(null);
@@ -164,6 +165,19 @@ const CanvasPage = () => {
 					className="tool__label"
 				>
 					<img src={colorpicker} alt="colorpick icon" className="toolbar__icon"/>
+				</label>
+				<input
+					type="radio"
+					id="paintbrush"
+					checked={tool === "paintbrush"}
+					onChange={() => setTool("paintbrush")}
+					className="tool"
+				/>
+				<label
+					htmlFor="paintbrush"
+					className="tool__label"
+				>
+					<img src={paintbrush} alt="paintbrush icon" className="toolbar__icon"/>
 				</label>
 				<input
 					type="radio"
