@@ -2,17 +2,16 @@ import './CanvasPage.scss';
 import React, { useLayoutEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import rough from 'roughjs/bundled/rough.esm';
-import ColorPicker from '../../components/ColorPicker/ColorPicker';
 
 // ----- icons for toolbar -----
 import paintbrush from '../../assets/images/paintbrush.png';
-import line from '../../assets/images/diagonal-line.png';
-import square from '../../assets/images/square.png';
-import selection from '../../assets/images/selection.png';
+import line from '../../assets/images/draw-line.svg';
+import square from '../../assets/images/rectangle.svg';
+import selection from '../../assets/images/select.svg';
 import home from '../../assets/images/home.png';
 import about from '../../assets/images/about.png';
 import deleteicon from '../../assets/images/delete.png';
-import circle from '../../assets/images/circle.png';
+import colorpicker from '../../assets/images/color-picker.svg';
 
 // ----- Functionality for Tools -----
 
@@ -164,7 +163,7 @@ const CanvasPage = () => {
 					htmlFor="colorpick"
 					className="tool__label"
 				>
-					<img src={circle} alt="colorpick icon" className="toolbar__logo"/>
+					<img src={colorpicker} alt="colorpick icon" className="toolbar__icon"/>
 				</label>
 				<input
 					type="radio"
@@ -177,7 +176,7 @@ const CanvasPage = () => {
 					htmlFor="line"
 					className="tool__label"
 				>
-					<img src={line} alt="line icon" className="toolbar__logo"/>
+					<img src={line} alt="line icon" className="toolbar__icon"/>
 				</label>
 				<input
 					type="radio"
@@ -190,7 +189,7 @@ const CanvasPage = () => {
 					htmlFor="rectangle"
 					className="tool__label"
 				>
-					<img src={square} alt="rectangle icon" className="toolbar__logo"/>
+					<img src={square} alt="rectangle icon" className="toolbar__icon"/>
 				</label>
 				<input
 					type="radio"
@@ -203,7 +202,7 @@ const CanvasPage = () => {
 					htmlFor="select"
 					className="tool__label"
 				>
-					<img src={selection} alt="selection icon" className="toolbar__logo"/>
+					<img src={selection} alt="selection icon" className="toolbar__icon"/>
 				</label>
 				<input
 					type="radio"
@@ -216,7 +215,7 @@ const CanvasPage = () => {
 					htmlFor="delete"
 					className="tool__label"
 				>
-					<img src={deleteicon} alt="delete icon" className="toolbar__logo"/>
+					<img src={deleteicon} alt="delete icon" className="toolbar__icon"/>
 				</label>
 			</div>
 
