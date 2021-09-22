@@ -2,7 +2,6 @@ import './CanvasPage.scss';
 import React, { useLayoutEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import rough from 'roughjs/bundled/rough.esm';
-import ColorPicker from '../../components/ColorPicker/ColorPicker';
 
 // ----- icons for toolbar -----
 import paintbrush from '../../assets/images/paintbrush.png';
@@ -75,7 +74,6 @@ const CanvasPage = () => {
 	const [action, setAction] = useState("none");
 	const [tool, setTool] = useState("line");
 	const [selectedElement, setSelectedElement] = useState(null);
-	const [color, setColor] = useState("black");
 
   useLayoutEffect(() => {
     const canvas = document.getElementById("canvas");
