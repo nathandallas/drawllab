@@ -4,14 +4,15 @@ import { Link } from 'react-router-dom';
 import rough from 'roughjs/bundled/rough.esm';
 
 // ----- icons for toolbar -----
-import paintbrush from '../../assets/images/paintbrush.png';
-import line from '../../assets/images/diagonal-line.png';
-import square from '../../assets/images/square.png';
-import selection from '../../assets/images/selection.png';
+
+import paintbrush from '../../assets/images/paintbrush.svg';
+import line from '../../assets/images/draw-line.svg';
+import square from '../../assets/images/rectangle.svg';
+import selection from '../../assets/images/select.svg';
 import home from '../../assets/images/home.png';
 import about from '../../assets/images/about.png';
 import deleteicon from '../../assets/images/delete.png';
-import circle from '../../assets/images/circle.png';
+import colorpicker from '../../assets/images/color-picker.svg';
 
 // ----- Functionality for Tools -----
 
@@ -26,28 +27,46 @@ function createElement(id, x1, y1, x2, y2, type) {
   return {id, x1, y1, x2, y2, type, roughElement};
 }
 
+const nearPoint = (x, y, x1, y1, name) => {
+	return Math.abs(x - x1) < 5 && Math.abs(y - y1) < 5 ? name : null;
+  };
+  
+  const onLine = (x1, y1, x2, y2, x, y, maxDistance = 1) => {
+	const a = { x: x1, y: y1 };
+	const b = { x: x2, y: y2 };
+	const c = { x, y };
+	const offset = distance(a, b) - (distance(a, c) + distance(b, c));
+	return Math.abs(offset) < maxDistance ? "inside" : null;
+  };
+
 const isWithinElement = (x, y, element) => {
 	const { type, x1, y1, x2, y2 } = element;
   if (type === "rectangle") {
-    const minX = Math.min(x1, x2);
-    const maxX = Math.max(x1, x2);
-    const minY = Math.min(y1, y2);
-    const maxY = Math.max(y1, y2);
-    return x >= minX && x <= maxX && y >= minY && y <= maxY;
+	const topLeft = nearPoint(x, y, x1, y1, "tl");
+	const topRight = nearPoint(x, y, x2, y1, "tr");
+	const bottomLeft = nearPoint(x, y, x1, y2, "bl");
+	const bottomRight = nearPoint(x, y, x2, y2, "br");
+	const inside = x >= x1 && x <= x2 && y >= y1 && y <= y2 ? "inside" : null;
+	return topLeft || topRight || bottomLeft || bottomRight || inside;
   } else {
 		const a = { x: x1, y: y1 };
 		const b = { x: x2, y: y2 };
 		const c = { x, y };
 		const offset = distance(a, b) - (distance(a, c) + distance(b, c));
-		return Math.abs(offset) < 1;
+		const start = nearPoint(x, y, x1, y1, "start");
+		const end = nearPoint(x, y, x2, y2, "end");
+		const inside = Math.abs(offset) < 1 ? "inside" : null;
+		return start || end || inside;
   }
 };
 
 const distance = (a, b) => Math.sqrt(Math.pow(a.x - b.x, 2) + Math.pow(a.y-b.y, 2));
 
 const getElementAtPosition = (x, y, elements) => {
-	return elements.find(element => isWithinElement(x, y, element));
-};
+	return elements
+	  .map(element => ({ ...element, position: isWithinElement(x, y, element) }))
+	  .find(element => element.position !== null);
+  };
 
 const adjustElementCoordinates = element => {
   const { type, x1, y1, x2, y2 } = element;
@@ -66,11 +85,45 @@ const adjustElementCoordinates = element => {
   }
 };
 
+const cursorForPosition = position => {
+	switch (position) {
+	  case "tl":
+	  case "br":
+	  case "start":
+	  case "end":
+		return "nwse-resize";
+	  case "tr":
+	  case "bl":
+		return "nesw-resize";
+	  default:
+		return "move";
+	}
+  };
+
+  const resizedCoordinates = (clientX, clientY, position, coordinates) => {
+	const { x1, y1, x2, y2 } = coordinates;
+	switch (position) {
+	  case "tl":
+	  case "start":
+		return { x1: clientX, y1: clientY, x2, y2 };
+	  case "tr":
+		return { x1, y1: clientY, x2: clientX, y2 };
+	  case "bl":
+		return { x1: clientX, y1, x2, y2: clientY };
+	  case "br":
+	  case "end":
+		return { x1, y1, x2: clientX, y2: clientY };
+	  default:
+		return null; 
+	}
+  };
+  
+
 // ----- PAGE -----
 
 const CanvasPage = () => {
-	// ----- Set State -----
-  const [elements, setElements] = useState([]);
+	// ----- Set State Hooks -----
+  	const [elements, setElements] = useState([]);
 	const [action, setAction] = useState("none");
 	const [tool, setTool] = useState("line");
 	const [selectedElement, setSelectedElement] = useState(null);
@@ -103,14 +156,18 @@ const CanvasPage = () => {
 				const offsetX = clientX - element.x1;
 				const offsetY = clientY - element.y1;
 				setSelectedElement({...element, offsetX, offsetY})
-				setAction("moving");
+				if (element.position === "inside") {
+					setAction("moving");
+				  } else {
+					setAction("resizing");
+				  }
 			}
 		} else {
 			const id = elements.length;
-    const element = createElement(id, clientX, clientY, clientX, clientY, tool);
-		setElements((prevState) => [...prevState, element]);
-			
-		setAction("drawing");
+			const element = createElement(id, clientX, clientY, clientX, clientY, tool);
+			setElements((prevState) => [...prevState, element]);
+				
+			setAction("drawing");
 
 		}
   };
@@ -118,8 +175,9 @@ const CanvasPage = () => {
 	const handleMouseMove = (e) => {
 		const { clientX, clientY } = e;
 		if (tool === "select") {
-			e.target.style.cursor = getElementAtPosition(clientX, clientY, elements) ? "move" : "default";
-		}
+			const element = getElementAtPosition(clientX, clientY, elements);
+			e.target.style.cursor = element ? cursorForPosition(element.position) : "default";
+		  }
 
 		if (action === "drawing") {
 			const index = elements.length - 1;
@@ -133,7 +191,11 @@ const CanvasPage = () => {
 			const nexY1 = clientY - offsetY;
 			updateElement(id, nexX1, nexY1, nexX1 + width, nexY1 + height, tool);
 		
-		}
+		} else if (action === "resizing") {
+			const { id, type, position, ...coordinates } = selectedElement;
+			const { x1, y1, x2, y2 } = resizedCoordinates(clientX, clientY, position, coordinates);
+			updateElement(id, x1, y1, x2, y2, type);
+		  }
   };
   
 	const handleMouseUp = () => {
@@ -162,7 +224,20 @@ const CanvasPage = () => {
 					htmlFor="colorpick"
 					className="tool__label"
 				>
-					<img src={circle} alt="colorpick icon" className="toolbar__logo"/>
+					<img src={colorpicker} alt="colorpick icon" className="toolbar__icon"/>
+				</label>
+				<input
+					type="radio"
+					id="paintbrush"
+					checked={tool === "paintbrush"}
+					onChange={() => setTool("paintbrush")}
+					className="tool"
+				/>
+				<label
+					htmlFor="paintbrush"
+					className="tool__label"
+				>
+					<img src={paintbrush} alt="paintbrush icon" className="toolbar__icon"/>
 				</label>
 				<input
 					type="radio"
@@ -175,7 +250,7 @@ const CanvasPage = () => {
 					htmlFor="line"
 					className="tool__label"
 				>
-					<img src={line} alt="line icon" className="toolbar__logo"/>
+					<img src={line} alt="line icon" className="toolbar__icon"/>
 				</label>
 				<input
 					type="radio"
@@ -188,7 +263,7 @@ const CanvasPage = () => {
 					htmlFor="rectangle"
 					className="tool__label"
 				>
-					<img src={square} alt="rectangle icon" className="toolbar__logo"/>
+					<img src={square} alt="rectangle icon" className="toolbar__icon"/>
 				</label>
 				<input
 					type="radio"
@@ -201,7 +276,7 @@ const CanvasPage = () => {
 					htmlFor="select"
 					className="tool__label"
 				>
-					<img src={selection} alt="selection icon" className="toolbar__logo"/>
+					<img src={selection} alt="selection icon" className="toolbar__icon"/>
 				</label>
 				<input
 					type="radio"
@@ -214,7 +289,7 @@ const CanvasPage = () => {
 					htmlFor="delete"
 					className="tool__label"
 				>
-					<img src={deleteicon} alt="delete icon" className="toolbar__logo"/>
+					<img src={deleteicon} alt="delete icon" className="toolbar__icon"/>
 				</label>
 			</div>
 

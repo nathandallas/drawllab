@@ -3,7 +3,6 @@
 @import "../../partials/partials";
 
 canvas {
-  border: solid 1px black;
   background-color: $offwhite;
 }
 
@@ -11,9 +10,12 @@ canvas {
   position: fixed;
   display: flex;
   flex-direction: column;
+  align-items: center;
   height: 100vh;
-  background-color: $lightgray;
-  &__logo {
+  width: 5rem;
+  background-color: $lightestgray;
+  &__icon
+   {
     max-width: 3rem;
     margin: 0.5rem;
   }
@@ -21,7 +23,24 @@ canvas {
 
 .tool {
   display: none;
+  &__label {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 .5rem;
+    width: 4rem;
+    height: 4rem;
+  }
+
+  &:checked + &__label {
+    -webkit-animation: animation 1000ms linear both;
+    animation: animation 1000ms linear both;
+    background-color: $lightgray;
+    border-radius: 1rem;
+  }
 }
+
+//Google how to keep image static during animation
 
 .nav {
   position: absolute;

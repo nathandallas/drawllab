@@ -26,6 +26,7 @@ h1 {
   height: 80vh;
   width: 80vw;
   border-radius: 2rem;
+  box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.1);
   &__logo {
     max-width: 50vw;
   }
@@ -47,6 +48,7 @@ h1 {
     border: none;
     border-radius: 1rem;
     margin: 1rem;
+    box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.1);
     &:hover {
       color: $darkblue;
       background-color: $ltbluegray;
@@ -63,6 +65,7 @@ h1 {
     border: none;
     border-radius: 1rem;
     margin: 1rem;
+    box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.1);
     &:hover {
       color: $blight;
       background-color: $darkblue;

@@ -110,7 +110,9 @@ const InfoBox = ({rgb}) => (
     </div>
 );
 
+
  const ColorPicker = () => {
+
     const [{shade, hue}, update] = useState({hue: [255,0,0], shade: [0,0,0]});
     const updateHue = useCallback(hue => update(c => ({...c, hue})), [update]);
     const updateShade = useCallback(shade => update(c => ({...c, shade})), [update]);
@@ -121,6 +123,7 @@ const InfoBox = ({rgb}) => (
             <InfoBox rgb={shade}/>
         </div>
     );
+
  };
 
 export default ColorPicker;
