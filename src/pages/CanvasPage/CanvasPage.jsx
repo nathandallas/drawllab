@@ -180,11 +180,16 @@ const drawElement = (roughCanvas, context, element) => {
       roughCanvas.draw(element.roughElement);
       break;
     case "paintbrush":
-      const stroke = getSvgPathFromStroke(getStroke(element.points));
+      const stroke = getSvgPathFromStroke(getStroke(element.points, {
+		size: 8,
+		thinning: 0.5,
+		smoothing: 0.5,
+		streamline: 0.5,
+	  }));
       context.fill(new Path2D(stroke));
       break;
     default:
-      throw new Error(`Type not recognised: ${element.type}`);
+      throw new Error(`unrecognised: ${element.type}`);
   }
 };
 
@@ -235,7 +240,7 @@ const CanvasPage = () => {
         elementsCopy[id].points = [...elementsCopy[id].points, { x: x2, y: y2 }];
         break;
       default:
-        throw new Error(`Type not recognised: ${type}`);
+        throw new Error(`unrecognised: ${type}`);
     }
 
     setElements(elementsCopy, true);
