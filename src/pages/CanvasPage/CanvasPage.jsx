@@ -173,22 +173,22 @@ const CanvasPage = () => {
 			setElements(elementsCopy);
 	};
 
-	useEffect(() => {
-		const undoRedoFunction = event => {
-		  if ((event.metaKey || event.ctrlKey) && event.key === "z") {
-			if (event.shiftKey) {
-			  redo();
-			} else {
-			  undo();
-			}
-		  }
-		};
-	
-		document.addEventListener("keydown", undoRedoFunction);
-		return () => {
-		  document.removeEventListener("keydown", undoRedoFunction);
-		};
-	  }, [undo, redo]);
+	  useEffect(() => {
+    const undoRedoFunction = event => {
+      if ((event.metaKey || event.ctrlKey) && event.key === "z") {
+        if (event.shiftKey) {
+          redo();
+        } else {
+          undo();
+        }
+      }
+    };
+
+    document.addEventListener("keydown", undoRedoFunction);
+    return () => {
+      document.removeEventListener("keydown", undoRedoFunction);
+    };
+  }, [undo, redo]);
 
 	
 	const handleMouseDown = (e) => {
