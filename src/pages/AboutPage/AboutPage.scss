@@ -24,7 +24,7 @@ body {
 }
 
 h1 {
-  padding: 1rem 3rem;
+  padding: 1rem 3rem 0;
   color: $graphite;
   letter-spacing: 2px;
 }
@@ -39,12 +39,11 @@ li {
   background-color: $offwhite;
   height: 80vh;
   width: 80vw;
-  margin-top: 10vh;
   border-radius: 2rem;
   box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.1);
 
   & h3 {
-    margin: 1rem 3rem;
+    margin: 0 3rem;
   }
   &__text {
     margin: 1rem 4rem;

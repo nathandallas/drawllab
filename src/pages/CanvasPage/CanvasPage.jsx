@@ -123,10 +123,12 @@ const cursorForPosition = position => {
 
 const CanvasPage = () => {
 	// ----- Set State Hooks -----
+
   	const [elements, setElements] = useState([]);
 	const [action, setAction] = useState("none");
 	const [tool, setTool] = useState("line");
 	const [selectedElement, setSelectedElement] = useState(null);
+
 
   useLayoutEffect(() => {
     const canvas = document.getElementById("canvas");
