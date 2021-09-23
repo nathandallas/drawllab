@@ -55,10 +55,11 @@ h2 {
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    z-index: 999;
   }
   &__canvas {
     padding: 1.5rem;
-    width: 30vw;
+    max-width: 30vw;
     font-size: 2rem;
     letter-spacing: 3px;
     text-transform: uppercase;

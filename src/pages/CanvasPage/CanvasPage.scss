@@ -61,3 +61,7 @@ canvas {
     margin: 0.5rem;
   }
 }
+
+.click:active {
+  animation: shrink 400ms;
+}
