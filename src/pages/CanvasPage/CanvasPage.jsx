@@ -1,5 +1,5 @@
 import './CanvasPage.scss';
-import React, { useLayoutEffect, useState } from 'react';
+import React, { useEffect, useLayoutEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import rough from 'roughjs/bundled/rough.esm';
 
@@ -13,6 +13,8 @@ import home from '../../assets/images/home.png';
 import about from '../../assets/images/about.png';
 import deleteicon from '../../assets/images/delete.png';
 import colorpicker from '../../assets/images/color-picker.svg';
+import undoIcon from '../../assets/images/undo.svg'
+import redoIcon from '../../assets/images/redo.svg'
 
 // ----- Functionality for Tools -----
 
@@ -118,59 +120,98 @@ const cursorForPosition = position => {
 	}
   };
   
+  const useHistory = initialState => {
+	const [index, setIndex] = useState(0);
+	const [history, setHistory] = useState([initialState]);
+  
+	const setState = (action, overwrite = false) => {
+	  const newState = typeof action === "function" ? action(history[index]) : action;
+	  if (overwrite) {
+		const historyCopy = [...history];
+		historyCopy[index] = newState;
+		setHistory(historyCopy);
+	  } else {
+		const updatedState = [...history].slice(0, index + 1);
+		setHistory([...updatedState, newState]);
+		setIndex(prevState => prevState + 1);
+	  }
+	};
+  
+	const undo = () => index > 0 && setIndex(prevState => prevState - 1);
+	const redo = () => index < history.length - 1 && setIndex(prevState => prevState + 1);
+  
+	return [history[index], setState, undo, redo];
+};
+
 
 // ----- PAGE -----
 
 const CanvasPage = () => {
 	// ----- Set State Hooks -----
-  	const [elements, setElements] = useState([]);
+  	const [elements, setElements, undo, redo] = useHistory([]);
 	const [action, setAction] = useState("none");
 	const [tool, setTool] = useState("line");
 	const [selectedElement, setSelectedElement] = useState(null);
 	const [color, setColor] = useState("black");
 
-  useLayoutEffect(() => {
-    const canvas = document.getElementById("canvas");
-    const context = canvas.getContext("2d");
-		// clears canvas on refresh 
-		context.clearRect(0, 0, canvas.width, canvas.height);
+	useLayoutEffect(() => {
+		const canvas = document.getElementById("canvas");
+		const context = canvas.getContext("2d");
+			// clears canvas on refresh 
+			context.clearRect(0, 0, canvas.width, canvas.height);
 
-    const roughCanvas = rough.canvas(canvas);
+		const roughCanvas = rough.canvas(canvas);
 
-    elements.forEach(({roughElement}) => roughCanvas.draw(roughElement));
-	}, [elements]);
-	
-	const updateElement = (id, x1, y1, x2, y2, type) => {
-		const updatedElement = createElement(id, x1, y1, x2, y2, type);
-
-		const elementsCopy = [...elements];
-		elementsCopy[id] = updatedElement;
-		setElements(elementsCopy);
-	};
-  
-	const handleMouseDown = (e) => {
-    const { clientX, clientY } = e;
+		elements.forEach(({roughElement}) => roughCanvas.draw(roughElement));
+		}, [elements]);
 		
-		if (tool === "select") {
-			const element = getElementAtPosition(clientX, clientY, elements)
-			if (element) {
-				const offsetX = clientX - element.x1;
-				const offsetY = clientY - element.y1;
-				setSelectedElement({...element, offsetX, offsetY})
-				if (element.position === "inside") {
-					setAction("moving");
-				  } else {
-					setAction("resizing");
-				  }
-			}
-		} else {
-			const id = elements.length;
-			const element = createElement(id, clientX, clientY, clientX, clientY, tool);
-			setElements((prevState) => [...prevState, element]);
-				
-			setAction("drawing");
+		const updateElement = (id, x1, y1, x2, y2, type) => {
+			const updatedElement = createElement(id, x1, y1, x2, y2, type);
 
-		}
+			const elementsCopy = [...elements];
+			elementsCopy[id] = updatedElement;
+			setElements(elementsCopy);
+	};
+
+	useEffect(() => {
+		const undoRedoFunction = event => {
+		  if ((event.metaKey || event.ctrlKey) && event.key === "z") {
+			if (event.shiftKey) {
+			  redo();
+			} else {
+			  undo();
+			}
+		  }
+		};
+	
+		document.addEventListener("keydown", undoRedoFunction);
+		return () => {
+		  document.removeEventListener("keydown", undoRedoFunction);
+		};
+	  }, [undo, redo]);
+
+	
+	const handleMouseDown = (e) => {
+		const { clientX, clientY } = e;
+			
+			if (tool === "select") {
+				const element = getElementAtPosition(clientX, clientY, elements)
+				if (element) {
+					const offsetX = clientX - element.x1;
+					const offsetY = clientY - element.y1;
+					setSelectedElement({...element, offsetX, offsetY})
+					if (element.position === "inside") {
+						setAction("moving");
+					} else {
+						setAction("resizing");
+					}
+				}
+			} else {
+				const id = elements.length;
+				const element = createElement(id, clientX, clientY, clientX, clientY, tool);
+				setElements((prevState) => [...prevState, element]);
+				setAction("drawing");
+			}
   };
   
 	const handleMouseMove = (e) => {
@@ -200,12 +241,14 @@ const CanvasPage = () => {
   };
   
 	const handleMouseUp = () => {
-		const index = elements.length - 1;
+		if (selectedElement) {
+		const index = selectedElement.id;
 		const { id, type } = elements[index];
-		if (action === "drawing") {
+		if (action === "drawing" || action === "resizing") {
 			const { x1, y1, x2, y2 } = adjustElementCoordinates(elements[index]);
 			updateElement(id, x1, y1, x2, y2, type);
 		}
+	}
 		setAction("none");
 		setSelectedElement(null);
   };
@@ -225,8 +268,11 @@ const CanvasPage = () => {
 				htmlFor="colorpick"
 				className="tool__label"
 			>
+			<div className="tool__div">
 				<img src={colorpicker} alt="colorpick icon" className="toolbar__icon"/>
+			</div>
 			</label>
+			
 			<input
 				type="radio"
 				id="paintbrush"
@@ -292,6 +338,15 @@ const CanvasPage = () => {
 			>
 				<img src={deleteicon} alt="delete icon" className="toolbar__icon"/>
 			</label>
+
+		{/* Undo/Redo Buttons should stay at bottom of list */}
+			<div onClick={undo} className="undo-redo">
+				<img src={undoIcon} alt="" className="toolbar__icon undo-redo" />
+			</div>
+			<div onClick={redo} className="undo-redo">
+				<img src={redoIcon} alt="" className="toolbar__icon undo-redo" />
+			</div>
+
 		</div>
 
 		{/* Nav Bar Component */}
