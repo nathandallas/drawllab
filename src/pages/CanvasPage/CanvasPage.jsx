@@ -211,113 +211,111 @@ const CanvasPage = () => {
   };
 
   return (
-		<>
-			{/* Toolbar Component */}
-			<div className="toolbar">
-				<input
-					type="radio"
-					id="colorpick"
-					checked={tool === "colorpick"}
-					onChange={() => setTool("colorpick")}
-					className="tool"
-				/>
-				<label
-					htmlFor="colorpick"
-					className="tool__label"
-				>
-					<img src={colorpicker} alt="colorpick icon" className="toolbar__icon"/>
-				</label>
-				<input
-					type="radio"
-					id="paintbrush"
-					checked={tool === "paintbrush"}
-					onChange={() => setTool("paintbrush")}
-					className="tool"
-				/>
-				<label
-					htmlFor="paintbrush"
-					className="tool__label"
-				>
-					<img src={paintbrush} alt="paintbrush icon" className="toolbar__icon"/>
-				</label>
-				<input
-					type="radio"
-					id="line"
-					checked={tool === "line"}
-					onChange={() => setTool("line")}
-					className="tool"
-				/>
-				<label
-					htmlFor="line"
-					className="tool__label"
-				>
-					<img src={line} alt="line icon" className="toolbar__icon"/>
-				</label>
-				<input
-					type="radio"
-					id="rectangle"
-					checked={tool === "rectangle"}
-					onChange={() => setTool("rectangle")}
-					className="tool"
-				/>
-				<label
-					htmlFor="rectangle"
-					className="tool__label"
-				>
-					<img src={square} alt="rectangle icon" className="toolbar__icon"/>
-				</label>
-				<input
-					type="radio"
-					id="select"
-					checked={tool === "select"}
-					onChange={() => setTool("select")}
-					className="tool"
-				/>
-				<label
-					htmlFor="select"
-					className="tool__label"
-				>
-					<img src={selection} alt="selection icon" className="toolbar__icon"/>
-				</label>
-				<input
-					type="radio"
-					id="delete"
-					checked={tool === "delete"}
-					onChange={() => setTool("delete")}
-					className="tool"
-				/>
-				<label
-					htmlFor="delete"
-					className="tool__label"
-				>
-					<img src={deleteicon} alt="delete icon" className="toolbar__icon"/>
-				</label>
-			</div>
+	<>
+		{/* Toolbar Component */}
+		<div className="toolbar">
+			<input
+				type="radio"
+				id="colorpick"
+				checked={tool === "colorpick"}
+				onChange={() => setTool("colorpick")}
+				className="tool"
+			/>
+			<label
+				htmlFor="colorpick"
+				className="tool__label"
+			>
+				<img src={colorpicker} alt="colorpick icon" className="toolbar__icon"/>
+			</label>
+			<input
+				type="radio"
+				id="paintbrush"
+				checked={tool === "paintbrush"}
+				onChange={() => setTool("paintbrush")}
+				className="tool"
+			/>
+			<label
+				htmlFor="paintbrush"
+				className="tool__label"
+			>
+				<img src={paintbrush} alt="paintbrush icon" className="toolbar__icon"/>
+			</label>
+			<input
+				type="radio"
+				id="line"
+				checked={tool === "line"}
+				onChange={() => setTool("line")}
+				className="tool"
+			/>
+			<label
+				htmlFor="line"
+				className="tool__label"
+			>
+				<img src={line} alt="line icon" className="toolbar__icon"/>
+			</label>
+			<input
+				type="radio"
+				id="rectangle"
+				checked={tool === "rectangle"}
+				onChange={() => setTool("rectangle")}
+				className="tool"
+			/>
+			<label
+				htmlFor="rectangle"
+				className="tool__label"
+			>
+				<img src={square} alt="rectangle icon" className="toolbar__icon"/>
+			</label>
+			<input
+				type="radio"
+				id="select"
+				checked={tool === "select"}
+				onChange={() => setTool("select")}
+				className="tool"
+			/>
+			<label
+				htmlFor="select"
+				className="tool__label"
+			>
+				<img src={selection} alt="selection icon" className="toolbar__icon"/>
+			</label>
+			<input
+				type="radio"
+				id="delete"
+				checked={tool === "delete"}
+				onChange={() => setTool("delete")}
+				className="tool"
+			/>
+			<label
+				htmlFor="delete"
+				className="tool__label"
+			>
+				<img src={deleteicon} alt="delete icon" className="toolbar__icon"/>
+			</label>
+		</div>
 
-			{/* Nav Bar Component */}
+		{/* Nav Bar Component */}
 
-			<nav className="nav">
-				<Link to="/">
-					<img src={home} alt="home icon" className="nav__icon"/>
-				</Link>
-				<Link to="/about">
-					<img src={about} alt="about icon" className="nav__icon"/>
-				</Link>
-			</nav>
+		<nav className="nav">
+			<Link to="/">
+				<img src={home} alt="home icon" className="nav__icon"/>
+			</Link>
+			<Link to="/about">
+				<img src={about} alt="about icon" className="nav__icon"/>
+			</Link>
+		</nav>
 
-
-
-			{/* Canvas Component */}
-      <canvas
-        id="canvas"
-        width={window.innerWidth}
-        height={window.innerHeight}
-        onMouseDown={handleMouseDown}
-        onMouseMove={handleMouseMove}
-        onMouseUp={handleMouseUp}
-      >
-        Canvas
-      </canvas>
+		{/* Canvas Component */}
+		<canvas
+			id="canvas"
+			width={window.innerWidth}
+			height={window.innerHeight}
+			onMouseDown={handleMouseDown}
+			onMouseMove={handleMouseMove}
+			onMouseUp={handleMouseUp}
+		>
+			Canvas
+		</canvas>
     </>
   )
 }

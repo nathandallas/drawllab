@@ -4,18 +4,24 @@
 
 canvas {
   background-color: $offwhite;
+  width: 100vw;
+  height: 100vh;
 }
 
 .toolbar {
-  position: fixed;
+  position: absolute;
+  top: 1rem;
+  left: 1rem;
   display: flex;
   flex-direction: column;
   align-items: center;
-  height: 100vh;
+  justify-content: center;
   width: 5rem;
+  max-height: 90vh;
   background-color: $lightestgray;
-  &__icon
-   {
+  border-radius: 1rem;
+  box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.1);
+  &__icon {
     max-width: 3rem;
     margin: 0.5rem;
   }
@@ -27,7 +33,6 @@ canvas {
     display: flex;
     align-items: center;
     justify-content: center;
-    margin: 0 .5rem;
     width: 4rem;
     height: 4rem;
   }
@@ -44,10 +49,13 @@ canvas {
 
 .nav {
   position: absolute;
-  bottom: 0;
-  left: 0;
+  top: 1rem;
+  right: 1rem;
   display: flex;
   flex-direction: column;
+  background-color: $lightestgray;
+  border-radius: 1rem;
+  box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.1);
   &__icon {
     max-width: 3rem;
     margin: 0.5rem;
