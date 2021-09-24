@@ -27,8 +27,8 @@ const createElement = (id, x1, y1, x2, y2, type) => {
     case "rectangle":
       const roughElement =
         type === "line"
-          ? generator.line(x1, y1, x2, y2)
-          : generator.rectangle(x1, y1, x2 - x1, y2 - y1);
+			  ? generator.line(x1, y1, x2, y2, { roughness: 1.25, bowing: 2, strokeWidth: 2})
+          : generator.rectangle(x1, y1, x2 - x1, y2 - y1, {roughness: 1.25, bowing: 2, strokeWidth: 3});
       return { id, x1, y1, x2, y2, type, roughElement };
     case "paintbrush":
       return { id, type, points: [{ x: x1, y: y1 }] };
@@ -213,9 +213,9 @@ const CanvasPage = () => {
   }, [elements]);
 
   useEffect(() => {
-    const undoRedoFunction = event => {
-      if ((event.metaKey || event.ctrlKey) && event.key === "z") {
-        if (event.shiftKey) {
+    const undoRedoFunction = e => {
+      if ((e.metaKey || e.ctrlKey) && e.key === "z") {
+        if (e.shiftKey) {
           redo();
         } else {
           undo();
@@ -247,8 +247,8 @@ const CanvasPage = () => {
     setElements(elementsCopy, true);
   };
 
-  const handleMouseDown = event => {
-    const { clientX, clientY } = event;
+  const handleMouseDown = e => {
+    const { clientX, clientY } = e;
     if (tool === "select") {
       const element = getElementAtPosition(clientX, clientY, elements);
       if (element) {
@@ -279,12 +279,12 @@ const CanvasPage = () => {
     }
   };
 
-  const handleMouseMove = event => {
-    const { clientX, clientY } = event;
+  const handleMouseMove = e => {
+    const { clientX, clientY } = e;
 
     if (tool === "select") {
       const element = getElementAtPosition(clientX, clientY, elements);
-      event.target.style.cursor = element ? cursorForPosition(element.position) : "default";
+      e.target.style.cursor = element ? cursorForPosition(element.position) : "default";
     }
 
     if (action === "drawing") {
