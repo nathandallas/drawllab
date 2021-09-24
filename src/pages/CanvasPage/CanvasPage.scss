@@ -11,6 +11,17 @@ canvas {
   background-color: $dlblack;
 }
 
+.color {
+  display: none;
+  position: absolute;
+  top: 1rem;
+  left: 7rem;
+  background-color: $blight;
+  padding: 1rem;
+  border-radius: 1rem;
+  box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.1);
+}
+
 .toolbar {
   position: absolute;
   top: 1rem;

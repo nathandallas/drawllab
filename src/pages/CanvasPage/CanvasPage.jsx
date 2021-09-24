@@ -2,9 +2,13 @@ import './CanvasPage.scss';
 import React, { useEffect, useLayoutEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import rough from 'roughjs/bundled/rough.esm';
+import tippy from 'tippy.js';
 import { getStroke } from 'perfect-freehand';
+import { CirclePicker } from 'react-color';
 
+// -----------------------------
 // ----- icons for toolbar -----
+// -----------------------------
 
 import paintbrush from '../../assets/images/paintbrush.svg';
 import line from '../../assets/images/draw-line.svg';
@@ -17,7 +21,11 @@ import colorpickicon from '../../assets/images/color-picker.svg';
 import undoIcon from '../../assets/images/undo.svg'
 import redoIcon from '../../assets/images/redo.svg'
 
-// ----- Functionality for Tools -----
+// ---------------------------------------------
+// ---------- Functionality for Tools ----------
+// ---------------------------------------------
+// ------------- Element Creation --------------
+// ---------------------------------------------
 
 const generator = rough.generator();
 
@@ -36,6 +44,46 @@ const createElement = (id, x1, y1, x2, y2, type) => {
       throw new Error(`unrecognized: ${type}`);
   }
 };
+
+const getSvgPathFromStroke = stroke => {
+  if (!stroke.length) return "";
+
+  const d = stroke.reduce(
+    (acc, [x0, y0], i, arr) => {
+      const [x1, y1] = arr[(i + 1) % arr.length];
+      acc.push(x0, y0, (x0 + x1) / 2, (y0 + y1) / 2);
+      return acc;
+    },
+    ["M", ...stroke[0], "Q"]
+  );
+
+  d.push("Z");
+  return d.join(" ");
+};
+
+const drawElement = (roughCanvas, context, element) => {
+  switch (element.type) {
+    case "line":
+    case "rectangle":
+      roughCanvas.draw(element.roughElement);
+      break;
+    case "paintbrush":
+      const stroke = getSvgPathFromStroke(getStroke(element.points, {
+				size: 8,
+				thinning: 0.5,
+				smoothing: 0.5,
+				streamline: 0.5
+	  }));
+      context.fill(new Path2D(stroke));
+      break;
+    default:
+      throw new Error(`unrecognised: ${element.type}`);
+  }
+};
+
+// --------------------------------------------------------
+// ----- Functions to find Position for Select/Resize -----
+// --------------------------------------------------------
 
 const nearPoint = (x, y, x1, y1, name) => {
   return Math.abs(x - x1) < 5 && Math.abs(y - y1) < 5 ? name : null;
@@ -72,7 +120,7 @@ const positionInElement = (x, y, element) => {
       });
       return betweenAnyPoint ? "inside" : null;
     default:
-      throw new Error(`Type not recognised: ${type}`);
+      throw new Error(`unrecognised: ${type}`);
   }
 };
 
@@ -130,9 +178,14 @@ const resizedCoordinates = (clientX, clientY, position, coordinates) => {
     case "end":
       return { x1, y1, x2: clientX, y2: clientY };
     default:
-      return null; //should not really get here...
+      return null; // Throws Error
   }
 };
+
+// --------------------------------------------
+// ----- Undo / Redo Button Functionality -----
+// --------------------------------------------
+
 
 const useHistory = initialState => {
   const [index, setIndex] = useState(0);
@@ -157,50 +210,24 @@ const useHistory = initialState => {
   return [history[index], setState, undo, redo];
 };
 
-const getSvgPathFromStroke = stroke => {
-  if (!stroke.length) return "";
-
-  const d = stroke.reduce(
-    (acc, [x0, y0], i, arr) => {
-      const [x1, y1] = arr[(i + 1) % arr.length];
-      acc.push(x0, y0, (x0 + x1) / 2, (y0 + y1) / 2);
-      return acc;
-    },
-    ["M", ...stroke[0], "Q"]
-  );
-
-  d.push("Z");
-  return d.join(" ");
-};
-
-const drawElement = (roughCanvas, context, element) => {
-  switch (element.type) {
-    case "line":
-    case "rectangle":
-      roughCanvas.draw(element.roughElement);
-      break;
-    case "paintbrush":
-      const stroke = getSvgPathFromStroke(getStroke(element.points, {
-		size: 8,
-		thinning: 0.5,
-		smoothing: 0.5,
-		streamline: 0.5,
-	  }));
-      context.fill(new Path2D(stroke));
-      break;
-    default:
-      throw new Error(`unrecognised: ${element.type}`);
-  }
-};
-
 const adjustmentRequired = type => ["line", "rectangle"].includes(type);
 
+// ---------------------------
+// ----------- PAGE ----------
+// ---------------------------
+
 const CanvasPage = () => {
+
+	// ---------------------------
+	// ---------- Hooks ----------
+	// ---------------------------
 
   const [elements, setElements, undo, redo] = useHistory([]);
   const [action, setAction] = useState("none");
   const [tool, setTool] = useState("paintbrush");
-  const [selectedElement, setSelectedElement] = useState(null);
+	const [selectedElement, setSelectedElement] = useState(null);
+	const [selectedColor, setSelectedColor] = useState('#363636');
+	const [display, setDisplay] = useState('false');
 
   useLayoutEffect(() => {
     const canvas = document.getElementById("canvas");
@@ -211,23 +238,6 @@ const CanvasPage = () => {
 
     elements.forEach(element => drawElement(roughCanvas, context, element));
   }, [elements]);
-
-  useEffect(() => {
-    const undoRedoFunction = e => {
-      if ((e.metaKey || e.ctrlKey) && e.key === "z") {
-        if (e.shiftKey) {
-          redo();
-        } else {
-          undo();
-        }
-      }
-    };
-
-    document.addEventListener("keydown", undoRedoFunction);
-    return () => {
-      document.removeEventListener("keydown", undoRedoFunction);
-    };
-  }, [undo, redo]);
 
   const updateElement = (id, x1, y1, x2, y2, type) => {
     const elementsCopy = [...elements];
@@ -246,6 +256,32 @@ const CanvasPage = () => {
 
     setElements(elementsCopy, true);
   };
+
+
+	// --------------------------------------------
+	// ----- Undo/Redo + Ctrl Z Functionality -----
+	// --------------------------------------------
+
+  useEffect(() => {
+    const undoRedoFunction = e => {
+      if ((e.metaKey || e.ctrlKey) && e.key === "z") {
+        if (e.shiftKey) {
+          redo();
+        } else {
+          undo();
+        }
+      }
+    };
+
+    document.addEventListener("keydown", undoRedoFunction);
+    return () => {
+      document.removeEventListener("keydown", undoRedoFunction);
+    };
+	}, [undo, redo]);
+
+	// --------------------------
+	// ----- Event Handlers -----
+	// --------------------------
 
   const handleMouseDown = e => {
     const { clientX, clientY } = e;
@@ -331,10 +367,41 @@ const CanvasPage = () => {
     setSelectedElement(null);
   };
 
+	// ----------------------------
+	// ---------- Render ----------
+	// ----------------------------
+
   return (
-	<>
+	  <>
+			<div className="color">
+				<CirclePicker
+					colors={
+						[ '#a5abe7',
+						'#6fb7da', 
+						'#aebc89', 
+						'#f1d896', 
+						'#e67f6e', 
+						'#f384a9', 
+						'#7b75da', 
+						'#3984a3', 
+						'#598b7f', 
+						'#f1b376', 
+						'#bc5953', 
+						'#ed5689', 
+						'#363636', 
+						'#666',
+						'#818589', 
+						'#A9A9A9',
+						'#ccc', 
+						'#fff'
+						]}
+					color={selectedColor}
+					onChangeComplete={color=>setSelectedColor(color.hex)}
+				/>
+			</div>
+			
 		{/* Toolbar Component */}
-		<div className="toolbar">
+		  <div className="toolbar">
 			<input
 				type="radio"
 				id="colorpick"
