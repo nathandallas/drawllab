@@ -13,7 +13,7 @@ import select from '../../assets/images/select.svg';
 import home from '../../assets/images/home.png';
 import about from '../../assets/images/about.png';
 import deleteicon from '../../assets/images/delete.png';
-import colorpicker from '../../assets/images/color-picker.svg';
+import colorpickicon from '../../assets/images/color-picker.svg';
 import undoIcon from '../../assets/images/undo.svg'
 import redoIcon from '../../assets/images/redo.svg'
 
@@ -27,8 +27,8 @@ const createElement = (id, x1, y1, x2, y2, type) => {
     case "rectangle":
       const roughElement =
         type === "line"
-			  ? generator.line(x1, y1, x2, y2, { roughness: 1.25, bowing: 2, strokeWidth: 2})
-          : generator.rectangle(x1, y1, x2 - x1, y2 - y1, {roughness: 1.25, bowing: 2, strokeWidth: 3});
+			  ? generator.line(x1, y1, x2, y2, { bowing: 2, strokeWidth: 2.5 })
+        : generator.rectangle(x1, y1, x2 - x1, y2 - y1, { bowing: 2, strokeWidth: 2.5 });
       return { id, x1, y1, x2, y2, type, roughElement };
     case "paintbrush":
       return { id, type, points: [{ x: x1, y: y1 }] };
@@ -347,7 +347,7 @@ const CanvasPage = () => {
 				className="tool__label"
 			>
 			<div className="tool__div">
-				<img src={colorpicker} alt="colorpick icon" className="toolbar__icon"/>
+				<img src={colorpickicon} alt="colorpick icon" className="toolbar__icon"/>
 			</div>
 			</label>
 			

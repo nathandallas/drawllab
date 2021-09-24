@@ -4,21 +4,7 @@
 @import "../../App.scss";
 
 body {
-  background: linear-gradient(
-    360deg,
-    #e0ddea,
-    #e0dfec,
-    #dfe0ed,
-    #dfe2ee,
-    #dfe3f0,
-    #dfe5f1,
-    #dfe7f2,
-    #dfe8f2,
-    #dfeaf3,
-    #e0ebf4,
-    #e0edf4,
-    #e1eef5
-  );
+  background: linear-gradient(180deg, #e1f1f5, #ddeef2, #d9ebef, #d5e8ec, #d1e5e9, #cde2e6, #c9dfe3, #c5dce0);
   display: flex;
   height: 100vh;
 }

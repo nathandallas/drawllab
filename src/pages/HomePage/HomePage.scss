@@ -4,7 +4,7 @@
 @import "../../App";
 
 body {
-  background-image: linear-gradient(45deg, #93a5cf 0%, #e4efe9 100%);
+  background: linear-gradient(180deg, #e1f1f5, #ddeef2, #d9ebef, #d5e8ec, #d1e5e9, #cde2e6, #c9dfe3, #c5dce0);
   display: flex;
   justify-content: center;
   align-items: center;
@@ -58,20 +58,20 @@ h2 {
     z-index: 999;
   }
   &__canvas {
-    padding: 1.5rem;
+    padding: 1rem 2.5rem;
     max-width: 30vw;
     font-size: 2rem;
     letter-spacing: 3px;
     text-transform: uppercase;
-    background-color: $darkblue;
+    background-color: $darkseagreen;
     color: $blight;
     border: none;
     border-radius: 1rem;
     margin: 1rem;
     box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.1);
     &:hover {
-      color: $darkblue;
-      background-color: $ltbluegray;
+      color: $darkseagreen;
+      background-color: $lightestseagreen;
     }
   }
   &__about {
@@ -80,7 +80,7 @@ h2 {
     font-size: 2rem;
     letter-spacing: 3px;
     text-transform: uppercase;
-    background-color: #70a0ba;
+    background-color: $lightseagreen;
     color: $offwhite;
     border: none;
     border-radius: 1rem;
@@ -88,7 +88,7 @@ h2 {
     box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.1);
     &:hover {
       color: $blight;
-      background-color: $darkblue;
+      background-color: $darkseagreen;
     }
   }
 }
