@@ -72,7 +72,8 @@ const drawElement = (roughCanvas, context, element) => {
 				size: 8,
 				thinning: 0.5,
 				smoothing: 0.5,
-				streamline: 0.5
+				streamline: 0.5,
+				strokeColor: '#666666'
 	  }));
       context.fill(new Path2D(stroke));
       break;
@@ -202,12 +203,13 @@ const useHistory = initialState => {
       setHistory([...updatedState, newState]);
       setIndex(prevState => prevState + 1);
     }
-  };
-
+	};
+	
+	const clear = () => index > 0 && setIndex(0);
   const undo = () => index > 0 && setIndex(prevState => prevState - 1);
   const redo = () => index < history.length - 1 && setIndex(prevState => prevState + 1);
 
-  return [history[index], setState, undo, redo];
+  return [history[index], setState, undo, redo, clear];
 };
 
 const adjustmentRequired = type => ["line", "rectangle"].includes(type);
@@ -222,17 +224,16 @@ const CanvasPage = () => {
 	// ---------- Hooks ----------
 	// ---------------------------
 
-  const [elements, setElements, undo, redo] = useHistory([]);
+	const [elements, setElements, undo, redo, clear] = useHistory([]);
   const [action, setAction] = useState("none");
   const [tool, setTool] = useState("paintbrush");
 	const [selectedElement, setSelectedElement] = useState(null);
 	const [selectedColor, setSelectedColor] = useState('#363636');
-	const [display, setDisplay] = useState('false');
 
   useLayoutEffect(() => {
     const canvas = document.getElementById("canvas");
     const context = canvas.getContext("2d");
-    context.clearRect(0, 0, canvas.width, canvas.height);
+		context.clearRect(0, 0, canvas.width, canvas.height);
 
     const roughCanvas = rough.canvas(canvas);
 
@@ -300,9 +301,9 @@ const CanvasPage = () => {
         setElements(prevState => prevState);
 
         if (element.position === "inside") {
-          setAction("moving");
+          setAction("move");
         } else {
-          setAction("resizing");
+          setAction("resize");
         }
       }
     } else {
@@ -311,7 +312,7 @@ const CanvasPage = () => {
       setElements(prevState => [...prevState, element]);
       setSelectedElement(element);
 
-      setAction("drawing");
+      setAction("draw");
     }
   };
 
@@ -323,11 +324,11 @@ const CanvasPage = () => {
       e.target.style.cursor = element ? cursorForPosition(element.position) : "default";
     }
 
-    if (action === "drawing") {
+    if (action === "draw") {
       const index = elements.length - 1;
       const { x1, y1 } = elements[index];
       updateElement(index, x1, y1, clientX, clientY, tool);
-    } else if (action === "moving") {
+    } else if (action === "move") {
       if (selectedElement.type === "paintbrush") {
         const newPoints = selectedElement.points.map((_, index) => ({
           x: clientX - selectedElement.xOffsets[index],
@@ -347,7 +348,7 @@ const CanvasPage = () => {
         const newY1 = clientY - offsetY;
         updateElement(id, newX1, newY1, newX1 + width, newY1 + height, type);
       }
-    } else if (action === "resizing") {
+    } else if (action === "resize") {
       const { id, type, position, ...coordinates } = selectedElement;
       const { x1, y1, x2, y2 } = resizedCoordinates(clientX, clientY, position, coordinates);
       updateElement(id, x1, y1, x2, y2, type);
@@ -358,7 +359,7 @@ const CanvasPage = () => {
     if (selectedElement) {
       const index = selectedElement.id;
       const { id, type } = elements[index];
-      if ((action === "drawing" || action === "resizing") && adjustmentRequired(type)) {
+      if ((action === "draw" || action === "resize") && adjustmentRequired(type)) {
         const { x1, y1, x2, y2 } = adjustElementCoordinates(elements[index]);
         updateElement(id, x1, y1, x2, y2, type);
       }
@@ -402,12 +403,12 @@ const CanvasPage = () => {
 			
 		{/* Toolbar Component */}
 		  <div className="toolbar">
-			<input
+			{/* <input
 				type="radio"
 				id="colorpick"
 				checked={tool === "colorpick"}
 				onChange={() => setTool("colorpick")}
-				className="tool"
+				className="tool color"
 			/>
 			<label
 				htmlFor="colorpick"
@@ -416,7 +417,7 @@ const CanvasPage = () => {
 			<div className="tool__div">
 				<img src={colorpickicon} alt="colorpick icon" className="toolbar__icon"/>
 			</div>
-			</label>
+			</label> */}
 			
 			<input
 				type="radio"
@@ -470,21 +471,14 @@ const CanvasPage = () => {
 			>
 				<img src={select} alt="select icon" className="toolbar__icon"/>
 			</label>
-			<input
-				type="radio"
-				id="delete"
-				checked={tool === "delete"}
-				onChange={() => setTool("delete")}
-				className="tool"
-			/>
-			<label
-				htmlFor="delete"
-				className="tool__label"
-			>
-				<img src={deleteicon} alt="delete icon" className="toolbar__icon"/>
-			</label>
 
-		{/* Undo/Redo Buttons should stay at bottom of list */}
+
+
+				{/* Undo/Redo/Clear Buttons should stay at bottom of list */}
+				
+			<div onClick={clear} className="click">
+				<img src={deleteicon} alt="clear canvas" className="toolbar__icon" />
+			</div>
 			<div onClick={undo} className="click">
 				<img src={undoIcon} alt="undo" className="toolbar__icon" />
 			</div>
