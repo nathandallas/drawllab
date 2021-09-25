@@ -218,6 +218,8 @@ const adjustmentRequired = type => ["line", "rectangle"].includes(type);
 
 const CanvasPage = () => {
 
+  var io = io.connect("https://drawllab.herokuapp.com/");
+
 	// ---------------------------
 	// ---------- Hooks ----------
 	// ---------------------------
