@@ -72,14 +72,13 @@ const drawElement = (roughCanvas, context, element) => {
 				size: 8,
 				thinning: 0.5,
 				smoothing: 0.5,
-				streamline: 0.5,
-				strokeColor: '#666666'
+				streamline: 0.5
 	  }));
-      context.fill(new Path2D(stroke));
+			context.fill(new Path2D(stroke));
       break;
     default:
       throw new Error(`unrecognised: ${element.type}`);
-  }
+	}
 };
 
 // --------------------------------------------------------
@@ -204,7 +203,6 @@ const useHistory = initialState => {
       setIndex(prevState => prevState + 1);
     }
 	};
-	
 	const clear = () => index > 0 && setIndex(0);
   const undo = () => index > 0 && setIndex(prevState => prevState - 1);
   const redo = () => index < history.length - 1 && setIndex(prevState => prevState + 1);
@@ -234,6 +232,7 @@ const CanvasPage = () => {
     const canvas = document.getElementById("canvas");
     const context = canvas.getContext("2d");
 		context.clearRect(0, 0, canvas.width, canvas.height);
+		context.strokeStyle = 'blue';
 
     const roughCanvas = rough.canvas(canvas);
 
