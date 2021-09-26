@@ -10,28 +10,32 @@
   padding: 0;
 }
 
-h1,
-h2,
-h3,
 h4,
-button,
 p {
   font-family: "Lato";
   font-weight: normal;
   color: $graphite;
 }
+h1,
+h2,
+h3,
+button {
+  font-family: "Mungil";
+  font-weight: normal;
+  color: $graphite;
+}
 
 h1 {
-  font-size: 3rem;
-  font-weight: bold;
+  font-size: 4rem;
+  text-transform: uppercase;
 }
 
 h2 {
-  font-size: 1.8rem;
+  font-size: 2rem;
 }
 
 h3 {
-  font-size: 2rem;
+  font-size: 3rem;
   font-weight: bold;
 }
 

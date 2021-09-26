@@ -2,9 +2,10 @@ import './CanvasPage.scss';
 import React, { useEffect, useLayoutEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import rough from 'roughjs/bundled/rough.esm';
-import tippy from 'tippy.js';
+//import tippy from 'tippy.js';
 import { getStroke } from 'perfect-freehand';
 import { CirclePicker } from 'react-color';
+// import { io } from 'socket.io';
 
 // -----------------------------
 // ----- icons for toolbar -----
@@ -17,7 +18,7 @@ import select from '../../assets/images/select.svg';
 import home from '../../assets/images/home.png';
 import about from '../../assets/images/about.png';
 import deleteicon from '../../assets/images/delete.png';
-import colorpickicon from '../../assets/images/color-picker.svg';
+// import colorpickicon from '../../assets/images/color-picker.svg';
 import undoIcon from '../../assets/images/undo.svg'
 import redoIcon from '../../assets/images/redo.svg'
 
@@ -45,7 +46,7 @@ const createElement = (id, x1, y1, x2, y2, type) => {
   }
 };
 
-const getSvgPathFromStroke = stroke => {
+const SVGpathData = stroke => {
   if (!stroke.length) return "";
 
   const d = stroke.reduce(
@@ -68,13 +69,13 @@ const drawElement = (roughCanvas, context, element) => {
       roughCanvas.draw(element.roughElement);
       break;
     case "paintbrush":
-      const stroke = getSvgPathFromStroke(getStroke(element.points, {
+      const stroke =SVGpathData(getStroke(element.points, {
 				size: 8,
-				thinning: 0.5,
+				thinning: 0.3,
 				smoothing: 0.5,
-				streamline: 0.5
+        streamline: 0.7
 	  }));
-			context.fill(new Path2D(stroke));
+      context.fill(new Path2D(stroke));
       break;
     default:
       throw new Error(`unrecognised: ${element.type}`);
@@ -218,8 +219,6 @@ const adjustmentRequired = type => ["line", "rectangle"].includes(type);
 
 const CanvasPage = () => {
 
-  //var io = io.connect("https://drawllab.herokuapp.com/");
-
 	// ---------------------------
 	// ---------- Hooks ----------
 	// ---------------------------
@@ -259,6 +258,9 @@ const CanvasPage = () => {
     setElements(elementsCopy, true);
   };
 
+  // ----------------------------------
+	// ------------ Collab --------------
+	// ----------------------------------
 
 	// --------------------------------------------
 	// ----- Undo/Redo + Ctrl Z Functionality -----
@@ -473,7 +475,7 @@ const CanvasPage = () => {
 				<img src={select} alt="select icon" className="toolbar__icon"/>
 			</label>
 
-
+      <div className="tool__divider"></div>
 
 				{/* Undo/Redo/Clear Buttons should stay at bottom of list */}
 				

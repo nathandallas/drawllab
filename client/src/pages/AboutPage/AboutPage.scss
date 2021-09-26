@@ -4,7 +4,17 @@
 @import "../../App.scss";
 
 body {
-  background: linear-gradient(180deg, #e1f1f5, #ddeef2, #d9ebef, #d5e8ec, #d1e5e9, #cde2e6, #c9dfe3, #c5dce0);
+  background: linear-gradient(
+    180deg,
+    #e1f1f5,
+    #ddeef2,
+    #d9ebef,
+    #d5e8ec,
+    #d1e5e9,
+    #cde2e6,
+    #c9dfe3,
+    #c5dce0
+  );
   display: flex;
   height: 100vh;
 }
@@ -29,7 +39,7 @@ li {
   box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.1);
 
   & h3 {
-    margin: 0 3rem;
+    margin: 1rem 3rem;
   }
   &__text {
     margin: 0 4rem;

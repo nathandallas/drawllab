@@ -12,7 +12,7 @@ import deleteicon from '../../assets/images/delete.png';
 import colorpicker from '../../assets/images/color-picker.svg';
 import collab from '../../assets/images/collab.svg';
 import layers from '../../assets/images/layers.svg';
-import light from '../../assets/images/light.svg';
+// import light from '../../assets/images/light.svg';
 
 export default function AboutPage() {
     return (
@@ -31,10 +31,10 @@ export default function AboutPage() {
                         <img src={paintbrush} alt="key" className="key__icon" />
                         <p>Pen/Brush</p>
                     </li>
-                    <li className="key__li">
+                    {/* <li className="key__li">
                         <img src="https://via.placeholder.com/50" alt="key" className="key__icon" />
                         <p>Eraser</p>
-                    </li>
+                    </li> */}
                     <li className="key__li">
                         <img src={line} alt="key" className="key__icon" />
                         <p>Draw Straight Line</p>
@@ -43,10 +43,10 @@ export default function AboutPage() {
                         <img src={square} alt="key" className="key__icon" />
                         <p>Create Quadrilateral</p>
                     </li>
-                    <li className="key__li">
+                    {/* <li className="key__li">
                         <img src="https://via.placeholder.com/50" alt="key" className="key__icon" />
                         <p>Create Circle</p>
-                    </li>
+                    </li> */}
                     <li className="key__li">
                         <img src={selection} alt="key" className="key__icon" />
                         <p>Select / Move / Resize</p>
@@ -59,10 +59,10 @@ export default function AboutPage() {
                         <img src={layers} alt="key" className="key__icon" />
                         <p>New/Manage Layers</p>
                     </li>
-                    <li className="key__li">
+                    {/* <li className="key__li">
                         <img src={light} alt="key" className="key__icon" />
                         <p>Toggle Dark/Light Mode</p>
-                    </li>
+                    </li> */}
                     <li className="key__li">
                         <img src={deleteicon} alt="key" className="key__icon" />
                         <p>Clear Canvas</p>

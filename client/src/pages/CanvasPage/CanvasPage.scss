@@ -32,7 +32,7 @@ canvas {
   justify-content: center;
   width: 5rem;
   max-height: 90vh;
-  background-color: $lightestgray;
+  background-color: #d5e8ec;
   border-radius: 1rem;
   box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.1);
   &__icon {
@@ -49,12 +49,17 @@ canvas {
     justify-content: center;
     width: 4rem;
     height: 4rem;
+    margin: 0.25rem 0.5rem;
+  }
+  &__divider {
+    border-bottom: 1px solid $darkseagreen;
+    width: 90%;
   }
 
   &:checked + &__label {
     -webkit-animation: animation 1000ms linear both;
     animation: animation 1000ms linear both;
-    background-color: $lightgray;
+    background-color: #b9cfd3;
     border-radius: 1rem;
   }
 }
@@ -67,7 +72,7 @@ canvas {
   right: 1rem;
   display: flex;
   flex-direction: column;
-  background-color: $lightestgray;
+  background-color: #d5e8ec;
   border-radius: 1rem;
   box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.1);
   &__icon {
@@ -77,5 +82,5 @@ canvas {
 }
 
 .click:active {
-  animation: shrink 400ms;
+  animation: shrink 100ms;
 }
