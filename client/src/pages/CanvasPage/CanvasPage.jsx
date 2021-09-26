@@ -5,7 +5,7 @@ import rough from 'roughjs/bundled/rough.esm';
 //import tippy from 'tippy.js';
 import { getStroke } from 'perfect-freehand';
 import { CirclePicker } from 'react-color';
-import { io } from 'socket.io';
+// import { io } from 'socket.io';
 
 // -----------------------------
 // ----- icons for toolbar -----
@@ -30,15 +30,15 @@ import redoIcon from '../../assets/images/redo.svg'
 
 const generator = rough.generator();
 
-const createElement = (id, x1, y1, x2, y2, type, selectedColor) => {
+const createElement = (id, x1, y1, x2, y2, type, color) => {
   switch (type) {
     case "line":
     case "rectangle":
-        console.log(selectedColor)
+        console.log(color)
       const roughElement =
         type === "line"
-			  ? generator.line(x1, y1, x2, y2, { bowing: 2, strokeWidth: 2.5, stroke: {selectedColor} })
-        : generator.rectangle(x1, y1, x2 - x1, y2 - y1, { bowing: 2, strokeWidth: 2.5, stroke: {selectedColor} });
+			  ? generator.line(x1, y1, x2, y2, { bowing: 2, stroke: {color}, strokeWidth: 2.5 })
+        : generator.rectangle(x1, y1, x2 - x1, y2 - y1, { bowing: 2, stroke: {color}, strokeWidth: 2.5 });
       return { id, x1, y1, x2, y2, type, roughElement };
     case "paintbrush":
       return { id, type, points: [{ x: x1, y: y1 }]};
@@ -68,6 +68,7 @@ const drawElement = (roughCanvas, context, element, color) => {
     case "line":
     case "rectangle":
       roughCanvas.draw(element.roughElement);
+
       break;
     case "paintbrush":
       const stroke = SVGpathData(getStroke(element.points, {
@@ -274,7 +275,6 @@ const CanvasPage = () => {
         }
       }
     };
-
     document.addEventListener("keydown", undoRedoFunction);
     return () => {
       document.removeEventListener("keydown", undoRedoFunction);
@@ -368,8 +368,6 @@ const CanvasPage = () => {
     setAction("none");
     setSelectedElement(null);
   };
-
-
 
 	// ----------------------------
 	// ---------- Render ----------
