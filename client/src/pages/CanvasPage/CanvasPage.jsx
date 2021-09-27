@@ -30,15 +30,15 @@ import redoIcon from '../../assets/images/redo.svg'
 
 const generator = rough.generator();
 
-const createElement = (id, x1, y1, x2, y2, type, color) => {
+const createElement = (id, x1, y1, x2, y2, type, selectedColor) => {
   switch (type) {
     case "line":
     case "rectangle":
-        console.log(color)
       const roughElement =
         type === "line"
-			  ? generator.line(x1, y1, x2, y2, { bowing: 2, stroke: {color}, strokeWidth: 2.5 })
-        : generator.rectangle(x1, y1, x2 - x1, y2 - y1, { bowing: 2, stroke: {color}, strokeWidth: 2.5 });
+			  ? generator.line(x1, y1, x2, y2, { bowing: 2, strokeWidth: 2.5, stroke: selectedColor })
+          : generator.rectangle(x1, y1, x2 - x1, y2 - y1, { bowing: 2, strokeWidth: 2.5, stroke: selectedColor });
+      // Note - stroke: "" for line color
       return { id, x1, y1, x2, y2, type, roughElement };
     case "paintbrush":
       return { id, type, points: [{ x: x1, y: y1 }]};
@@ -63,12 +63,11 @@ const SVGpathData = stroke => {
   return d.join(" ");
 };
 
-const drawElement = (roughCanvas, context, element, color) => {
+const drawElement = (roughCanvas, context, element, selectedColor) => {
   switch (element.type) {
     case "line":
     case "rectangle":
       roughCanvas.draw(element.roughElement);
-
       break;
     case "paintbrush":
       const stroke = SVGpathData(getStroke(element.points, {
@@ -78,7 +77,7 @@ const drawElement = (roughCanvas, context, element, color) => {
         streamline: 0.7
 	  }));
       context.fill(new Path2D(stroke));
-      context.fillStyle = color;
+      context.fillStyle = selectedColor;
       break;
     default:
       throw new Error(`unrecognised: ${element.type}`);
@@ -238,9 +237,8 @@ const CanvasPage = () => {
     context.clearRect(0, 0, canvas.width, canvas.height);
 
     const roughCanvas = rough.canvas(canvas);
-    let color = selectedColor;
 
-    elements.forEach(element => drawElement(roughCanvas, context, element, color));
+    elements.map(element => drawElement(roughCanvas, context, element, selectedColor));
   }, [elements, selectedColor]);
 
   const updateElement = (id, x1, y1, x2, y2, type) => {
