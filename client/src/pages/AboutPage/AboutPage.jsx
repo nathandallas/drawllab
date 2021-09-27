@@ -23,10 +23,10 @@ export default function AboutPage() {
             <h3>Key</h3>
             <div className="key">
                 <ul className="key__ul">
-                    <li className="key__li">
+                    {/* <li className="key__li">
                         <img src={colorpicker} alt="key" className="key__icon" />
                         <p>Select Color</p>
-                    </li>
+                    </li> */}
                     <li className="key__li">
                         <img src={paintbrush} alt="key" className="key__icon" />
                         <p>Pen/Brush</p>
@@ -51,7 +51,7 @@ export default function AboutPage() {
                         <img src={selection} alt="key" className="key__icon" />
                         <p>Select / Move / Resize</p>
                     </li>
-                    <li className="key__li">
+                   {/*  <li className="key__li">
                         <img src={collab} alt="key" className="key__icon" />
                         <p>Generate Collab Link</p>
                     </li>
@@ -59,7 +59,7 @@ export default function AboutPage() {
                         <img src={layers} alt="key" className="key__icon" />
                         <p>New/Manage Layers</p>
                     </li>
-                    {/* <li className="key__li">
+                    <li className="key__li">
                         <img src={light} alt="key" className="key__icon" />
                         <p>Toggle Dark/Light Mode</p>
                     </li> */}
