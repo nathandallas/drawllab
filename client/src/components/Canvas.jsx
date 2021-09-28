@@ -245,9 +245,10 @@ const CanvasPage = () => {
 
     const roughCanvas = rough.canvas(canvas);
 
+     
     elements
       .map(element => drawElement(roughCanvas, context, element, selectedColor));
-  }, [elements, ...selectedColor]);
+  }, [elements, selectedColor]);
 
   const updateElement = (id, x1, y1, x2, y2, type) => {
     const elementsCopy = [...elements];
