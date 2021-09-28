@@ -9,9 +9,9 @@ import square from '../../assets/images/rectangle.svg';
 import selection from '../../assets/images/select.svg';
 import about from '../../assets/images/about.png';
 import deleteicon from '../../assets/images/delete.png';
-import colorpicker from '../../assets/images/color-picker.svg';
-import collab from '../../assets/images/collab.svg';
-import layers from '../../assets/images/layers.svg';
+// import colorpicker from '../../assets/images/color-picker.svg';
+// import collab from '../../assets/images/collab.svg';
+// import layers from '../../assets/images/layers.svg';
 // import light from '../../assets/images/light.svg';
 
 export default function AboutPage() {

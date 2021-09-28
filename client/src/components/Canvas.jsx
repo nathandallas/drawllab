@@ -4,6 +4,11 @@ import { Link } from 'react-router-dom';
 import rough from 'roughjs/bundled/rough.esm';
 import { getStroke } from 'perfect-freehand';
 import { CirclePicker } from 'react-color';
+import {
+	subscribe,
+	initiateSocketConnection,
+	disconnectSocket,
+} from "./socketio.service";
 
 // -----------------------------
 // ----- icons for toolbar -----
@@ -233,6 +238,20 @@ const CanvasPage = () => {
   const [selectedElement, setSelectedElement] = useState(null);
   const [selectedColor, setSelectedColor] = useState('#363636');
 
+  // ----------------------------------
+  // ---------- Socket Setup ----------
+  // ----------------------------------
+    
+  useEffect(() => {
+    initiateSocketConnection();
+    subscribe((err, data) => {
+      return data
+    });
+    return () => {
+      disconnectSocket();
+    }
+  }, []);
+    
   // --------------------------------------
   // ---------- Creating Element ----------
   // --------------------------------------
