@@ -18,7 +18,7 @@ export default function AboutPage() {
     return (
         <div className="about">
             <h1>About Drawllab</h1>
-            <p className="about__text">Drawllab is a browser based whiteboard and drawing application.</p>
+            <p className="about__text">Drawllab is a browser based whiteboard and drawing application. Use it to make wireframes, sketch out ideas and jump start your creative projects!</p>
 
             <h3>Key</h3>
             <div className="key">
@@ -49,7 +49,7 @@ export default function AboutPage() {
                     </li> */}
                     <li className="key__li">
                         <img src={selection} alt="key" className="key__icon" />
-                        <p>Select / Move / Resize</p>
+                        <p>Move / Resize</p>
                     </li>
                    {/*  <li className="key__li">
                         <img src={collab} alt="key" className="key__icon" />

@@ -20,9 +20,11 @@ body {
 }
 
 h1 {
-  padding: 1rem 3rem 0;
+  padding: 2rem 3rem 1rem;
   color: $graphite;
   letter-spacing: 2px;
+  -webkit-animation: aboutanimation1 3000ms linear both;
+  animation: aboutanimation1 3000ms linear both;
 }
 li {
   list-style-type: none;
@@ -40,7 +42,10 @@ li {
 
   & h3 {
     margin: 1rem 3rem;
+    -webkit-animation: logoanimation1 4000ms linear both;
+    animation: logoanimation1 4000ms linear both;
   }
+
   &__text {
     margin: 0 4rem;
   }
@@ -54,6 +59,7 @@ li {
     flex-direction: column;
     flex-wrap: wrap;
     max-height: 40vh;
+    height: 50%;
   }
   &__li {
     display: flex;
@@ -77,6 +83,10 @@ li {
     font-size: 2rem;
     display: inline-flex;
     align-items: center;
+    &:hover {
+      transform: scale(1.1);
+      animation: bounce 1.5s infinite;
+    }
     &--canvas {
       position: absolute;
       bottom: 1rem;
@@ -86,14 +96,17 @@ li {
       position: absolute;
       bottom: 1rem;
       right: 1rem;
+      &:hover {
+        transform: scale(1.1);
+      }
+      &:active {
+        transform: scale(0.9);
+      }
     }
   }
   &__icon {
     max-width: 3rem;
     margin: 0.5rem;
     padding-right: 1rem;
-    &:hover {
-      animation: bounce 1.5s infinite;
-    }
   }
 }

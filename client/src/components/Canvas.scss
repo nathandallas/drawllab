@@ -29,7 +29,7 @@ canvas {
   align-items: center;
   justify-content: center;
   max-width: 50vw;
-  max-height: 5rem;
+  height: 5rem;
   background-color: $blight;
   border-radius: 1rem;
   box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.1);
@@ -55,10 +55,12 @@ canvas {
   }
 
   &:checked + &__label {
-    -webkit-animation: animation 1000ms linear both;
-    animation: animation 1000ms linear both;
-    background-color: #b9cfd3;
+    background-color: $lightestseagreen;
     border-radius: 1rem;
+    transform: scale(1.1);
+  }
+  &:hover + &__label {
+    transform: scale(1.1);
   }
 }
 
@@ -75,13 +77,15 @@ canvas {
     border-radius: 1rem;
     padding: 0.25rem 0.75rem;
     box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.1);
+    &:hover {
+      transform: scale(1.1);
+      background-color: $lightestseagreen;
+    }
     &:active {
-      animation: shrink 100ms;
+      transform: scale(0.9);
     }
   }
 }
-
-//Google how to keep image static during animation
 
 .nav {
   position: absolute;
@@ -95,9 +99,11 @@ canvas {
   &__icon {
     max-width: 3rem;
     margin: 0.5rem;
+    &:hover {
+      transform: scale(1.1);
+    }
+    &:active {
+      transform: scale(0.9);
+    }
   }
-}
-
-.click:active {
-  animation: shrink 100ms;
 }
