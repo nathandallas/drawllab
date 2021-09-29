@@ -14,7 +14,7 @@ canvas {
 .color {
   position: absolute;
   top: 1rem;
-  left: 7rem;
+  left: 1rem;
   background-color: $blight;
   padding: 1rem;
   border-radius: 1rem;
@@ -24,14 +24,13 @@ canvas {
 .toolbar {
   position: absolute;
   top: 1rem;
-  left: 1rem;
+  left: 40vw;
   display: flex;
-  flex-direction: column;
   align-items: center;
   justify-content: center;
-  width: 5rem;
-  max-height: 90vh;
-  background-color: #d5e8ec;
+  max-width: 50vw;
+  max-height: 5rem;
+  background-color: $blight;
   border-radius: 1rem;
   box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.1);
   &__icon {
@@ -46,8 +45,8 @@ canvas {
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 4rem;
-    height: 4rem;
+    width: 3.75rem;
+    height: 3.75rem;
     margin: 0.25rem 0.5rem;
   }
   &__divider {
@@ -68,9 +67,8 @@ canvas {
   position: absolute;
   display: flex;
   justify-content: space-between;
-  top: 11.5rem;
-  left: 7rem;
-
+  top: 11rem;
+  left: 1rem;
   width: 17rem;
   &__button {
     background-color: $blight;

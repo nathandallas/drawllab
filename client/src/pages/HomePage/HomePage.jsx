@@ -9,7 +9,7 @@ export default function HomePage() {
         <div className="home">
             
                 <div className="home__logo"><img src={logo} alt="" className="home__logo" /></div>
-                <h2>a collaborative drawing application</h2>
+                <h2>a browser based drawing application</h2>
 
                 <div className="home__graphic">
                     <img src={icon} alt="drawllab icon" className="home__icon" />
