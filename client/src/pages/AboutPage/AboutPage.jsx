@@ -8,7 +8,7 @@ import line from '../../assets/images/draw-line.svg';
 import square from '../../assets/images/rectangle.svg';
 import selection from '../../assets/images/select.svg';
 import about from '../../assets/images/about.png';
-import deleteicon from '../../assets/images/delete.png';
+// import deleteicon from '../../assets/images/delete.png';
 // import colorpicker from '../../assets/images/color-picker.svg';
 // import collab from '../../assets/images/collab.svg';
 // import layers from '../../assets/images/layers.svg';
@@ -18,7 +18,7 @@ export default function AboutPage() {
     return (
         <div className="about">
             <h1>About Drawllab</h1>
-            <p className="about__text">Drawllab is a browser based whiteboard and drawing application. Multiple users can use Drawllab to work on the same canvas simultaneously.</p>
+            <p className="about__text">Drawllab is a browser based whiteboard and drawing application.</p>
 
             <h3>Key</h3>
             <div className="key">
@@ -62,18 +62,18 @@ export default function AboutPage() {
                     <li className="key__li">
                         <img src={light} alt="key" className="key__icon" />
                         <p>Toggle Dark/Light Mode</p>
-                    </li> */}
+                    </li> 
                     <li className="key__li">
                         <img src={deleteicon} alt="key" className="key__icon" />
                         <p>Clear Canvas</p>
-                    </li>
+                    </li>*/}
                     <li className="key__li">
                         <img src={home} alt="key" className="key__icon" />
-                        <p>Home</p>
+                        <p>Go to Home</p>
                     </li>
                     <li className="key__li">
                         <img src={about} alt="key" className="key__icon" />
-                        <p>About</p>
+                        <p>Go to About</p>
                     </li>
                 </ul>
                 </div>

@@ -51,7 +51,7 @@ canvas {
     margin: 0.25rem 0.5rem;
   }
   &__divider {
-    border-bottom: 1px solid $darkseagreen;
+    // border-bottom: 1px solid $darkseagreen;
     width: 90%;
   }
 
@@ -60,6 +60,26 @@ canvas {
     animation: animation 1000ms linear both;
     background-color: #b9cfd3;
     border-radius: 1rem;
+  }
+}
+
+// ----- canvas tools -----
+.canvas-tools {
+  position: absolute;
+  display: flex;
+  justify-content: space-between;
+  top: 11.5rem;
+  left: 7rem;
+
+  width: 17rem;
+  &__button {
+    background-color: $blight;
+    border-radius: 1rem;
+    padding: 0.25rem 0.75rem;
+    box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.1);
+    &:active {
+      animation: shrink 100ms;
+    }
   }
 }
 

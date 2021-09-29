@@ -5,16 +5,16 @@
 
 body {
   background: linear-gradient(
-    180deg,
-    #e1f1f5,
-    #ddeef2,
-    #d9ebef,
-    #d5e8ec,
-    #d1e5e9,
-    #cde2e6,
-    #c9dfe3,
-    #c5dce0
+    to bottom,
+    #e1f1f5 0%,
+    #cddee3 20%,
+    #a6bac0 40%,
+    #9cb1b8 60%,
+    #a6bac0 80%,
+    #e1f1f5 100%
   );
+  background-size: 100%;
+  animation: bg 10s linear infinite;
   display: flex;
   justify-content: center;
   align-items: center;

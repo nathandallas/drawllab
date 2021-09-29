@@ -1,9 +1,10 @@
 import './Canvas.scss';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useLayoutEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import rough from 'roughjs/bundled/rough.esm';
 import { getStroke } from 'perfect-freehand';
 import { CirclePicker } from 'react-color';
+import io from 'socket.io-client';
 
 // -----------------------------
 // ----- icons for toolbar -----
@@ -29,14 +30,14 @@ import redoIcon from '../assets/images/redo.svg'
 
 const generator = rough.generator();
 
-const createElement = (id, x1, y1, x2, y2, type, selectedColor) => {
+const createElement = (id, x1, y1, x2, y2, type) => {
   switch (type) {
     case "line":
     case "rectangle":
       const roughElement =
         type === "line"
-			  ? generator.line(x1, y1, x2, y2, { bowing: 2, strokeWidth: 2.5, stroke: selectedColor })
-          : generator.rectangle(x1, y1, x2 - x1, y2 - y1, { bowing: 2, strokeWidth: 2.5, stroke: selectedColor });
+			  ? generator.line(x1, y1, x2, y2, { bowing: 2, strokeWidth: 3, stroke: '#363636' })
+          : generator.rectangle(x1, y1, x2 - x1, y2 - y1, { bowing: 2, strokeWidth: 3, stroke: '#363636' });
 
       return { id, x1, y1, x2, y2, type, roughElement };
     case "paintbrush":
@@ -67,7 +68,7 @@ const drawElement = (roughCanvas, context, element, selectedColor) => {
     case "line":
     case "rectangle":
       roughCanvas.draw(element.roughElement);
-      context.fill(new Path2D(element.roughElement));
+      context.fill(new Path2D());
       context.fillStyle = selectedColor;
       break;
     case "paintbrush":
@@ -208,12 +209,14 @@ const useHistory = initialState => {
     }
   };
   
-	const clear = () => index > 0 && setIndex(0);
+  const clear = () => index > 0 && setIndex(0);
   const undo = () => index > 0 && setIndex(prevState => prevState - 1);
   const redo = () => index < history.length - 1 && setIndex(prevState => prevState + 1);
 
   return [history[index], setState, undo, redo, clear];
 };
+
+var socket = io('http://localhost:3000/canvas');
 
 const adjustmentRequired = type => ["line", "rectangle"].includes(type);
 
@@ -231,23 +234,24 @@ const CanvasPage = () => {
   const [action, setAction] = useState("none");
   const [tool, setTool] = useState("paintbrush");
   const [selectedElement, setSelectedElement] = useState(null);
-  const [selectedColor, setSelectedColor] = useState('#363636');
+    const [selectedColor, setSelectedColor] = useState('#363636');
+
+    
 
   // --------------------------------------
   // ---------- Creating Element ----------
   // --------------------------------------
 
-  useEffect(() => {
+
+  useLayoutEffect(() => {
     const canvas = document.getElementById("canvas");
     const context = canvas.getContext("2d");
-
     context.clearRect(0, 0, canvas.width, canvas.height);
-
-    const roughCanvas = rough.canvas(canvas);
-
-     
+      const roughCanvas = rough.canvas(canvas);
+    
     elements
-      .map(element => drawElement(roughCanvas, context, element, selectedColor));
+        .map(element => drawElement(roughCanvas, context, element, selectedColor));
+		socket.send(canvas);
   }, [elements, selectedColor]);
 
   const updateElement = (id, x1, y1, x2, y2, type) => {
@@ -483,21 +487,21 @@ const CanvasPage = () => {
 			</label>
 
       <div className="tool__divider"></div>
-
-				{/* Undo/Redo/Clear Buttons should stay at bottom of list */}
-				
-			<div onClick={clear} className="click">
-				<img src={deleteicon} alt="clear canvas" className="toolbar__icon" />
 			</div>
-			<div onClick={undo} className="click">
-				<img src={undoIcon} alt="undo" className="toolbar__icon" />
+			
+			{/* Undo/Redo/Clear Buttons */}
+			<div className="canvas-tools">
+				<div onClick={clear} className="canvas-tools__button">
+					<h2>clear</h2>
+				</div>
+				<div onClick={undo} className="canvas-tools__button">
+					<h2>undo</h2>
+				</div>
+				<div onClick={redo} className="canvas-tools__button">
+					<h2>redo</h2>
+				</div>
 			</div>
-			<div onClick={redo} className="click">
-				<img src={redoIcon} alt="redo" className="toolbar__icon" />
-			</div>
-
-		</div>
-
+			
 		{/* Nav Bar Component */}
 
 		<nav className="nav">
@@ -516,7 +520,7 @@ const CanvasPage = () => {
 			height={window.innerHeight}
 			onMouseDown={handleMouseDown}
 			onMouseMove={handleMouseMove}
-			onMouseUp={handleMouseUp}
+      onMouseUp={handleMouseUp}
 		>
 			Canvas
 		</canvas>
