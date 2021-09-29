@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import './HomePage.scss';
 import logo from '../../assets/images/drawllab-logo.svg';
 import icon from '../../assets/images/drawllab-icon.svg';
+import mouse from '../../assets/images/drawllab-icon-mouse.svg';
 
 export default function HomePage() {
     return (
@@ -13,6 +14,9 @@ export default function HomePage() {
 
                 <div className="home__graphic">
                     <img src={icon} alt="drawllab icon" className="home__icon" />
+                </div>
+                <div className="home__graphic">
+                    <img src={mouse} alt="drawllab icon" className="home__icon2" />
                 </div>
 
             <div className="home__button-container">
