@@ -23,11 +23,11 @@ export default function AboutPage() {
     return (
         <div className="about">
             <h1>About Drawllab</h1>
-            <h6 className="about__text">Drawllab is a browser based whiteboard and drawing application. Use it to make wireframes, sketch out ideas and jump start your creative projects!</h6>
+            <h6 className="about__text">Drawllab is a browser based whiteboard and drawing application. </h6>
             <div className="about__container">
 
                 <section className="key">
-                <h3>Key</h3>
+                <h3>Key:</h3>
                 <ul className="key__ul">
                     {/* <li className="key__li">
                         <img src={colorpicker} alt="key" className="key__icon" />
@@ -85,15 +85,36 @@ export default function AboutPage() {
                 </section>
 
                 <section className="about-me">
-                    <h3>about the creator</h3>
+                    <div className="about-me__project">
+                        <h3>about the project</h3>
+                        <p>Drawllab was created to be a lightweight and user-friendly alternative to modern-day drawing applications. Using a minimalist design and easy to learn interface, Drawllab makes it easy for any user to jump in and start creating without having a huge learning curve. Use it to make wireframes, sketch out ideas and jump start your creative projects!</p>
 
-                    <h2 className="about-me__icon-header">see what i'm working on</h2>
-                    <div className="about-me__icon-container">
-                        <div className="about-me__icon">
-                            <SocialIcon url="https://www.linkedin.com/in/alysurr/" bgColor="#96bbbf" />
+                        <h2>libraries used</h2>
+                        <ul>
+                            <li><button><a href="https://roughjs.com/">roughJS</a></button></li>
+                            <li><button><a href="https://www.npmjs.com/package/perfect-freehand">perfect-freehand</a></button></li>
+                            <li><button><a href="https://casesandberg.github.io/react-color/">react color</a></button></li>
+                            <li><button><a href="https://developer.mozilla.org/en-US/docs/Web/API/Canvas_API">html canvas</a></button></li>
+                        </ul>
+                    </div>
+
+                    <div className="about-me__me">
+                        
+                        <div className="about-me__container info">
+                            <h2>contact info</h2>
+                            <p><span>Alyssa Challender</span></p>
+                            <p>alysurr@gmail.com</p>
                         </div>
-                        <div className="about-me__icon">
-                            <SocialIcon url="https://github.com/alysurr" bgColor="#96bbbf"/>
+
+                        <div className="about-me__container">
+                            <div className="about-me__icon-container">
+                                <div className="about-me__icon">
+                                    <SocialIcon url="https://www.linkedin.com/in/alysurr/" bgColor="#96bbbf" style={{ height: 75, width: 75 }} />
+                                </div>
+                                <div className="about-me__icon">
+                                    <SocialIcon url="https://github.com/alysurr" bgColor="#96bbbf" style={{ height: 75, width: 75 }}/>
+                                </div>
+                            </div>
                         </div>
                     </div>
 

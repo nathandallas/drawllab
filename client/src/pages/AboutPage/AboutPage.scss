@@ -98,14 +98,52 @@ li {
 	padding: 1rem;
 	border-radius: 2rem;
 	height: 60vh;
-	min-height: 26rem;
+	min-height: 24rem;
 	width: 100%;
 	box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.1);
 	-webkit-animation: aboutanimation2 4000ms linear both;
 	animation: aboutanimation2 4000ms linear both;
+	& h3 {
+		margin-top: 1rem;
+	}
+	& p {
+		margin: 0 3rem 1rem;
+	}
+	& ul {
+		margin: 1rem 0;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+	}
+	& a {
+		text-decoration: none;
+		color: $graphite;
+	}
+	& button {
+		background-color: $medseagreen;
+		border-radius: 1rem;
+		font-size: 1.1rem;
+		font-family: "Lato";
+		font-weight: 300;
+		padding: 0.5rem 1rem;
+		box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.1);
+		border: none;
+		margin: 0 1rem;
+		&:hover {
+			transform: scale(1.1);
+			background-color: $lightseagreen;
+			color: $lightestseagreen;
+			& a {
+				color: $blight;
+			}
+		}
+		&:active {
+			transform: scale(0.9);
+		}
+	}
 	&__icon {
 		margin: 0.5rem;
-		border-radius: 2rem;
+		border-radius: 4rem;
 		box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.1);
 		&:hover {
 			transform: scale(1.1);
@@ -117,8 +155,38 @@ li {
 			display: flex;
 			justify-content: center;
 			align-items: center;
+			margin-bottom: 1rem;
 		}
 	}
+	&__project {
+		& h2 {
+			margin-top: 2rem;
+		}
+	}
+	&__me {
+		display: flex;
+		position: absolute;
+		align-items: center;
+		bottom: 1rem;
+		width: 100%;
+	}
+	&__container {
+		width: 50%;
+		& h2 {
+			margin-bottom: 1rem;
+		}
+		& p {
+			text-align: center;
+			margin: 0.25rem;
+		}
+		& span {
+			font-weight: bold;
+		}
+	}
+}
+
+.info {
+	margin-bottom: 1rem;
 }
 
 // ----- nav bar -----
