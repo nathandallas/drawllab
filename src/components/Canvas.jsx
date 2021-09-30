@@ -16,11 +16,6 @@ import square from '../assets/images/rectangle.svg';
 import select from '../assets/images/select.svg';
 import home from '../assets/images/home.png';
 import about from '../assets/images/about.png';
-import deleteicon from '../assets/images/delete.png';
-// import colorpickicon from '../assets/images/color-picker.svg';
-import undoIcon from '../assets/images/undo.svg'
-import redoIcon from '../assets/images/redo.svg'
-
 
 // ---------------------------------------------
 // ---------- Functionality for Tools ----------
@@ -417,22 +412,6 @@ const CanvasPage = () => {
 			
 		{/* Toolbar Component */}
 		  <div className="toolbar">
-			{/* <input
-				type="radio"
-				id="colorpick"
-				checked={tool === "colorpick"}
-				onChange={() => setTool("colorpick")}
-				className="tool color"
-			/>
-			<label
-				htmlFor="colorpick"
-				className="tool__label"
-			>
-			<div className="tool__div">
-				<img src={colorpickicon} alt="colorpick icon" className="toolbar__icon"/>
-			</div>
-			</label> */}
-			
 			<input
 				type="radio"
 				id="paintbrush"

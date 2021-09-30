@@ -11,8 +11,6 @@ import line from '../../assets/images/draw-line.svg';
 import square from '../../assets/images/rectangle.svg';
 import selection from '../../assets/images/select.svg';
 import about from '../../assets/images/about.png';
-import linkedin from '../../assets/images/linkedin-logo.png';
-import github from '../../assets/images/github-logo.png';
 // import deleteicon from '../../assets/images/delete.png';
 // import colorpicker from '../../assets/images/color-picker.svg';
 // import collab from '../../assets/images/collab.svg';
