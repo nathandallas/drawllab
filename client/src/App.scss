@@ -11,7 +11,8 @@
 }
 
 h4,
-p {
+p,
+h6 {
   font-family: "Lato";
   font-weight: normal;
   color: $graphite;
@@ -35,12 +36,15 @@ h2 {
 }
 
 h3 {
-  font-size: 3rem;
+  font-size: 2.5rem;
   font-weight: bold;
 }
 
 p {
-  font-size: 1.5rem;
+  font-size: 1.25rem;
+}
+h6 {
+  font-size: 1.6rem;
 }
 
 button {

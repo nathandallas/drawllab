@@ -4,109 +4,154 @@
 @import "../../App.scss";
 
 body {
-  background: linear-gradient(
-    to right,
-    #e1f1f5 0%,
-    #cddee3 20%,
-    #b1cad1 40%,
-    #a0c4cf 60%,
-    #b1cad1 80%,
-    #e1f1f5 100%
-  );
-  background-size: $bgWidth 100%;
-  animation: bg 10s linear infinite;
-  display: flex;
-  height: 100vh;
+	background: linear-gradient(
+		to right,
+		#e1f1f5 0%,
+		#cddee3 20%,
+		#b1cad1 40%,
+		#a0c4cf 60%,
+		#b1cad1 80%,
+		#e1f1f5 100%
+	);
+	background-size: $bgWidth 100%;
+	animation: bg 10s linear infinite;
+	display: flex;
+	height: 100vh;
 }
 
 h1 {
-  padding: 2rem 3rem 1rem;
-  color: $graphite;
-  letter-spacing: 2px;
-  -webkit-animation: aboutanimation1 3000ms linear both;
-  animation: aboutanimation1 3000ms linear both;
+	padding: 2rem 3rem 1rem;
+	color: $graphite;
+	letter-spacing: 2px;
+	-webkit-animation: aboutanimation1 3000ms linear both;
+	animation: aboutanimation1 3000ms linear both;
 }
 li {
-  list-style-type: none;
+	list-style-type: none;
 }
 
 .about {
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  background-color: $offwhite;
-  min-height: 80vh;
-  width: 80vw;
-  border-radius: 2rem;
-  box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.1);
-
-  & h3 {
-    margin: 1rem 3rem;
-    -webkit-animation: logoanimation1 4000ms linear both;
-    animation: logoanimation1 4000ms linear both;
-  }
-
-  &__text {
-    margin: 0 4rem;
-  }
+	position: relative;
+	display: flex;
+	flex-direction: column;
+	background-color: $offwhite;
+	width: 80vw;
+	height: 90vh;
+	min-height: 44rem;
+	border-radius: 2rem;
+	box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.1);
+	& h3 {
+		text-align: center;
+		margin-bottom: 1rem;
+	}
+	&__text {
+		margin: 0 4rem;
+	}
+	&__container {
+		display: flex;
+	}
 }
 // ----- key list  -----
 .key {
-  margin: 0 4rem;
-  padding-bottom: 7vh;
-  &__ul {
-    display: flex;
-    flex-direction: column;
-    flex-wrap: wrap;
-    max-height: 40vh;
-    height: 50%;
-  }
-  &__li {
-    display: flex;
-    align-items: center;
-    padding: 0.5rem;
-    max-width: 30%;
-  }
-  & p {
-    padding-left: 0.5rem;
-  }
-  &__icon {
-    width: 50px;
-    height: 50px;
-  }
+	margin: 2rem 2rem 2rem 3rem;
+	background-color: $medseagreen;
+	padding: 1rem;
+	border-radius: 2rem;
+	width: 25rem;
+	height: 45vh;
+	min-height: 26rem;
+	box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.1);
+	-webkit-animation: logoanimation1 4000ms linear both;
+	animation: logoanimation1 4000ms linear both;
+	&__ul {
+		display: flex;
+		flex-direction: column;
+		justify-content: space-between;
+		height: 85%;
+	}
+	&__li {
+		display: flex;
+		align-items: center;
+		padding-left: 0.5rem;
+		&:hover {
+			& p {
+				font-weight: bold;
+			}
+			& img {
+				transform: scale(1.1);
+			}
+		}
+	}
+	& p {
+		padding-left: 1rem;
+	}
+	&__icon {
+		width: 35px;
+		height: 35px;
+	}
+}
+
+// ----- about me -----
+.about-me {
+	margin: 2rem 3rem 2rem 0rem;
+	background-color: $lighterseagreen;
+	padding: 1rem;
+	border-radius: 2rem;
+	height: 60vh;
+	min-height: 26rem;
+	width: 100%;
+	box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.1);
+	-webkit-animation: aboutanimation2 4000ms linear both;
+	animation: aboutanimation2 4000ms linear both;
+	&__icon {
+		margin: 0.5rem;
+		border-radius: 2rem;
+		box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.1);
+		&:hover {
+			transform: scale(1.1);
+		}
+		&:active {
+			transform: scale(0.9);
+		}
+		&-container {
+			display: flex;
+			justify-content: center;
+			align-items: center;
+		}
+	}
 }
 
 // ----- nav bar -----
 .about-nav {
-  &__link {
-    text-decoration: none;
-    font-size: 2rem;
-    display: inline-flex;
-    align-items: center;
-    &:hover {
-      transform: scale(1.1);
-      animation: bounce 1.5s infinite;
-    }
-    &--canvas {
-      position: absolute;
-      bottom: 1rem;
-      left: 1rem;
-    }
-    &--home {
-      position: absolute;
-      bottom: 1rem;
-      right: 1rem;
-      &:hover {
-        transform: scale(1.1);
-      }
-      &:active {
-        transform: scale(0.9);
-      }
-    }
-  }
-  &__icon {
-    max-width: 3rem;
-    margin: 0.5rem;
-    padding-right: 1rem;
-  }
+	&__link {
+		text-decoration: none;
+		font-size: 2rem;
+		display: inline-flex;
+		align-items: center;
+		&:hover {
+			transform: scale(1.1);
+			animation: bounce 1.5s infinite;
+		}
+		&--canvas {
+			position: absolute;
+			bottom: 1rem;
+			left: 1rem;
+		}
+		&--home {
+			position: absolute;
+			bottom: 1rem;
+			right: 1rem;
+			&:hover {
+				transform: scale(1.1);
+			}
+			&:active {
+				transform: scale(0.9);
+			}
+		}
+	}
+	&__icon {
+		max-width: 3rem;
+		margin: 0.5rem;
+		padding-right: 1rem;
+	}
 }

@@ -1,6 +1,9 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { SocialIcon } from 'react-social-icons';
 import './AboutPage.scss';
+
+// ----- icons -----
 import home from '../../assets/images/home.png';
 import back from '../../assets/images/arrow.png'
 import paintbrush from '../../assets/images/paintbrush.svg';
@@ -8,6 +11,8 @@ import line from '../../assets/images/draw-line.svg';
 import square from '../../assets/images/rectangle.svg';
 import selection from '../../assets/images/select.svg';
 import about from '../../assets/images/about.png';
+import linkedin from '../../assets/images/linkedin-logo.png';
+import github from '../../assets/images/github-logo.png';
 // import deleteicon from '../../assets/images/delete.png';
 // import colorpicker from '../../assets/images/color-picker.svg';
 // import collab from '../../assets/images/collab.svg';
@@ -18,10 +23,11 @@ export default function AboutPage() {
     return (
         <div className="about">
             <h1>About Drawllab</h1>
-            <p className="about__text">Drawllab is a browser based whiteboard and drawing application. Use it to make wireframes, sketch out ideas and jump start your creative projects!</p>
+            <h6 className="about__text">Drawllab is a browser based whiteboard and drawing application. Use it to make wireframes, sketch out ideas and jump start your creative projects!</h6>
+            <div className="about__container">
 
-            <h3>Key</h3>
-            <div className="key">
+                <section className="key">
+                <h3>Key</h3>
                 <ul className="key__ul">
                     {/* <li className="key__li">
                         <img src={colorpicker} alt="key" className="key__icon" />
@@ -41,7 +47,7 @@ export default function AboutPage() {
                     </li>
                     <li className="key__li">
                         <img src={square} alt="key" className="key__icon" />
-                        <p>Create Quadrilateral</p>
+                        <p>Draw Quadrilateral</p>
                     </li>
                     {/* <li className="key__li">
                         <img src="https://via.placeholder.com/50" alt="key" className="key__icon" />
@@ -76,9 +82,25 @@ export default function AboutPage() {
                         <p>Go to About</p>
                     </li>
                 </ul>
-                </div>
+                </section>
 
-            
+                <section className="about-me">
+                    <h3>about the creator</h3>
+
+                    <h2 className="about-me__icon-header">see what i'm working on</h2>
+                    <div className="about-me__icon-container">
+                        <div className="about-me__icon">
+                            <SocialIcon url="https://www.linkedin.com/in/alysurr/" bgColor="#96bbbf" />
+                        </div>
+                        <div className="about-me__icon">
+                            <SocialIcon url="https://github.com/alysurr" bgColor="#96bbbf"/>
+                        </div>
+                    </div>
+
+                </section>
+                
+            </div>
+
                 <div className="about-nav__link--canvas">
                 <Link to="/canvas" className="about-nav__link">
                     <img src={back} alt="back button" className="about-nav__icon" />
