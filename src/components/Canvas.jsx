@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import rough from 'roughjs/bundled/rough.esm';
 import { getStroke } from 'perfect-freehand';
 import { CirclePicker } from 'react-color';
-import io from 'socket.io-client';
+// import io from 'socket.io-client';
 
 // -----------------------------
 // ----- icons for toolbar -----
@@ -211,7 +211,6 @@ const useHistory = initialState => {
   return [history[index], setState, undo, redo, clear];
 };
 
-var socket = io('http://localhost:3000/canvas');
 
 const adjustmentRequired = type => ["line", "rectangle"].includes(type);
 
