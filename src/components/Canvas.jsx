@@ -4,7 +4,6 @@ import { Link } from 'react-router-dom';
 import rough from 'roughjs/bundled/rough.esm';
 import { getStroke } from 'perfect-freehand';
 import { CirclePicker } from 'react-color';
-// import io from 'socket.io-client';
 
 // -----------------------------
 // ----- icons for toolbar -----
@@ -245,7 +244,7 @@ const CanvasPage = () => {
     
     elements
         .map(element => drawElement(roughCanvas, context, element, selectedColor));
-		socket.send(canvas);
+		
   }, [elements, selectedColor]);
 
   const updateElement = (id, x1, y1, x2, y2, type) => {

@@ -21,7 +21,7 @@ export default function AboutPage() {
     return (
         <div className="about">
             <h1>About Drawllab</h1>
-            <h6 className="about__text">Drawllab is a browser based whiteboard and drawing application. </h6>
+            {/* <h6 className="about__text">Drawllab is a browser based whiteboard and drawing application. </h6> */}
             <div className="about__container">
 
                 <section className="key">
@@ -90,7 +90,7 @@ export default function AboutPage() {
                         <h2>libraries used</h2>
                         <ul>
                             <li><button><a href="https://roughjs.com/">roughJS</a></button></li>
-                            <li><button><a href="https://www.npmjs.com/package/perfect-freehand">perfect-freehand</a></button></li>
+                            <li><button><a href="https://www.npmjs.com/package/perfect-freehand">perfect freehand</a></button></li>
                             <li><button><a href="https://casesandberg.github.io/react-color/">react color</a></button></li>
                             <li><button><a href="https://developer.mozilla.org/en-US/docs/Web/API/Canvas_API">html canvas</a></button></li>
                         </ul>

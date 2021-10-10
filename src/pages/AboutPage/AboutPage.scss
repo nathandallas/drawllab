@@ -93,12 +93,12 @@ li {
 
 // ----- about me -----
 .about-me {
-	margin: 2rem 3rem 2rem 0rem;
+	margin: 1rem 3rem 1rem 0rem;
 	background-color: $lighterseagreen;
 	padding: 1rem;
 	border-radius: 2rem;
 	height: 60vh;
-	min-height: 24rem;
+	min-height: 32rem;
 	width: 100%;
 	box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.1);
 	-webkit-animation: aboutanimation2 4000ms linear both;
@@ -107,7 +107,7 @@ li {
 		margin-top: 1rem;
 	}
 	& p {
-		margin: 0 3rem 1rem;
+		margin: 0 1rem 1rem;
 	}
 	& ul {
 		margin: 1rem 0;
@@ -123,9 +123,8 @@ li {
 		background-color: $medseagreen;
 		border-radius: 1rem;
 		font-size: 1.1rem;
-		font-family: "Lato";
-		font-weight: 300;
-		padding: 0.5rem 1rem;
+		width: 8rem;
+		height: 3rem;
 		box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.1);
 		border: none;
 		margin: 0 1rem;
