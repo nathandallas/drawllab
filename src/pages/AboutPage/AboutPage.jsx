@@ -96,7 +96,7 @@ export default function AboutPage() {
                         </ul>
                     </div>
 
-                    <div className="about-me__me">
+                    <div className="about-me__details">
                         
                         <div className="about-me__container info">
                             <h2>contact info</h2>

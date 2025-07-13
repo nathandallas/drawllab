@@ -1,21 +1,19 @@
-@import "../partials/typography";
-@import "../partials/mixins";
-@import "../partials/partials";
+@use "../partials/partials" as col;
 
 canvas {
-  background-color: $offwhite;
+  background-color: col.$offwhite;
   width: 100vw;
   height: 100vh;
 }
 .dark-theme canvas {
-  background-color: $dlblack;
+  background-color: col.$dlblack;
 }
 
 .color {
   position: absolute;
   top: 1rem;
   left: 1rem;
-  background-color: $blight;
+  background-color: col.$blight;
   padding: 1rem;
   border-radius: 1rem;
   box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.1);
@@ -30,7 +28,7 @@ canvas {
   justify-content: center;
   max-width: 50vw;
   height: 5rem;
-  background-color: $blight;
+  background-color: col.$blight;
   border-radius: 1rem;
   box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.1);
   &__icon {
@@ -55,7 +53,7 @@ canvas {
   }
 
   &:checked + &__label {
-    background-color: $lightestseagreen;
+    background-color: col.$lightestseagreen;
     border-radius: 1rem;
     transform: scale(1.1);
   }
@@ -73,13 +71,13 @@ canvas {
   left: 1rem;
   width: 17rem;
   &__button {
-    background-color: $blight;
+    background-color: col.$blight;
     border-radius: 1rem;
     padding: 0.25rem 0.75rem;
     box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.1);
     &:hover {
       transform: scale(1.1);
-      background-color: $lightestseagreen;
+      background-color: col.$lightestseagreen;
     }
     &:active {
       transform: scale(0.9);
