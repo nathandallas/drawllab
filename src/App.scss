@@ -10,6 +10,11 @@
   padding: 0;
 }
 
+body {
+  background: #5e878b;
+  background: linear-gradient(0deg, rgba(94, 135, 139, 1) 0%, rgba(150, 187, 191, 1) 50%, rgba(185, 207, 211, 1) 100%);
+}
+
 h4,
 p,
 h6 {
@@ -20,6 +25,7 @@ h6 {
 h1,
 h2,
 h3,
+a,
 button {
   font-family: "Permanent Marker", cursive;
   font-weight: normal;
@@ -43,6 +49,7 @@ h3 {
 p {
   font-size: 1.25rem;
 }
+
 h6 {
   font-size: 1.6rem;
 }

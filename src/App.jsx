@@ -8,7 +8,7 @@ import AboutPage from "./pages/AboutPage/AboutPage";
 const App = () => {
   return (
     <div className="App">
-      <Switch>
+      <Switch base="/drawllab">
         <Route path="/" exact component={HomePage} />
         <Route path="/canvas" component={CanvasPage} />
         <Route path="/about" component={AboutPage} />
