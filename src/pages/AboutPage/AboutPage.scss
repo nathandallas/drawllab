@@ -1,14 +1,5 @@
-@import "../../partials/typography";
 @import "../../partials/mixins";
 @import "../../partials/partials";
-
-body {
-  background: linear-gradient(to right, #e1f1f5 0%, #cddee3 20%, #b1cad1 40%, #a0c4cf 60%, #b1cad1 80%, #e1f1f5 100%);
-  background-size: $bgWidth;
-  animation: bg 10s linear infinite;
-  display: flex;
-  height: 100vh;
-}
 
 h1 {
   padding: 2rem 3rem 1rem;
@@ -17,30 +8,28 @@ h1 {
   -webkit-animation: aboutanimation1 3000ms linear both;
   animation: aboutanimation1 3000ms linear both;
 }
+
 li {
   list-style-type: none;
 }
 
-.about {
-  position: relative;
+.about-page {
+  position: sticky;
   display: flex;
   flex-direction: column;
   background-color: $offwhite;
-  width: 80vw;
-  height: 90vh;
-  min-height: 1000px;
-  max-width: 1600px;
+  margin: 0 auto;
+  min-height: 850px;
   border-radius: 2rem;
   box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.1);
   & h3 {
     text-align: center;
     margin-bottom: 1rem;
   }
-  &__text {
-    margin: 0 4rem;
-  }
   &__container {
     display: flex;
+    align-items: start;
+    margin: 0 auto;
   }
 }
 // ----- key list  -----
@@ -49,20 +38,15 @@ li {
   background-color: $medseagreen;
   padding: 1rem;
   border-radius: 2rem;
-  width: 25rem;
+  width: 280px;
   box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.1);
   -webkit-animation: logoanimation1 4000ms linear both;
   animation: logoanimation1 4000ms linear both;
-  &__ul {
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    height: 85%;
-  }
-  &__li {
+  & li {
     display: flex;
     align-items: center;
     padding-left: 0.5rem;
+    padding-bottom: 1rem;
     &:hover {
       & p {
         font-weight: bold;
@@ -72,24 +56,20 @@ li {
       }
     }
   }
-  & p {
-    padding-left: 1rem;
-  }
-  &__icon {
-    width: 35px;
-    height: 35px;
+  & img {
+    width: 50px;
+    height: 50px;
+    margin-right: 1rem;
   }
 }
 
 // ----- about me -----
-.about-me {
+.about {
   margin: 1rem 3rem 1rem 0rem;
   background-color: $lighterseagreen;
   padding: 1rem;
   border-radius: 2rem;
-  height: 60vh;
-  min-height: 700px;
-  width: 100%;
+  min-height: 600px;
   box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.1);
   -webkit-animation: aboutanimation2 4000ms linear both;
   animation: aboutanimation2 4000ms linear both;
@@ -100,36 +80,7 @@ li {
     margin: 0 auto;
     max-width: 700px;
   }
-  & ul {
-    margin: 1rem 0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-  & a {
-    text-decoration: none;
-    color: $graphite;
-  }
-  & button {
-    background-color: $medseagreen;
-    border-radius: 1rem;
-    font-size: 1.1rem;
-    padding: 1rem;
-    box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.1);
-    border: none;
-    margin: 0 1rem;
-    &:hover {
-      transform: scale(1.1);
-      background-color: $lightseagreen;
-      color: $lightestseagreen;
-      & a {
-        color: $blight;
-      }
-    }
-    &:active {
-      transform: scale(0.9);
-    }
-  }
+
   &__icon {
     margin: 0.5rem;
     border-radius: 4rem;
@@ -178,11 +129,45 @@ li {
   margin-bottom: 1rem;
 }
 
+.about ul {
+  margin: 1rem;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-evenly;
+  & li {
+    text-align: center;
+
+    width: 45%;
+    max-width: 250px;
+    color: $graphite;
+    background-color: $medseagreen;
+    border-radius: 1rem;
+    font-size: 1.5rem;
+    padding: 0.5rem 0;
+    margin-bottom: 1rem;
+    box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.1);
+  }
+}
+
+.library {
+  text-decoration: none;
+  &:hover {
+    transform: scale(1.1);
+    background-color: $lightseagreen;
+    color: $lightestseagreen;
+    color: $blight;
+  }
+  &:active {
+    transform: scale(0.9);
+  }
+}
+
 // ----- nav bar -----
 .about-nav {
   &__link {
     text-decoration: none;
     font-size: 2rem;
+    margin-top: 1rem;
     display: inline-flex;
     align-items: center;
     &:hover {

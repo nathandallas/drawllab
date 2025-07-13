@@ -3,9 +3,6 @@
 @import "../../partials/partials";
 
 body {
-  background: linear-gradient(to bottom, #e1f1f5 0%, #cddee3 20%, #a6bac0 40%, #9cb1b8 60%, #a6bac0 80%, #e1f1f5 100%);
-  background-size: 100%;
-  animation: bg 10s linear infinite;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -32,9 +29,8 @@ h2 {
   align-items: center;
   background-color: $offwhite;
   min-height: 40rem;
-  height: 80vh;
-  min-width: 40rem;
-  width: 80vw;
+  height: 850px;
+  width: 1140px;
   border-radius: 2rem;
   box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.1);
   &__graphic {

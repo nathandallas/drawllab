@@ -1,4 +1,4 @@
-![Logo](https://imgur.com/HgFZrxO.png)
+![Drawllab Logo](https://imgur.com/HgFZrxO.png)
 
 # Drawllab
 
@@ -6,17 +6,18 @@ Drawllab is a browser based whiteboard and drawing application. This program was
 
 Use it to make wireframes, sketch out ideas and jump start your creative projects!
 
-![AboutPage](https://i.imgur.com/DZhBzM5.png)
+![Drawllab Home Page](https://i.imgur.com/vUuPRgq.jpeg)
 
-## Deployment
+![Drawllab Canvas](https://i.imgur.com/58tr5PR.jpeg)
 
-Check out the live website here: https://nathandallas.github.io/drawllab/
+![Drawllab About Page](https://i.imgur.com/cJg95y4.jpeg)
+
+
 
 ## Tech Stack
 
 - **NodeJS**
 - **React**
-- **SASS**
 - **RoughJS**
 - **perfect-freehand**
 - **React Color**
