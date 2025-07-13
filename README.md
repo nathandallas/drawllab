@@ -2,14 +2,15 @@
 
 # Drawllab
 
-Drawllab is a browser based collaborative whiteboard and drawing application. This program was created to be a lightweight and user-friendly alternative to modern-day drawing applications. Using a minimalist design and easy to learn interface, Drawllab makes it easy for any user to jump in and start creating without having a huge learning curve.
+Drawllab is a browser based whiteboard and drawing application. This program was created to be a lightweight and user-friendly alternative to modern-day drawing applications. Using a minimalist design and easy to learn interface, Drawllab makes it easy for any user to jump in and start creating without having a huge learning curve.
+
 Use it to make wireframes, sketch out ideas and jump start your creative projects!
 
 ![AboutPage](https://i.imgur.com/DZhBzM5.png)
 
 ## Deployment
 
-Check out the live website here: https://drawllab.herokuapp.com/
+Check out the live website here: https://nathandallas.github.io/drawllab/
 
 ## Tech Stack
 
@@ -21,11 +22,20 @@ Check out the live website here: https://drawllab.herokuapp.com/
 - **React Color**
 - **HTML Canvas**
 
+## Updates to Come 
+
+- Web Sockets for Collaboration
+- Updated Color Functionality
+- File Saving
+- Mobile Responsiveness
+- Dark Mode
+
+
 ## How to Install
 
 #### Clone this repository
 
-$ git clone https://github.com/alysurr/drawllab.git
+$ git clone https://github.com/nathandallas/drawllab.git
 
 #### Go into the repository
 
@@ -37,14 +47,14 @@ $ npm install
 
 #### Run the app
 
-$ npm start
+$ npm run dev
 
 Runs the app in the development mode.
-Open http://localhost:3000 to view application in the browser.
+
 
 ## Authors
 
-- **Alyssa Challender** - [GitHub](https://github.com/alysurr) | [LinkedIn](https://www.linkedin.com/in/alysurr/)
+- **Nathan Challender** - [GitHub](https://github.com/nathandallas) 
 
 ## Acknowledgements
 

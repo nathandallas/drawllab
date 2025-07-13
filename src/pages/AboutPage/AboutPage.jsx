@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link } from 'wouter';
 import { SocialIcon } from 'react-social-icons';
 import './AboutPage.scss';
 
@@ -100,17 +100,17 @@ export default function AboutPage() {
                         
                         <div className="about-me__container info">
                             <h2>contact info</h2>
-                            <p><span>Alyssa Challender</span></p>
-                            <p>alysurr@gmail.com</p>
+                            <p><span>Nathan Challender</span></p>
+                            <p>nathandallas@proton.me</p>
                         </div>
 
                         <div className="about-me__container">
                             <div className="about-me__icon-container">
                                 <div className="about-me__icon">
-                                    <SocialIcon url="https://www.linkedin.com/in/alysurr/" bgColor="#96bbbf" style={{ height: 75, width: 75 }} />
+                                    <SocialIcon url="https://codepen.io/nathandallas" bgColor="#96bbbf" style={{ height: 75, width: 75 }} />
                                 </div>
                                 <div className="about-me__icon">
-                                    <SocialIcon url="https://github.com/alysurr" bgColor="#96bbbf" style={{ height: 75, width: 75 }}/>
+                                    <SocialIcon url="https://github.com/nathandallas" bgColor="#96bbbf" style={{ height: 75, width: 75 }}/>
                                 </div>
                             </div>
                         </div>

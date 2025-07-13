@@ -1,20 +1,20 @@
-import './Canvas.scss';
-import React, { useEffect, useLayoutEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
-import rough from 'roughjs/bundled/rough.esm';
-import { getStroke } from 'perfect-freehand';
-import { CirclePicker } from 'react-color';
+import "./Canvas.scss";
+import React, { useEffect, useLayoutEffect, useState } from "react";
+import { Link } from "wouter";
+import rough from "roughjs/bundled/rough.esm";
+import { getStroke } from "perfect-freehand";
+import { CirclePicker } from "react-color";
 
 // -----------------------------
 // ----- icons for toolbar -----
 // -----------------------------
 
-import paintbrush from '../assets/images/paintbrush.svg';
-import line from '../assets/images/draw-line.svg';
-import square from '../assets/images/rectangle.svg';
-import select from '../assets/images/select.svg';
-import home from '../assets/images/home.png';
-import about from '../assets/images/about.png';
+import paintbrush from "../assets/images/paintbrush.svg";
+import line from "../assets/images/draw-line.svg";
+import square from "../assets/images/rectangle.svg";
+import select from "../assets/images/select.svg";
+import home from "../assets/images/home.png";
+import about from "../assets/images/about.png";
 
 // ---------------------------------------------
 // ---------- Functionality for Tools ----------
@@ -28,14 +28,11 @@ const createElement = (id, x1, y1, x2, y2, type) => {
   switch (type) {
     case "line":
     case "rectangle":
-      const roughElement =
-        type === "line"
-			  ? generator.line(x1, y1, x2, y2, { bowing: 2, strokeWidth: 3, stroke: '#363636' })
-          : generator.rectangle(x1, y1, x2 - x1, y2 - y1, { bowing: 2, strokeWidth: 3, stroke: '#363636' });
+      const roughElement = type === "line" ? generator.line(x1, y1, x2, y2, { bowing: 2, strokeWidth: 3, stroke: "#363636" }) : generator.rectangle(x1, y1, x2 - x1, y2 - y1, { bowing: 2, strokeWidth: 3, stroke: "#363636" });
 
       return { id, x1, y1, x2, y2, type, roughElement };
     case "paintbrush":
-      return { id, type, points: [{ x: x1, y: y1 }]};
+      return { id, type, points: [{ x: x1, y: y1 }] };
     default:
       throw new Error(`unrecognized: ${type}`);
   }
@@ -66,18 +63,20 @@ const drawElement = (roughCanvas, context, element, selectedColor) => {
       context.fillStyle = selectedColor;
       break;
     case "paintbrush":
-      const stroke = SVGpathData(getStroke(element.points, {
-				size: 8,
-				thinning: 0.3,
-				smoothing: 0.5,
-        streamline: 0.7
-	  }));
+      const stroke = SVGpathData(
+        getStroke(element.points, {
+          size: 8,
+          thinning: 0.3,
+          smoothing: 0.5,
+          streamline: 0.7,
+        })
+      );
       context.fill(new Path2D(stroke));
       context.fillStyle = selectedColor;
       break;
     default:
       throw new Error(`unrecognised: ${element.type}`);
-	}
+  }
 };
 
 // --------------------------------------------------------
@@ -126,9 +125,7 @@ const positionInElement = (x, y, element) => {
 const distance = (a, b) => Math.sqrt(Math.pow(a.x - b.x, 2) + Math.pow(a.y - b.y, 2));
 
 const getElementAtPosition = (x, y, elements) => {
-  return elements
-    .map(element => ({ ...element, position: positionInElement(x, y, element) }))
-    .find(element => element.position !== null);
+  return elements.map(element => ({ ...element, position: positionInElement(x, y, element) })).find(element => element.position !== null);
 };
 
 const adjustElementCoordinates = element => {
@@ -185,7 +182,6 @@ const resizedCoordinates = (clientX, clientY, position, coordinates) => {
 // ----- Undo / Redo Button Functionality -----
 // --------------------------------------------
 
-
 const useHistory = initialState => {
   const [index, setIndex] = useState(0);
   const [history, setHistory] = useState([initialState]);
@@ -202,14 +198,13 @@ const useHistory = initialState => {
       setIndex(prevState => prevState + 1);
     }
   };
-  
+
   const clear = () => index > 0 && setIndex(0);
   const undo = () => index > 0 && setIndex(prevState => prevState - 1);
   const redo = () => index < history.length - 1 && setIndex(prevState => prevState + 1);
 
   return [history[index], setState, undo, redo, clear];
 };
-
 
 const adjustmentRequired = type => ["line", "rectangle"].includes(type);
 
@@ -218,7 +213,6 @@ const adjustmentRequired = type => ["line", "rectangle"].includes(type);
 // ---------------------------
 
 const CanvasPage = () => {
-
   // ---------------------------
   // ---------- Hooks ----------
   // ---------------------------
@@ -227,24 +221,19 @@ const CanvasPage = () => {
   const [action, setAction] = useState("none");
   const [tool, setTool] = useState("paintbrush");
   const [selectedElement, setSelectedElement] = useState(null);
-    const [selectedColor, setSelectedColor] = useState('#363636');
-
-    
+  const [selectedColor, setSelectedColor] = useState("#363636");
 
   // --------------------------------------
   // ---------- Creating Element ----------
   // --------------------------------------
 
-
   useLayoutEffect(() => {
     const canvas = document.getElementById("canvas");
     const context = canvas.getContext("2d");
     context.clearRect(0, 0, canvas.width, canvas.height);
-      const roughCanvas = rough.canvas(canvas);
-    
-    elements
-        .map(element => drawElement(roughCanvas, context, element, selectedColor));
-		
+    const roughCanvas = rough.canvas(canvas);
+
+    elements.map(element => drawElement(roughCanvas, context, element, selectedColor));
   }, [elements, selectedColor]);
 
   const updateElement = (id, x1, y1, x2, y2, type) => {
@@ -264,10 +253,10 @@ const CanvasPage = () => {
 
     setElements(elementsCopy, true);
   };
-  
-	// --------------------------------------------
-	// ----- Undo/Redo + Ctrl Z Functionality -----
-	// --------------------------------------------
+
+  // --------------------------------------------
+  // ----- Undo/Redo + Ctrl Z Functionality -----
+  // --------------------------------------------
 
   useEffect(() => {
     const undoRedoFunction = e => {
@@ -283,11 +272,11 @@ const CanvasPage = () => {
     return () => {
       document.removeEventListener("keydown", undoRedoFunction);
     };
-	}, [undo, redo]);
+  }, [undo, redo]);
 
-	// --------------------------
-	// ----- Event Handlers -----
-	// --------------------------
+  // --------------------------
+  // ----- Event Handlers -----
+  // --------------------------
 
   const handleMouseDown = e => {
     const { clientX, clientY } = e;
@@ -372,137 +361,73 @@ const CanvasPage = () => {
     setAction("none");
     setSelectedElement(null);
   };
- 
 
-
-	// ----------------------------
-	// ---------- Render ----------
-	// ----------------------------
+  // ----------------------------
+  // ---------- Render ----------
+  // ----------------------------
 
   return (
-	  <>
-			<div className="color">
-				<CirclePicker
-					colors={
-						[ '#a5abe7',
-						'#6fb7da', 
-						'#aebc89', 
-						'#f1d896', 
-						'#e67f6e', 
-						'#f384a9', 
-						'#7b75da', 
-						'#3984a3', 
-						'#598b7f', 
-						'#f1b376', 
-						'#bc5953', 
-						'#ed5689', 
-						'#363636', 
-						'#666',
-						'#818589', 
-						'#A9A9A9',
-						'#ccc', 
-						'#fff'
-						]}
+    <>
+      <div className="color">
+        <CirclePicker
+          colors={["#a5abe7", "#6fb7da", "#aebc89", "#f1d896", "#e67f6e", "#f384a9", "#7b75da", "#3984a3", "#598b7f", "#f1b376", "#bc5953", "#ed5689", "#363636", "#666", "#818589", "#A9A9A9", "#ccc", "#fff"]}
           color={selectedColor}
-					onChange={color=>setSelectedColor(color.hex)}
-				/>
-			</div>
-			
-		{/* Toolbar Component */}
-		  <div className="toolbar">
-			<input
-				type="radio"
-				id="paintbrush"
-				checked={tool === "paintbrush"}
-				onChange={() => setTool("paintbrush")}
-				className="tool"
-			/>
-			<label
-				htmlFor="paintbrush"
-				className="tool__label"
-			>
-				<img src={paintbrush} alt="paintbrush icon" className="toolbar__icon"/>
-			</label>
-			<input
-				type="radio"
-				id="line"
-				checked={tool === "line"}
-				onChange={() => setTool("line")}
-				className="tool"
-			/>
-			<label
-				htmlFor="line"
-				className="tool__label"
-			>
-				<img src={line} alt="line icon" className="toolbar__icon"/>
-			</label>
-			<input
-				type="radio"
-				id="rectangle"
-				checked={tool === "rectangle"}
-				onChange={() => setTool("rectangle")}
-				className="tool"
-			/>
-			<label
-				htmlFor="rectangle"
-				className="tool__label"
-			>
-				<img src={square} alt="rectangle icon" className="toolbar__icon"/>
-			</label>
-			<input
-				type="radio"
-				id="select"
-				checked={tool === "select"}
-				onChange={() => setTool("select")}
-				className="tool"
-			/>
-			<label
-				htmlFor="select"
-				className="tool__label"
-			>
-				<img src={select} alt="select icon" className="toolbar__icon"/>
-			</label>
+          onChange={color => setSelectedColor(color.hex)}
+        />
+      </div>
 
-      <div className="tool__divider"></div>
-			</div>
-			
-			{/* Undo/Redo/Clear Buttons */}
-			<div className="canvas-tools">
-				<div onClick={clear} className="canvas-tools__button">
-					<h2>clear</h2>
-				</div>
-				<div onClick={undo} className="canvas-tools__button">
-					<h2>undo</h2>
-				</div>
-				<div onClick={redo} className="canvas-tools__button">
-					<h2>redo</h2>
-				</div>
-			</div>
-			
-		{/* Nav Bar Component */}
+      {/* Toolbar Component */}
+      <div className="toolbar">
+        <input type="radio" id="paintbrush" checked={tool === "paintbrush"} onChange={() => setTool("paintbrush")} className="tool" />
+        <label htmlFor="paintbrush" className="tool__label">
+          <img src={paintbrush} alt="paintbrush icon" className="toolbar__icon" />
+        </label>
+        <input type="radio" id="line" checked={tool === "line"} onChange={() => setTool("line")} className="tool" />
+        <label htmlFor="line" className="tool__label">
+          <img src={line} alt="line icon" className="toolbar__icon" />
+        </label>
+        <input type="radio" id="rectangle" checked={tool === "rectangle"} onChange={() => setTool("rectangle")} className="tool" />
+        <label htmlFor="rectangle" className="tool__label">
+          <img src={square} alt="rectangle icon" className="toolbar__icon" />
+        </label>
+        <input type="radio" id="select" checked={tool === "select"} onChange={() => setTool("select")} className="tool" />
+        <label htmlFor="select" className="tool__label">
+          <img src={select} alt="select icon" className="toolbar__icon" />
+        </label>
 
-		<nav className="nav">
-			<Link to="/">
-				<img src={home} alt="home icon" className="nav__icon click"/>
-			</Link>
-			<Link to="/about">
-				<img src={about} alt="about icon" className="nav__icon click"/>
-			</Link>
-		</nav>
+        <div className="tool__divider"></div>
+      </div>
 
-		{/* Canvas Component */}
-		<canvas
-			id="canvas"
-			width={window.innerWidth}
-			height={window.innerHeight}
-			onMouseDown={handleMouseDown}
-			onMouseMove={handleMouseMove}
-      onMouseUp={handleMouseUp}
-		>
-			Canvas
-		</canvas>
+      {/* Undo/Redo/Clear Buttons */}
+      <div className="canvas-tools">
+        <div onClick={clear} className="canvas-tools__button">
+          <h2>clear</h2>
+        </div>
+        <div onClick={undo} className="canvas-tools__button">
+          <h2>undo</h2>
+        </div>
+        <div onClick={redo} className="canvas-tools__button">
+          <h2>redo</h2>
+        </div>
+      </div>
+
+      {/* Nav Bar Component */}
+
+      <nav className="nav">
+        <Link to="/">
+          <img src={home} alt="home icon" className="nav__icon click" />
+        </Link>
+        <Link to="/about">
+          <img src={about} alt="about icon" className="nav__icon click" />
+        </Link>
+      </nav>
+
+      {/* Canvas Component */}
+      <canvas id="canvas" width={window.innerWidth} height={window.innerHeight} onMouseDown={handleMouseDown} onMouseMove={handleMouseMove} onMouseUp={handleMouseUp}>
+        Canvas
+      </canvas>
     </>
-  )
-}
+  );
+};
 
 export default CanvasPage;
