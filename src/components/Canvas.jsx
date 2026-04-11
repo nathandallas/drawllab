@@ -3,7 +3,7 @@ import React, { useEffect, useLayoutEffect, useState } from "react";
 import { Link } from "wouter";
 import rough from "roughjs/bundled/rough.esm";
 import { getStroke } from "perfect-freehand";
-import { CirclePicker } from "react-color";
+import { CirclePicker, SketchPicker } from "react-color";
 
 // -----------------------------
 // ----- icons for toolbar -----
@@ -28,7 +28,10 @@ const createElement = (id, x1, y1, x2, y2, type, color = "#363636") => {
   switch (type) {
     case "line":
     case "rectangle":
-      const roughElement = type === "line" ? generator.line(x1, y1, x2, y2, { bowing: 2, strokeWidth: 3, stroke: color }) : generator.rectangle(x1, y1, x2 - x1, y2 - y1, { bowing: 2, strokeWidth: 3, stroke: color });
+      const roughElement =
+        type === "line"
+          ? generator.line(x1, y1, x2, y2, { bowing: 2, strokeWidth: 3, stroke: color })
+          : generator.rectangle(x1, y1, x2 - x1, y2 - y1, { bowing: 2, strokeWidth: 3, stroke: color });
 
       return { id, x1, y1, x2, y2, type, roughElement, color };
     case "paintbrush":
@@ -47,7 +50,7 @@ const SVGpathData = stroke => {
       acc.push(x0, y0, (x0 + x1) / 2, (y0 + y1) / 2);
       return acc;
     },
-    ["M", ...stroke[0], "Q"]
+    ["M", ...stroke[0], "Q"],
   );
 
   d.push("Z");
@@ -67,7 +70,7 @@ const drawElement = (roughCanvas, context, element) => {
           thinning: 0.3,
           smoothing: 0.5,
           streamline: 0.7,
-        })
+        }),
       );
       context.fillStyle = element.color;
       context.fill(new Path2D(stroke));
@@ -367,8 +370,27 @@ const CanvasPage = () => {
   return (
     <>
       <div className="color">
-        <CirclePicker
-          colors={["#a5abe7", "#6fb7da", "#aebc89", "#f1d896", "#e67f6e", "#f384a9", "#7b75da", "#3984a3", "#598b7f", "#f1b376", "#bc5953", "#ed5689", "#363636", "#666", "#818589", "#A9A9A9", "#ccc", "#fff"]}
+        <SketchPicker
+          presetColors={[
+            "#a5abe7",
+            "#6fb7da",
+            "#aebc89",
+            "#f1d896",
+            "#e67f6e",
+            "#f384a9",
+            "#7b75da",
+            "#3984a3",
+            "#598b7f",
+            "#f1b376",
+            "#bc5953",
+            "#ed5689",
+            "#363636",
+            "#666",
+            "#818589",
+            "#A9A9A9",
+            "#ccc",
+            "#fff",
+          ]}
           color={selectedColor}
           onChange={color => setSelectedColor(color.hex)}
         />
@@ -398,14 +420,17 @@ const CanvasPage = () => {
 
       {/* Undo/Redo/Clear Buttons */}
       <div className="canvas-tools">
+        <div className="canvas-tools-container">
+          <div onClick={undo} className="canvas-tools__button">
+            <h2>undo</h2>
+          </div>
+          <div onClick={redo} className="canvas-tools__button">
+            <h2>redo</h2>
+          </div>
+        </div>
+
         <div onClick={clear} className="canvas-tools__button">
           <h2>clear</h2>
-        </div>
-        <div onClick={undo} className="canvas-tools__button">
-          <h2>undo</h2>
-        </div>
-        <div onClick={redo} className="canvas-tools__button">
-          <h2>redo</h2>
         </div>
       </div>
 
@@ -421,7 +446,13 @@ const CanvasPage = () => {
       </nav>
 
       {/* Canvas Component */}
-      <canvas id="canvas" width={window.innerWidth} height={window.innerHeight} onMouseDown={handleMouseDown} onMouseMove={handleMouseMove} onMouseUp={handleMouseUp}>
+      <canvas
+        id="canvas"
+        width={window.innerWidth}
+        height={window.innerHeight}
+        onMouseDown={handleMouseDown}
+        onMouseMove={handleMouseMove}
+        onMouseUp={handleMouseUp}>
         Canvas
       </canvas>
     </>

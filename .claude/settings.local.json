@@ -1,0 +1,14 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(git ls-tree:*)",
+      "WebFetch(domain:github.com)",
+      "WebFetch(domain:nathandallas.github.io)",
+      "Bash(curl -I https://nathandallas.github.io/drawllab/assets/index-CfVRfzQX.js)",
+      "Bash(curl -s https://nathandallas.github.io/drawllab/)",
+      "Bash(curl -s -I https://nathandallas.github.io/drawllab/assets/index-mR7LWLI8.js)",
+      "Bash(curl -s https://nathandallas.github.io/drawllab/assets/index-mR7LWLI8.js)",
+      "Bash(curl -s https://github.com/nathandallas/drawllab/actions)"
+    ]
+  }
+}

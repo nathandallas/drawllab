@@ -5,8 +5,8 @@ h1 {
   padding: 2rem 3rem 1rem;
   color: $graphite;
   letter-spacing: 2px;
-  -webkit-animation: aboutanimation1 3000ms linear both;
-  animation: aboutanimation1 3000ms linear both;
+  -webkit-animation: aboutanimation1 600ms cubic-bezier(0.22, 1, 0.36, 1) both;
+  animation: aboutanimation1 600ms cubic-bezier(0.22, 1, 0.36, 1) both;
 }
 
 li {
@@ -40,8 +40,7 @@ li {
   border-radius: 2rem;
   width: 280px;
   box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.1);
-  -webkit-animation: logoanimation1 4000ms linear both;
-  animation: logoanimation1 4000ms linear both;
+  animation: logoanimation1 800ms linear 0.1s both;
   & li {
     display: flex;
     align-items: center;
@@ -53,7 +52,11 @@ li {
       }
       & img {
         transform: scale(1.1);
+        transition: transform 0.2s ease;
       }
+    }
+    & img {
+      transition: transform 0.2s ease;
     }
   }
   & img {
@@ -71,8 +74,7 @@ li {
   border-radius: 2rem;
   min-height: 600px;
   box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.1);
-  -webkit-animation: aboutanimation2 4000ms linear both;
-  animation: aboutanimation2 4000ms linear both;
+  animation: aboutanimation2 800ms linear 0.2s both;
   & h3 {
     margin-top: 1rem;
   }
@@ -85,6 +87,7 @@ li {
     margin: 0.5rem;
     border-radius: 4rem;
     box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.1);
+    transition: transform 0.2s ease;
     &:hover {
       transform: scale(1.1);
     }
@@ -146,16 +149,22 @@ li {
     padding: 0.5rem 0;
     margin-bottom: 1rem;
     box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.1);
+    &:hover {
+      transform: scale(1.1);
+      background-color: $lightseagreen;
+      color: $blight;
+    }
   }
 }
 
 .library {
   text-decoration: none;
+  transition:
+    transform 0.2s ease,
+    background-color 0.2s ease,
+    color 0.2s ease;
   &:hover {
     transform: scale(1.1);
-    background-color: $lightseagreen;
-    color: $lightestseagreen;
-    color: $blight;
   }
   &:active {
     transform: scale(0.9);
@@ -170,9 +179,9 @@ li {
     margin-top: 1rem;
     display: inline-flex;
     align-items: center;
+    transition: transform 0.2s ease;
     &:hover {
-      transform: scale(1.1);
-      animation: bounce 1.5s infinite;
+      animation: bounce 1s ease infinite;
     }
     &--canvas {
       position: absolute;

@@ -14,9 +14,9 @@ canvas {
   top: 1rem;
   left: 1rem;
   background-color: col.$blight;
-  padding: 1rem;
   border-radius: 1rem;
   box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.1);
+  margin: auto 0;
 }
 
 .toolbar {
@@ -66,10 +66,16 @@ canvas {
 .canvas-tools {
   position: absolute;
   display: flex;
-  justify-content: space-between;
-  top: 11rem;
+  flex-direction: column;
+  top: 22rem;
   left: 1rem;
-  width: 17rem;
+  width: 14rem;
+  &-container {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 1rem;
+    width: 100%;
+  }
   &__button {
     background-color: col.$blight;
     border-radius: 1rem;

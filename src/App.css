@@ -1,0 +1,148 @@
+@import url("https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&family=Permanent+Marker&display=swap");
+@keyframes bg {
+  0% {
+    background-position-x: 0;
+  }
+  100% {
+    background-position-x: 5000px;
+  }
+}
+@keyframes bounce {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  40% {
+    transform: translateY(-8px);
+  }
+  70% {
+    transform: translateY(-3px);
+  }
+}
+@keyframes animation {
+  0% {
+    transform: matrix3d(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1);
+  }
+  5.71% {
+    transform: matrix3d(0.375, 0, 0, 0, 0, 0.375, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1);
+  }
+  11.31% {
+    transform: matrix3d(0.635, 0, 0, 0, 0, 0.635, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1);
+  }
+  17.02% {
+    transform: matrix3d(0.809, 0, 0, 0, 0, 0.809, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1);
+  }
+  22.62% {
+    transform: matrix3d(0.913, 0, 0, 0, 0, 0.913, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1);
+  }
+  28.33% {
+    transform: matrix3d(0.973, 0, 0, 0, 0, 0.973, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1);
+  }
+  33.93% {
+    transform: matrix3d(1.002, 0, 0, 0, 0, 1.002, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1);
+  }
+  45.15% {
+    transform: matrix3d(1.017, 0, 0, 0, 0, 1.017, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1);
+  }
+  72.57% {
+    transform: matrix3d(1.004, 0, 0, 0, 0, 1.004, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1);
+  }
+  100% {
+    transform: matrix3d(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1);
+  }
+}
+@keyframes logoanimation1 {
+  0% {
+    opacity: 0;
+    transform: translateX(-50px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+@keyframes logoanimation2 {
+  0% {
+    opacity: 0;
+    transform: translate(50px, 50px);
+  }
+  100% {
+    opacity: 1;
+    transform: translate(0, 0);
+  }
+}
+@keyframes aboutanimation1 {
+  0% {
+    opacity: 0;
+    transform: translateY(-30px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+@keyframes aboutanimation2 {
+  0% {
+    opacity: 0;
+    transform: translateX(50px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background: #5e878b;
+  background: linear-gradient(0deg, rgb(94, 135, 139) 0%, rgb(150, 187, 191) 50%, rgb(185, 207, 211) 100%);
+}
+
+h4,
+p,
+h6 {
+  font-family: "Lato", sans-serif;
+  font-weight: normal;
+  color: #24283b;
+}
+
+h1,
+h2,
+h3,
+a,
+button {
+  font-family: "Permanent Marker", cursive;
+  font-weight: normal;
+  color: #24283b;
+}
+
+h1 {
+  font-size: 4rem;
+  text-transform: uppercase;
+}
+
+h2 {
+  font-size: 2rem;
+}
+
+h3 {
+  font-size: 2.5rem;
+  font-weight: bold;
+}
+
+p {
+  font-size: 1.25rem;
+}
+
+h6 {
+  font-size: 1.6rem;
+}
+
+button {
+  font-weight: bold;
+}/*# sourceMappingURL=App.css.map */
