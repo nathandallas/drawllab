@@ -6,7 +6,7 @@ import react from "@vitejs/plugin-react";
 export default defineConfig(({ mode }) => {
   setEnv(mode);
   return {
-    plugins: [react(), envPlugin(), devServerPlugin(), sourcemapPlugin(), buildPathPlugin(), basePlugin(), importPrefixPlugin(), htmlPlugin(mode), svgrPlugin()],
+    plugins: [react(), envPlugin(), devServerPlugin(), sourcemapPlugin(), buildPathPlugin(), importPrefixPlugin(), htmlPlugin(mode), svgrPlugin()],
     base: "/drawllab",
   };
 });
@@ -85,19 +85,6 @@ function buildPathPlugin() {
         build: {
           outDir: BUILD_PATH || "build",
         },
-      };
-    },
-  };
-}
-// Migration guide: Follow the guide below and remove homepage field in package.json
-// https://vitejs.dev/config/shared-options.html#base
-function basePlugin() {
-  return {
-    name: "base-plugin",
-    config(_, { mode }) {
-      const { PUBLIC_URL } = loadEnv(mode, ".", ["PUBLIC_URL"]);
-      return {
-        base: PUBLIC_URL || "",
       };
     },
   };

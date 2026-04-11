@@ -6,6 +6,20 @@
     <meta name="theme-color" content="#000000" />
     <meta name="description" content="Make wireframes, sketch out ideas and jump start your creative projects with Drawllab!" />
     <title>Drawllab</title>
+    <script>
+      // Restore path encoded by 404.html redirect
+      (function () {
+        var params = new URLSearchParams(window.location.search);
+        var p = params.get('p');
+        if (p) {
+          var q = params.get('q');
+          window.history.replaceState(
+            null, null,
+            '/drawllab' + p + (q ? '?' + q : '') + window.location.hash
+          );
+        }
+      })();
+    </script>
     <script type="module" src="/src/index.jsx"></script>
   </head>
   <body>
