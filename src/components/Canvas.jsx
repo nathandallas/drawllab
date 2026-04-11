@@ -371,19 +371,26 @@ const CanvasPage = () => {
     <>
       <div className="color">
         <SketchPicker
+          disableAlpha={true}
           presetColors={[
-            "#a5abe7",
-            "#6fb7da",
-            "#aebc89",
-            "#f1d896",
+            "#8b3a35",
+            "#bc5953",
             "#e67f6e",
+            "#e8a09a",
+            "#c47fa0",
+            "#ed5689",
             "#f384a9",
             "#7b75da",
+            "#a5abe7",
             "#3984a3",
+            "#6fb7da",
             "#598b7f",
+            "#7a9e5e",
+            "#aebc89",
+            "#d4753a",
             "#f1b376",
-            "#bc5953",
-            "#ed5689",
+            "#d4a832",
+            "#f1d896",
             "#363636",
             "#666",
             "#818589",
