@@ -10,6 +10,7 @@
 
 # production
 /memory
+/.claude
 
 # misc
 .DS_Store
