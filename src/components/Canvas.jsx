@@ -24,15 +24,15 @@ import about from "../assets/images/about.png";
 
 const generator = rough.generator();
 
-const createElement = (id, x1, y1, x2, y2, type) => {
+const createElement = (id, x1, y1, x2, y2, type, color = "#363636") => {
   switch (type) {
     case "line":
     case "rectangle":
-      const roughElement = type === "line" ? generator.line(x1, y1, x2, y2, { bowing: 2, strokeWidth: 3, stroke: "#363636" }) : generator.rectangle(x1, y1, x2 - x1, y2 - y1, { bowing: 2, strokeWidth: 3, stroke: "#363636" });
+      const roughElement = type === "line" ? generator.line(x1, y1, x2, y2, { bowing: 2, strokeWidth: 3, stroke: color }) : generator.rectangle(x1, y1, x2 - x1, y2 - y1, { bowing: 2, strokeWidth: 3, stroke: color });
 
-      return { id, x1, y1, x2, y2, type, roughElement };
+      return { id, x1, y1, x2, y2, type, roughElement, color };
     case "paintbrush":
-      return { id, type, points: [{ x: x1, y: y1 }] };
+      return { id, type, points: [{ x: x1, y: y1 }], color };
     default:
       throw new Error(`unrecognized: ${type}`);
   }
@@ -54,13 +54,11 @@ const SVGpathData = stroke => {
   return d.join(" ");
 };
 
-const drawElement = (roughCanvas, context, element, selectedColor) => {
+const drawElement = (roughCanvas, context, element) => {
   switch (element.type) {
     case "line":
     case "rectangle":
       roughCanvas.draw(element.roughElement);
-      context.fill(new Path2D());
-      context.fillStyle = selectedColor;
       break;
     case "paintbrush":
       const stroke = SVGpathData(
@@ -71,8 +69,8 @@ const drawElement = (roughCanvas, context, element, selectedColor) => {
           streamline: 0.7,
         })
       );
+      context.fillStyle = element.color;
       context.fill(new Path2D(stroke));
-      context.fillStyle = selectedColor;
       break;
     default:
       throw new Error(`unrecognised: ${element.type}`);
@@ -233,8 +231,8 @@ const CanvasPage = () => {
     context.clearRect(0, 0, canvas.width, canvas.height);
     const roughCanvas = rough.canvas(canvas);
 
-    elements.map(element => drawElement(roughCanvas, context, element, selectedColor));
-  }, [elements, selectedColor]);
+    elements.map(element => drawElement(roughCanvas, context, element));
+  }, [elements]);
 
   const updateElement = (id, x1, y1, x2, y2, type) => {
     const elementsCopy = [...elements];
@@ -242,7 +240,7 @@ const CanvasPage = () => {
     switch (type) {
       case "line":
       case "rectangle":
-        elementsCopy[id] = createElement(id, x1, y1, x2, y2, type);
+        elementsCopy[id] = createElement(id, x1, y1, x2, y2, type, elementsCopy[id].color);
         break;
       case "paintbrush":
         elementsCopy[id].points = [...elementsCopy[id].points, { x: x2, y: y2 }];
@@ -302,7 +300,7 @@ const CanvasPage = () => {
       }
     } else {
       const id = elements.length;
-      const element = createElement(id, clientX, clientY, clientX, clientY, tool);
+      const element = createElement(id, clientX, clientY, clientX, clientY, tool, selectedColor);
       setElements(prevState => [...prevState, element]);
       setSelectedElement(element);
 
