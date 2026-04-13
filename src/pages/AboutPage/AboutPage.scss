@@ -75,6 +75,7 @@ li {
   min-height: 600px;
   box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.1);
   animation: aboutanimation2 800ms linear 0.2s both;
+
   & h3 {
     margin-top: 1rem;
   }
@@ -139,7 +140,6 @@ li {
   justify-content: space-evenly;
   & li {
     text-align: center;
-
     width: 45%;
     max-width: 250px;
     color: $graphite;
@@ -157,12 +157,23 @@ li {
   }
 }
 
+.portfolio-link {
+  text-decoration: none;
+}
+
+a.library {
+  font-family: "Permanent Marker", cursive;
+  font-weight: normal;
+  color: $graphite;
+}
+
 .library {
   text-decoration: none;
   transition:
     transform 0.2s ease,
     background-color 0.2s ease,
     color 0.2s ease;
+
   &:hover {
     transform: scale(1.1);
   }

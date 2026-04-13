@@ -84,34 +84,45 @@ export default function AboutPage() {
           <div className="about__project">
             <h3>a tiny drawing application</h3>
             <p>
-              Drawllab was created to be a lightweight and user-friendly alternative to modern-day drawing applications. Using a minimalist design and easy to learn interface, Drawllab makes it easy for any user to jump in and start creating without
-              having a huge learning curve. Use it to make wireframes, sketch out ideas and jump start your creative projects!
+              Drawllab was created to be a lightweight and user-friendly alternative to modern-day drawing applications. Using a minimalist
+              design and easy to learn interface, Drawllab makes it easy for any user to jump in and start creating without having a huge
+              learning curve. Use it to make wireframes, sketch out ideas and jump start your creative projects!
             </p>
 
             <h2>libraries used</h2>
             <ul>
               <li>
-                <a className="library" href="https://roughjs.com/">roughJS</a>
+                <a className="library" href="https://roughjs.com/">
+                  roughJS
+                </a>
               </li>
               <li>
-                <a className="library" href="https://www.npmjs.com/package/perfect-freehand">perfect freehand</a>
+                <a className="library" href="https://www.npmjs.com/package/perfect-freehand">
+                  perfect freehand
+                </a>
               </li>
               <li>
-                <a className="library" href="https://casesandberg.github.io/react-color/">react color</a>
+                <a className="library" href="https://casesandberg.github.io/react-color/">
+                  react color
+                </a>
               </li>
               <li>
-                <a className="library" href="https://developer.mozilla.org/en-US/docs/Web/API/Canvas_API">html canvas</a>
+                <a className="library" href="https://developer.mozilla.org/en-US/docs/Web/API/Canvas_API">
+                  html canvas
+                </a>
               </li>
             </ul>
           </div>
 
           <div className="about__details">
             <div className="about__container info">
-              <h2>contact info</h2>
+              <h2>created by</h2>
               <p>
-                <span>Nathan Challender</span>
+                <span>Nathan Challender | </span>
+                <a className="portfolio-link" href="https://nathandallas.github.io/portfolio/">
+                  Portfolio
+                </a>
               </p>
-              <p>nathandallas@proton.me</p>
             </div>
 
             <div className="about__container">

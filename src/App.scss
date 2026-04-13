@@ -17,7 +17,8 @@ body {
 
 h4,
 p,
-h6 {
+h6,
+a {
   font-family: "Lato", sans-serif;
   font-weight: normal;
   color: $graphite;
@@ -25,7 +26,6 @@ h6 {
 h1,
 h2,
 h3,
-a,
 button {
   font-family: "Permanent Marker", cursive;
   font-weight: normal;
