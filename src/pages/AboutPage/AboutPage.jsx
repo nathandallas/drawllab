@@ -25,10 +25,6 @@ export default function AboutPage() {
         <section className="key">
           <h3>Key:</h3>
           <ul>
-            {/* <li className="key__li">
-                        <img src={colorpicker} alt="key" className="key__icon" />
-                        <p>Select Color</p>
-                    </li> */}
             <li>
               <img src={paintbrush} alt="key" className="key__icon" />
               <p>Pen/Brush</p>
