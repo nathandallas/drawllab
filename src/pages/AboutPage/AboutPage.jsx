@@ -1,7 +1,7 @@
 import React from "react";
 import { Link } from "wouter";
 import { SocialIcon } from "react-social-icons";
-import "./AboutPage.scss";
+import "./AboutPage.css";
 
 // ----- icons -----
 import home from "../../assets/images/home.png";

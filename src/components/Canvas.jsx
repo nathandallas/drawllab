@@ -1,4 +1,4 @@
-import "./Canvas.scss";
+import "./Canvas.css";
 import { useEffect, useLayoutEffect, useState } from "react";
 import { Link } from "wouter";
 import rough from "roughjs/bundled/rough.esm";

@@ -1,4 +1,4 @@
-import "./App.scss";
+import "./App.css";
 import { Router, Route, Switch } from "wouter";
 import HomePage from "./pages/HomePage/HomePage";
 import CanvasPage from "./pages/CanvasPage/CanvasPage";

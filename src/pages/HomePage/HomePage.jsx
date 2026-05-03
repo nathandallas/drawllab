@@ -1,6 +1,6 @@
 import React from "react";
 import { Link } from "wouter";
-import "./HomePage.scss";
+import "./HomePage.css";
 import logo from "../../assets/images/drawllab-logo.svg";
 import icon from "../../assets/images/drawllab-icon.svg";
 import mouse from "../../assets/images/drawllab-icon-mouse.svg";

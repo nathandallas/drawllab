@@ -1,46 +1,14 @@
-// ----- media queries -----
-
-@mixin tablet {
-  @media screen and (min-width: 768px) {
-    @content;
-  }
-}
-
-@mixin desktop {
-  @media screen and (min-width: 1024px) {
-    @content;
-  }
-}
-
-// ----- animations -----
-$bgWidth: 5000px;
-
 @keyframes bg {
-  0% {
-    background-position-x: 0;
-  }
-
-  100% {
-    background-position-x: $bgWidth;
-  }
+  from { background-position-x: 0; }
+  to { background-position-x: 5000px; }
 }
 
 @keyframes bounce {
-  0%,
-  100% {
-    transform: translateY(0);
-  }
-  40% {
-    transform: translateY(-8px);
-  }
-  70% {
-    transform: translateY(-3px);
-  }
+  0%, 100% { transform: translateY(0); }
+  40% { transform: translateY(-8px); }
+  70% { transform: translateY(-3px); }
 }
 
-// Home page icon (left side) — slides in from left with spring bounce.
-// Targets opacity: 0.6 to match the element's resting opacity.
-// Uses linear timing so the bounce shape in the keyframes isn't distorted.
 @keyframes homeSlide1 {
   0%   { opacity: 0;   transform: translateX(-160px); }
   40%  { opacity: 0.6; }
@@ -51,8 +19,6 @@ $bgWidth: 5000px;
   100% { opacity: 0.6; transform: translateX(0); }
 }
 
-// Home page icon2 (bottom-right side) — slides in from bottom-right with spring bounce.
-// Targets opacity: 0.5 to match the element's resting opacity.
 @keyframes homeSlide2 {
   0%   { opacity: 0;   transform: translate(130px, 80px); }
   40%  { opacity: 0.5; }
@@ -63,10 +29,9 @@ $bgWidth: 5000px;
   100% { opacity: 0.5; transform: translate(0, 0); }
 }
 
-// About page key panel (left) + any left-slide element — spring bounce from left.
 @keyframes logoanimation1 {
   0%   { opacity: 0; transform: translateX(-100px); }
-  40%  { opacity: 1;  }
+  40%  { opacity: 1; }
   57%  { transform: translateX(14px); }
   72%  { transform: translateX(-7px); }
   84%  { transform: translateX(3px); }
@@ -74,13 +39,11 @@ $bgWidth: 5000px;
   100% { opacity: 1;  transform: translateX(0); }
 }
 
-// About page h1 — smooth drop from above, no bounce needed.
 @keyframes aboutanimation1 {
   0%   { opacity: 0; transform: translateY(-50px); }
   100% { opacity: 1; transform: translateY(0); }
 }
 
-// About page right panel — spring bounce from right.
 @keyframes aboutanimation2 {
   0%   { opacity: 0; transform: translateX(100px); }
   40%  { opacity: 1; }
