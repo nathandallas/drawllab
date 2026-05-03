@@ -1,24 +1,61 @@
+/* Default Light Mode */
 :root {
-  /* sea greens */
-  --color-lighter-sea-green: #b9cfd349;
-  --color-lightest-sea-green: #b9cfd3;
-  --color-light-sea-green: #96bbbf;
-  --color-med-sea-green: #96bbbf60;
-  --color-dark-sea-green: #5e878b;
-
-  /* black */
-  --color-graphite: #24283b;
-  --color-dl-black: #0e0f14;
-
-  /* white */
-  --color-off-white: #eeeeef;
-  --color-b-light: #d7e5ed;
-  --color-lt-blue-gray: #b9d0da;
-
-  /* gray */
-  --color-lightest-gray: #e0ddea;
-  --color-light-gray: #ccc7d4;
-  --color-medium-gray: #b5b3c2;
-  --color-dark-med-gray: #6f7882;
-  --color-dark-gray: #39424c;
+  --color-primary: #004643;
+  --color-secondary: #abd1c6;
+  --color-tertiary: #e4572e;
+  --color-accent: #c1666b;
+  --color-highlight: #F9BC60;
+  --color-background: #fdf6e9;
+  --color-grid: rgba(218, 212, 200, 0.3);
+  
+  --text-primary: #002220;
+  --text-secondary: #3a5e5b;
+  --text-tertiary: #6b8a87;
+  --text-inverse: #fdf6e9;
+  --text-accent: #e4572e;
+  --text-highlight: #9e6d1f;
+  --text-link: #c1666b;
+  --text-link-hover: #9e4a4f;
 }
+
+/* Dark Mode */
+[data-theme="dark"] {
+  --color-primary: #5bc0b8;
+  --color-secondary: #6b9e94;
+  --color-tertiary: #ff7a4f;
+  --color-accent: #e68a8f;
+  --color-highlight: #fdcd81;
+  --color-background: #1a1f1e;
+  --color-grid: rgba(91, 192, 184, 0.12);
+  
+  --text-primary: #e8f0ef;
+  --text-secondary: #b3c7c4;
+  --text-tertiary: #8aa5a1;
+  --text-inverse: #1a1f1e;
+  --text-accent: #ff7a4f;
+  --text-highlight: #fdcd81;
+  --text-link: #f0a0a5;
+  --text-link-hover: #ffc4c8;
+}
+
+/* Respect system preference 
+@media (prefers-color-scheme: dark) {
+  :root {
+    --color-primary: #5bc0b8;
+    --color-secondary: #6b9e94;
+    --color-tertiary: #ff7a4f;
+    --color-accent: #e68a8f;
+    --color-highlight: #fdcd81;
+    --color-background: #1a1f1e;
+    --color-grid: rgba(91, 192, 184, 0.12);
+    
+    --text-primary: #e8f0ef;
+    --text-secondary: #b3c7c4;
+    --text-tertiary: #8aa5a1;
+    --text-inverse: #1a1f1e;
+    --text-accent: #ff7a4f;
+    --text-highlight: #fdcd81;
+    --text-link: #f0a0a5;
+    --text-link-hover: #ffc4c8;
+  }
+}*/

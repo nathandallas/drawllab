@@ -1,6 +1,7 @@
 import React from "react";
 import { Link } from "wouter";
 import "./HomePage.css";
+import ThemeToggle from "../../components/ThemeToggle";
 import logo from "../../assets/images/drawllab-logo.svg";
 import icon from "../../assets/images/drawllab-icon.svg";
 import mouse from "../../assets/images/drawllab-icon-mouse.svg";
@@ -27,6 +28,7 @@ export default function HomePage() {
         <Link to="/about">
           <button className="home__about">About</button>
         </Link>
+        <ThemeToggle />
       </div>
     </div>
   );
