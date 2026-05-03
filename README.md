@@ -25,6 +25,7 @@ Use it to make wireframes, sketch out ideas and jump start your creative project
 
 ## Updates to Come 
 
+- Add Text
 - Backgrounds
 - File Saving
 - Dark Mode

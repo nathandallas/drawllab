@@ -25,6 +25,7 @@ import eraser from "../assets/images/eraser.png";
 import line from "../assets/images/draw-line.svg";
 import square from "../assets/images/rectangle.svg";
 import select from "../assets/images/select.svg";
+import move from "../assets/images/move.png";
 import home from "../assets/images/home.png";
 import about from "../assets/images/about.png";
 
@@ -95,12 +96,9 @@ const CanvasPage = () => {
   useEffect(() => {
     const undoRedoFunction = e => {
       if ((e.metaKey || e.ctrlKey) && e.key === "z") {
-        if (e.shiftKey) {
-          redo();
-        } else {
-          undo();
-        }
+        undo();
       }
+
       if ((e.metaKey || e.ctrlKey) && e.key === "y") {
         redo();
       }
@@ -128,25 +126,27 @@ const CanvasPage = () => {
           if (!isAlreadySelected) setSelectedElementIds([element.id]);
 
           const data = {};
-          elements.filter(el => idsToMove.includes(el.id)).forEach(el => {
-            if (el.type === "paintbrush") {
-              data[el.id] = {
-                type: "paintbrush",
-                originalPoints: el.points,
-                xOffsets: el.points.map(p => clientX - p.x),
-                yOffsets: el.points.map(p => clientY - p.y),
-              };
-            } else {
-              data[el.id] = {
-                type: el.type,
-                color: el.color,
-                offsetX: clientX - el.x1,
-                offsetY: clientY - el.y1,
-                width: el.x2 - el.x1,
-                height: el.y2 - el.y1,
-              };
-            }
-          });
+          elements
+            .filter(el => idsToMove.includes(el.id))
+            .forEach(el => {
+              if (el.type === "paintbrush") {
+                data[el.id] = {
+                  type: "paintbrush",
+                  originalPoints: el.points,
+                  xOffsets: el.points.map(p => clientX - p.x),
+                  yOffsets: el.points.map(p => clientY - p.y),
+                };
+              } else {
+                data[el.id] = {
+                  type: el.type,
+                  color: el.color,
+                  offsetX: clientX - el.x1,
+                  offsetY: clientY - el.y1,
+                  width: el.x2 - el.x1,
+                  height: el.y2 - el.y1,
+                };
+              }
+            });
           const bbox = computeSelectionBBox(elements.filter(el => idsToMove.includes(el.id)));
           if (bbox) setMarquee({ x1: bbox.minX - 8, y1: bbox.minY - 8, x2: bbox.maxX + 8, y2: bbox.maxY + 8 });
           setMoveData(data);
@@ -154,32 +154,35 @@ const CanvasPage = () => {
           setAction("move");
         }
       } else {
-        const insideExistingMarquee = marquee &&
+        const insideExistingMarquee =
+          marquee &&
           clientX >= Math.min(marquee.x1, marquee.x2) &&
           clientX <= Math.max(marquee.x1, marquee.x2) &&
           clientY >= Math.min(marquee.y1, marquee.y2) &&
           clientY <= Math.max(marquee.y1, marquee.y2);
         if (insideExistingMarquee && selectedElementIds.length > 0) {
           const data = {};
-          elements.filter(el => selectedElementIds.includes(el.id)).forEach(el => {
-            if (el.type === "paintbrush") {
-              data[el.id] = {
-                type: "paintbrush",
-                originalPoints: el.points,
-                xOffsets: el.points.map(p => clientX - p.x),
-                yOffsets: el.points.map(p => clientY - p.y),
-              };
-            } else {
-              data[el.id] = {
-                type: el.type,
-                color: el.color,
-                offsetX: clientX - el.x1,
-                offsetY: clientY - el.y1,
-                width: el.x2 - el.x1,
-                height: el.y2 - el.y1,
-              };
-            }
-          });
+          elements
+            .filter(el => selectedElementIds.includes(el.id))
+            .forEach(el => {
+              if (el.type === "paintbrush") {
+                data[el.id] = {
+                  type: "paintbrush",
+                  originalPoints: el.points,
+                  xOffsets: el.points.map(p => clientX - p.x),
+                  yOffsets: el.points.map(p => clientY - p.y),
+                };
+              } else {
+                data[el.id] = {
+                  type: el.type,
+                  color: el.color,
+                  offsetX: clientX - el.x1,
+                  offsetY: clientY - el.y1,
+                  width: el.x2 - el.x1,
+                  height: el.y2 - el.y1,
+                };
+              }
+            });
           setMoveData(data);
           setElements(prevState => prevState);
           setAction("move");
@@ -188,6 +191,32 @@ const CanvasPage = () => {
         setSelectedElementIds([]);
         setMarquee({ x1: clientX, y1: clientY, x2: clientX, y2: clientY, isDragging: true });
         setAction("marquee");
+      }
+    } else if (tool === "move") {
+      const element = getElementAtPosition(clientX, clientY, elements);
+      if (element) {
+        const data = {};
+        if (element.type === "paintbrush") {
+          data[element.id] = {
+            type: "paintbrush",
+            originalPoints: element.points,
+            xOffsets: element.points.map(p => clientX - p.x),
+            yOffsets: element.points.map(p => clientY - p.y),
+          };
+        } else {
+          data[element.id] = {
+            type: element.type,
+            color: element.color,
+            offsetX: clientX - element.x1,
+            offsetY: clientY - element.y1,
+            width: element.x2 - element.x1,
+            height: element.y2 - element.y1,
+          };
+        }
+        setSelectedElementIds([element.id]);
+        setMoveData(data);
+        setElements(prevState => prevState);
+        setAction("move");
       }
     } else {
       const element = createElement(clientX, clientY, clientX, clientY, tool, selectedColor);
@@ -211,6 +240,9 @@ const CanvasPage = () => {
       } else {
         e.target.style.cursor = "crosshair";
       }
+    } else if (tool === "move") {
+      const element = getElementAtPosition(clientX, clientY, elements);
+      e.target.style.cursor = element ? "move" : "default";
     }
 
     if (action === "draw") {
@@ -247,9 +279,7 @@ const CanvasPage = () => {
 
   const handleMouseUp = () => {
     if (action === "marquee" && marquee) {
-      const selectedIds = elements
-        .filter(el => elementInMarquee(el, marquee.x1, marquee.y1, marquee.x2, marquee.y2))
-        .map(el => el.id);
+      const selectedIds = elements.filter(el => elementInMarquee(el, marquee.x1, marquee.y1, marquee.x2, marquee.y2)).map(el => el.id);
       setSelectedElementIds(selectedIds);
       const bbox = computeSelectionBBox(elements.filter(el => selectedIds.includes(el.id)));
       setMarquee(bbox ? { x1: bbox.minX - 8, y1: bbox.minY - 8, x2: bbox.maxX + 8, y2: bbox.maxY + 8 } : null);
@@ -335,6 +365,10 @@ const CanvasPage = () => {
         <label htmlFor="select" className="tool__label">
           <img src={select} alt="select icon" className="toolbar__icon" />
         </label>
+        <input type="radio" id="move" checked={tool === "move"} onChange={() => setTool("move")} className="tool" />
+        <label htmlFor="move" className="tool__label">
+          <img src={move} alt="move icon" className="toolbar__icon" />
+        </label>
 
         <div className="tool__divider"></div>
       </div>
@@ -350,7 +384,12 @@ const CanvasPage = () => {
           </div>
         </div>
 
-        <div onClick={() => { clear(); setSelectedElementIds([]); }} className="canvas-tools__button">
+        <div
+          onClick={() => {
+            clear();
+            setSelectedElementIds([]);
+          }}
+          className="canvas-tools__button">
           <h2>clear</h2>
         </div>
       </div>
