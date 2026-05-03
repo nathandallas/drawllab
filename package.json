@@ -9,6 +9,7 @@
     "react-dom": "^19.1.0",
     "react-social-icons": "^6.24.0",
     "roughjs": "^4.6.6",
+    "uuid": "^14.0.0",
     "wouter": "^3.7.1"
   },
   "scripts": {

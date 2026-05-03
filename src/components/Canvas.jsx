@@ -1,9 +1,10 @@
 import "./Canvas.scss";
-import React, { useEffect, useLayoutEffect, useState } from "react";
+import { useEffect, useLayoutEffect, useState } from "react";
 import { Link } from "wouter";
 import rough from "roughjs/bundled/rough.esm";
 import { getStroke } from "perfect-freehand";
-import { CirclePicker, SketchPicker } from "react-color";
+import { SketchPicker } from "react-color";
+import { v4 as uuidv4 } from "uuid";
 
 // -----------------------------
 // ----- icons for toolbar -----
@@ -24,7 +25,8 @@ import about from "../assets/images/about.png";
 
 const generator = rough.generator();
 
-const createElement = (id, x1, y1, x2, y2, type, color = "#363636") => {
+const createElement = (x1, y1, x2, y2, type, color = "#363636", existingId = null) => {
+  const id = existingId ?? uuidv4();
   switch (type) {
     case "line":
     case "rectangle":
@@ -239,14 +241,14 @@ const CanvasPage = () => {
 
   const updateElement = (id, x1, y1, x2, y2, type) => {
     const elementsCopy = [...elements];
-
+    const index = elementsCopy.findIndex(el => el.id === id);
     switch (type) {
       case "line":
       case "rectangle":
-        elementsCopy[id] = createElement(id, x1, y1, x2, y2, type, elementsCopy[id].color);
+        elementsCopy[index] = createElement(x1, y1, x2, y2, type, elementsCopy[index].color, id);
         break;
       case "paintbrush":
-        elementsCopy[id].points = [...elementsCopy[id].points, { x: x2, y: y2 }];
+        elementsCopy[index].points = [...elementsCopy[index].points, { x: x2, y: y2 }];
         break;
       default:
         throw new Error(`unrecognised: ${type}`);
@@ -256,7 +258,7 @@ const CanvasPage = () => {
   };
 
   // --------------------------------------------
-  // ----- Undo/Redo + Ctrl Z Functionality -----
+  // --------- Undo/Redo Functionality ----------
   // --------------------------------------------
 
   useEffect(() => {
@@ -267,6 +269,9 @@ const CanvasPage = () => {
         } else {
           undo();
         }
+      }
+      if ((e.metaKey || e.ctrlKey) && e.key === "y") {
+        redo();
       }
     };
     document.addEventListener("keydown", undoRedoFunction);
@@ -302,8 +307,7 @@ const CanvasPage = () => {
         }
       }
     } else {
-      const id = elements.length;
-      const element = createElement(id, clientX, clientY, clientX, clientY, tool, selectedColor);
+      const element = createElement(clientX, clientY, clientX, clientY, tool, selectedColor);
       setElements(prevState => [...prevState, element]);
       setSelectedElement(element);
 
@@ -320,9 +324,8 @@ const CanvasPage = () => {
     }
 
     if (action === "draw") {
-      const index = elements.length - 1;
-      const { x1, y1 } = elements[index];
-      updateElement(index, x1, y1, clientX, clientY, tool);
+      const { id, x1, y1 } = elements[elements.length - 1];
+      updateElement(id, x1, y1, clientX, clientY, tool);
     } else if (action === "move") {
       if (selectedElement.type === "paintbrush") {
         const newPoints = selectedElement.points.map((_, index) => ({
@@ -330,10 +333,8 @@ const CanvasPage = () => {
           y: clientY - selectedElement.yOffsets[index],
         }));
         const elementsCopy = [...elements];
-        elementsCopy[selectedElement.id] = {
-          ...elementsCopy[selectedElement.id],
-          points: newPoints,
-        };
+        const idx = elementsCopy.findIndex(el => el.id === selectedElement.id);
+        elementsCopy[idx] = { ...elementsCopy[idx], points: newPoints };
         setElements(elementsCopy, true);
       } else {
         const { id, x1, x2, y1, y2, type, offsetX, offsetY } = selectedElement;
@@ -352,10 +353,10 @@ const CanvasPage = () => {
 
   const handleMouseUp = () => {
     if (selectedElement) {
-      const index = selectedElement.id;
-      const { id, type } = elements[index];
-      if ((action === "draw" || action === "resize") && adjustmentRequired(type)) {
-        const { x1, y1, x2, y2 } = adjustElementCoordinates(elements[index]);
+      const { id, type } = selectedElement;
+      const element = elements.find(el => el.id === id);
+      if (element && (action === "draw" || action === "resize") && adjustmentRequired(type)) {
+        const { x1, y1, x2, y2 } = adjustElementCoordinates(element);
         updateElement(id, x1, y1, x2, y2, type);
       }
     }
