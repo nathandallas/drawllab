@@ -11,6 +11,7 @@ import { v4 as uuidv4 } from "uuid";
 // -----------------------------
 
 import paintbrush from "../assets/images/paintbrush.svg";
+import eraser from "../assets/images/eraser.png"
 import line from "../assets/images/draw-line.svg";
 import square from "../assets/images/rectangle.svg";
 import select from "../assets/images/select.svg";
@@ -211,6 +212,46 @@ const useHistory = initialState => {
 
 const adjustmentRequired = type => ["line", "rectangle"].includes(type);
 
+const elementInMarquee = (element, mx1, my1, mx2, my2) => {
+  const left = Math.min(mx1, mx2);
+  const right = Math.max(mx1, mx2);
+  const top = Math.min(my1, my2);
+  const bottom = Math.max(my1, my2);
+  const inBounds = (x, y) => x >= left && x <= right && y >= top && y <= bottom;
+  switch (element.type) {
+    case "line":
+      return inBounds(element.x1, element.y1) && inBounds(element.x2, element.y2);
+    case "rectangle":
+      return (
+        Math.min(element.x1, element.x2) >= left &&
+        Math.max(element.x1, element.x2) <= right &&
+        Math.min(element.y1, element.y2) >= top &&
+        Math.max(element.y1, element.y2) <= bottom
+      );
+    case "paintbrush":
+      return element.points.some(p => inBounds(p.x, p.y));
+    default:
+      return false;
+  }
+};
+
+
+const computeSelectionBBox = selectedElements => {
+  let minX = Infinity, minY = Infinity, maxX = -Infinity, maxY = -Infinity;
+  selectedElements.forEach(el => {
+    if (el.type === "paintbrush") {
+      el.points.forEach(p => {
+        minX = Math.min(minX, p.x); minY = Math.min(minY, p.y);
+        maxX = Math.max(maxX, p.x); maxY = Math.max(maxY, p.y);
+      });
+    } else {
+      minX = Math.min(minX, el.x1, el.x2); minY = Math.min(minY, el.y1, el.y2);
+      maxX = Math.max(maxX, el.x1, el.x2); maxY = Math.max(maxY, el.y1, el.y2);
+    }
+  });
+  return minX !== Infinity ? { minX, minY, maxX, maxY } : null;
+};
+
 // ---------------------------
 // ----------- PAGE ----------
 // ---------------------------
@@ -223,7 +264,10 @@ const CanvasPage = () => {
   const [elements, setElements, undo, redo, clear] = useHistory([]);
   const [action, setAction] = useState("none");
   const [tool, setTool] = useState("paintbrush");
-  const [selectedElement, setSelectedElement] = useState(null);
+  const [selectedElement, setSelectedElement] = useState(null); // only used for resize
+  const [selectedElementIds, setSelectedElementIds] = useState([]);
+  const [marquee, setMarquee] = useState(null);
+  const [moveData, setMoveData] = useState(null);
   const [selectedColor, setSelectedColor] = useState("#363636");
 
   // --------------------------------------
@@ -236,8 +280,25 @@ const CanvasPage = () => {
     context.clearRect(0, 0, canvas.width, canvas.height);
     const roughCanvas = rough.canvas(canvas);
 
-    elements.map(element => drawElement(roughCanvas, context, element));
-  }, [elements]);
+    elements.forEach(element => drawElement(roughCanvas, context, element));
+
+    if (marquee) {
+      context.save();
+      context.strokeStyle = "#4a90d9";
+      context.lineWidth = 1;
+      context.setLineDash([4, 3]);
+      const mx = Math.min(marquee.x1, marquee.x2);
+      const my = Math.min(marquee.y1, marquee.y2);
+      const mw = Math.abs(marquee.x2 - marquee.x1);
+      const mh = Math.abs(marquee.y2 - marquee.y1);
+      if (marquee.isDragging) {
+        context.fillStyle = "rgba(74, 144, 217, 0.08)";
+        context.fillRect(mx, my, mw, mh);
+      }
+      context.strokeRect(mx, my, mw, mh);
+      context.restore();
+    }
+  }, [elements, marquee]);
 
   const updateElement = (id, x1, y1, x2, y2, type) => {
     const elementsCopy = [...elements];
@@ -262,16 +323,23 @@ const CanvasPage = () => {
   // --------------------------------------------
 
   useEffect(() => {
+    if (tool !== "select") {
+      setSelectedElementIds([]);
+      setMarquee(null);
+    }
+  }, [tool]);
+
+  useEffect(() => {
     const undoRedoFunction = e => {
       if ((e.metaKey || e.ctrlKey) && e.key === "z") {
         if (e.shiftKey) {
-          redo();
+          redo(); // Mac Redo Cmd + Shift + Z
         } else {
-          undo();
+          undo(); // Undo Ctrl + Z
         }
       }
       if ((e.metaKey || e.ctrlKey) && e.key === "y") {
-        redo();
+        redo(); // Windows Redo Ctrl + Y
       }
     };
     document.addEventListener("keydown", undoRedoFunction);
@@ -289,28 +357,53 @@ const CanvasPage = () => {
     if (tool === "select") {
       const element = getElementAtPosition(clientX, clientY, elements);
       if (element) {
-        if (element.type === "paintbrush") {
-          const xOffsets = element.points.map(point => clientX - point.x);
-          const yOffsets = element.points.map(point => clientY - point.y);
-          setSelectedElement({ ...element, xOffsets, yOffsets });
-        } else {
-          const offsetX = clientX - element.x1;
-          const offsetY = clientY - element.y1;
-          setSelectedElement({ ...element, offsetX, offsetY });
-        }
-        setElements(prevState => prevState);
-
-        if (element.position === "inside") {
-          setAction("move");
-        } else {
+        const isAlreadySelected = selectedElementIds.includes(element.id);
+        if (element.position !== "inside" && selectedElementIds.length === 1 && isAlreadySelected) {
+          // Single selected element clicked on a resize handle
+          setSelectedElement({ ...element });
+          setElements(prevState => prevState);
           setAction("resize");
+        } else {
+          // Move: if clicking a selected element carry all selected, otherwise select this one alone
+          const idsToMove = isAlreadySelected ? selectedElementIds : [element.id];
+          if (!isAlreadySelected) setSelectedElementIds([element.id]);
+
+          const data = {};
+          elements.filter(el => idsToMove.includes(el.id)).forEach(el => {
+            if (el.type === "paintbrush") {
+              data[el.id] = {
+                type: "paintbrush",
+                originalPoints: el.points,
+                xOffsets: el.points.map(p => clientX - p.x),
+                yOffsets: el.points.map(p => clientY - p.y),
+              };
+            } else {
+              data[el.id] = {
+                type: el.type,
+                color: el.color,
+                offsetX: clientX - el.x1,
+                offsetY: clientY - el.y1,
+                width: el.x2 - el.x1,
+                height: el.y2 - el.y1,
+              };
+            }
+          });
+          const bbox = computeSelectionBBox(elements.filter(el => idsToMove.includes(el.id)));
+          if (bbox) setMarquee({ x1: bbox.minX - 8, y1: bbox.minY - 8, x2: bbox.maxX + 8, y2: bbox.maxY + 8 });
+          setMoveData(data);
+          setElements(prevState => prevState);
+          setAction("move");
         }
+      } else {
+        // Click on empty space — clear selection and start a new marquee drag
+        setSelectedElementIds([]);
+        setMarquee({ x1: clientX, y1: clientY, x2: clientX, y2: clientY, isDragging: true });
+        setAction("marquee");
       }
     } else {
       const element = createElement(clientX, clientY, clientX, clientY, tool, selectedColor);
       setElements(prevState => [...prevState, element]);
-      setSelectedElement(element);
-
+      setSelectedElementIds([element.id]);
       setAction("draw");
     }
   };
@@ -320,30 +413,42 @@ const CanvasPage = () => {
 
     if (tool === "select") {
       const element = getElementAtPosition(clientX, clientY, elements);
-      e.target.style.cursor = element ? cursorForPosition(element.position) : "default";
+      if (element && selectedElementIds.includes(element.id)) {
+        e.target.style.cursor = "move";
+      } else if (element && element.position !== "inside") {
+        e.target.style.cursor = cursorForPosition(element.position);
+      } else if (element) {
+        e.target.style.cursor = "move";
+      } else {
+        e.target.style.cursor = "crosshair";
+      }
     }
 
     if (action === "draw") {
       const { id, x1, y1 } = elements[elements.length - 1];
       updateElement(id, x1, y1, clientX, clientY, tool);
+    } else if (action === "marquee") {
+      setMarquee(prev => ({ ...prev, x2: clientX, y2: clientY, isDragging: true }));
     } else if (action === "move") {
-      if (selectedElement.type === "paintbrush") {
-        const newPoints = selectedElement.points.map((_, index) => ({
-          x: clientX - selectedElement.xOffsets[index],
-          y: clientY - selectedElement.yOffsets[index],
-        }));
-        const elementsCopy = [...elements];
-        const idx = elementsCopy.findIndex(el => el.id === selectedElement.id);
-        elementsCopy[idx] = { ...elementsCopy[idx], points: newPoints };
-        setElements(elementsCopy, true);
-      } else {
-        const { id, x1, x2, y1, y2, type, offsetX, offsetY } = selectedElement;
-        const width = x2 - x1;
-        const height = y2 - y1;
-        const newX1 = clientX - offsetX;
-        const newY1 = clientY - offsetY;
-        updateElement(id, newX1, newY1, newX1 + width, newY1 + height, type);
-      }
+      const elementsCopy = [...elements];
+      Object.entries(moveData).forEach(([id, data]) => {
+        const idx = elementsCopy.findIndex(el => el.id === id);
+        if (idx === -1) return;
+        if (data.type === "paintbrush") {
+          const newPoints = data.originalPoints.map((_, i) => ({
+            x: clientX - data.xOffsets[i],
+            y: clientY - data.yOffsets[i],
+          }));
+          elementsCopy[idx] = { ...elementsCopy[idx], points: newPoints };
+        } else {
+          const newX1 = clientX - data.offsetX;
+          const newY1 = clientY - data.offsetY;
+          elementsCopy[idx] = createElement(newX1, newY1, newX1 + data.width, newY1 + data.height, data.type, data.color, id);
+        }
+      });
+      setElements(elementsCopy, true);
+      const bbox = computeSelectionBBox(elementsCopy.filter(el => selectedElementIds.includes(el.id)));
+      if (bbox) setMarquee({ x1: bbox.minX - 8, y1: bbox.minY - 8, x2: bbox.maxX + 8, y2: bbox.maxY + 8 });
     } else if (action === "resize") {
       const { id, type, position, ...coordinates } = selectedElement;
       const { x1, y1, x2, y2 } = resizedCoordinates(clientX, clientY, position, coordinates);
@@ -352,16 +457,59 @@ const CanvasPage = () => {
   };
 
   const handleMouseUp = () => {
-    if (selectedElement) {
+    if (action === "marquee" && marquee) {
+      let newElements = [...elements];
+      const selectedIds = [];
+
+      for (const element of elements) {
+        if (element.type === "paintbrush") {
+          const allIn = element.points.every(p =>
+            p.x >= Math.min(marquee.x1, marquee.x2) && p.x <= Math.max(marquee.x1, marquee.x2) &&
+            p.y >= Math.min(marquee.y1, marquee.y2) && p.y <= Math.max(marquee.y1, marquee.y2)
+          );
+          if (allIn) {
+            selectedIds.push(element.id);
+          } else if (elementInMarquee(element, marquee.x1, marquee.y1, marquee.x2, marquee.y2)) {
+            // Partially inside — split into segments
+            const { inside, outside } = splitPaintbrushByMarquee(element, marquee.x1, marquee.y1, marquee.x2, marquee.y2);
+            newElements = newElements.filter(el => el.id !== element.id);
+            inside.forEach(points => {
+              const newEl = { id: uuidv4(), type: "paintbrush", points, color: element.color };
+              newElements.push(newEl);
+              selectedIds.push(newEl.id);
+            });
+            outside.forEach(points => {
+              if (points.length > 0) newElements.push({ id: uuidv4(), type: "paintbrush", points, color: element.color });
+            });
+          }
+        } else if (elementInMarquee(element, marquee.x1, marquee.y1, marquee.x2, marquee.y2)) {
+          selectedIds.push(element.id);
+        }
+      }
+
+      if (newElements.length !== elements.length) setElements(newElements);
+      setSelectedElementIds(selectedIds);
+
+      const bbox = computeSelectionBBox(newElements.filter(el => selectedIds.includes(el.id)));
+      setMarquee(bbox ? { x1: bbox.minX - 8, y1: bbox.minY - 8, x2: bbox.maxX + 8, y2: bbox.maxY + 8 } : null);
+    } else if (action === "draw") {
+      const lastElement = elements[elements.length - 1];
+      if (lastElement && adjustmentRequired(lastElement.type)) {
+        const { id, type } = lastElement;
+        const { x1, y1, x2, y2 } = adjustElementCoordinates(lastElement);
+        updateElement(id, x1, y1, x2, y2, type);
+      }
+    } else if (action === "resize" && selectedElement) {
       const { id, type } = selectedElement;
       const element = elements.find(el => el.id === id);
-      if (element && (action === "draw" || action === "resize") && adjustmentRequired(type)) {
+      if (element && adjustmentRequired(type)) {
         const { x1, y1, x2, y2 } = adjustElementCoordinates(element);
         updateElement(id, x1, y1, x2, y2, type);
       }
+      setSelectedElement(null);
     }
     setAction("none");
-    setSelectedElement(null);
+    setMoveData(null);
   };
 
   // ----------------------------
@@ -410,6 +558,10 @@ const CanvasPage = () => {
         <label htmlFor="paintbrush" className="tool__label">
           <img src={paintbrush} alt="paintbrush icon" className="toolbar__icon" />
         </label>
+        <input type="radio" id="eraser" checked={tool === "eraser"} onChange={() => setTool("eraser")} className="tool" />
+        <label htmlFor="eraser" className="tool__label">
+          <img src={eraser} alt="eraser icon" className="toolbar__icon" />
+        </label>
         <input type="radio" id="line" checked={tool === "line"} onChange={() => setTool("line")} className="tool" />
         <label htmlFor="line" className="tool__label">
           <img src={line} alt="line icon" className="toolbar__icon" />
@@ -437,7 +589,7 @@ const CanvasPage = () => {
           </div>
         </div>
 
-        <div onClick={clear} className="canvas-tools__button">
+        <div onClick={() => { clear(); setSelectedElementIds([]); }} className="canvas-tools__button">
           <h2>clear</h2>
         </div>
       </div>
