@@ -10,50 +10,12 @@
 }
 
 body {
-  background: #5e878b;
-  background: linear-gradient(0deg, rgba(94, 135, 139, 1) 0%, rgba(150, 187, 191, 1) 50%, rgba(185, 207, 211, 1) 100%);
-}
+  height: 100vh;
+  width: 100%;
 
-h4,
-p,
-h6,
-a {
-  font-family: "Lato", sans-serif;
-  font-weight: normal;
-  color: var(--color-graphite);
-}
-
-h1,
-h2,
-h3,
-button {
-  font-family: "Permanent Marker", cursive;
-  font-weight: normal;
-  color: var(--color-graphite);
-}
-
-h1 {
-  font-size: 4rem;
-  text-transform: uppercase;
-}
-
-h2 {
-  font-size: 2rem;
-}
-
-h3 {
-  font-size: 2.5rem;
-  font-weight: bold;
-}
-
-p {
-  font-size: 1.25rem;
-}
-
-h6 {
-  font-size: 1.6rem;
-}
-
-button {
-  font-weight: bold;
+  background: #fdf6e9;
+  background-image:
+    linear-gradient(rgba(218, 212, 200, 0.3) 0.1em, transparent 0.1em),
+    linear-gradient(90deg, rgba(218, 212, 200, 0.3) 0.1em, transparent 0.1em);
+  background-size: 2em 2em;
 }
