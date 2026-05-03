@@ -25,11 +25,10 @@ Use it to make wireframes, sketch out ideas and jump start your creative project
 
 ## Updates to Come 
 
-- Web Sockets for Collaboration
-- Updated Color Functionality
+- Backgrounds
 - File Saving
-- Mobile Responsiveness
 - Dark Mode
+- Web Sockets for Collaboration
 
 
 ## How to Install
