@@ -26,7 +26,7 @@ export default function HomePage() {
               <button className="btn">about</button>
             </Link>
           </div>
-          <h5 className="mobile-hide">
+          <h5 className="tablet-hide">
             or press <span>N</span> for new canvas
           </h5>
         </div>

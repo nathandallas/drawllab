@@ -52,12 +52,13 @@ button {
   border: 3px solid var(--text-primary);
   box-shadow: 4px 4px 0 var(--text-primary);
   transition: all 0.2s ease;
-  margin-right: 2rem;
+  margin-right: 4rem;
 }
 
 .btn-primary {
   background: var(--color-primary);
   color: var(--text-inverse);
+  margin-bottom: 1rem;
 }
 
 .btn:hover {
@@ -73,16 +74,18 @@ button {
 /* Tablet */
 @media (max-width: 1024px) {
   button {
-    font-size: 1.75rem;
+    width: 18rem;
+    font-size: 2rem;
     padding: 8px 16px;
-    margin-right: 1.25rem;
+    margin-right: 4rem;
   }
 }
 
 /* Mobile */
-@media (max-width: 768px) {
+@media (max-width: 750px) {
   button {
-    font-size: 1.4rem;
+    width: 90vw;
+    font-size: 1.8rem;
     padding: 8px 14px;
     margin-right: 1rem;
     box-shadow: 3px 3px 0 var(--text-primary);
