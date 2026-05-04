@@ -11,6 +11,7 @@ import line from "../../assets/images/draw-line.svg";
 import square from "../../assets/images/rectangle.svg";
 import selection from "../../assets/images/select.svg";
 import about from "../../assets/images/about.png";
+import ThemeToggle from "../../components/ThemeToggle";
 // import deleteicon from '../../assets/images/delete.png';
 // import colorpicker from '../../assets/images/color-picker.svg';
 // import collab from '../../assets/images/collab.svg';
@@ -20,6 +21,16 @@ import about from "../../assets/images/about.png";
 export default function AboutPage() {
   return (
     <div className="about-page">
+      <ThemeToggle />
+      <div className="about-nav">
+        <div className="about-nav__link">
+          <Link to="/">
+            <button className="btn">
+              <img src={back} alt="home button" className="about-nav__icon" />
+            </button>
+          </Link>
+        </div>
+      </div>
       <h1>About Drawllab</h1>
       <div className="about-page__container">
         <section className="key">
@@ -139,11 +150,6 @@ export default function AboutPage() {
         <Link to="/canvas" className="about-nav__link">
           <img src={back} alt="back button" className="about-nav__icon" />
           <h2 className="about-nav__h2">Back to Canvas</h2>
-        </Link>
-      </div>
-      <div className="about-nav__link--home">
-        <Link to="/">
-          <img src={home} alt="home button" className="about-nav__icon" />
         </Link>
       </div>
     </div>
