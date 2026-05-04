@@ -61,10 +61,35 @@ button {
 }
 
 .btn:hover {
+  transform: translate(-2px, -2px);
   box-shadow: 5px 5px 0 var(--text-primary);
 }
 
 .btn:active {
   transform: translate(3px, 3px);
   box-shadow: 2px 2px 0 0 var(--text-primary);
+}
+
+/* Tablet */
+@media (max-width: 1024px) {
+  button {
+    font-size: 1.75rem;
+    padding: 8px 16px;
+    margin-right: 1.25rem;
+  }
+}
+
+/* Mobile */
+@media (max-width: 768px) {
+  button {
+    font-size: 1.4rem;
+    padding: 8px 14px;
+    margin-right: 1rem;
+    box-shadow: 3px 3px 0 var(--text-primary);
+  }
+
+  h3 {
+    font-size: 1.25rem;
+    margin: 1.25rem 0 0.75rem 0;
+  }
 }

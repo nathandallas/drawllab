@@ -2,12 +2,14 @@ import React from "react";
 import { Link } from "wouter";
 import "./HomePage.css";
 import ThemeToggle from "../../components/ThemeToggle";
-import logo from "../../assets/images/drawllab-logo.svg";
-import icon from "../../assets/images/drawllab-icon.svg";
-import mouse from "../../assets/images/drawllab-icon-mouse.svg";
-import hero from "../../assets/images/hero-image.png";
+import useTheme from "../../hooks/useTheme";
+
+import heroLight from "../../assets/images/hero-image.png";
+import heroDark from "../../assets/images/hero-image-dark.png";
 
 export default function HomePage() {
+  const { theme } = useTheme();
+
   return (
     <div className="home">
       <div className="hero">
@@ -18,18 +20,18 @@ export default function HomePage() {
           <h3>A browser-based drawing app for wireframes, diagrams, and quick sketches.</h3>
           <div className="home-nav">
             <Link to="/canvas">
-              <button className="btn-primary">start drawing</button>
+              <button className="btn btn-primary">start drawing</button>
             </Link>
             <Link to="/about">
               <button className="btn">about</button>
             </Link>
           </div>
-          <h5>
+          <h5 className="mobile-hide">
             or press <span>N</span> for new canvas
           </h5>
         </div>
         <div className="container">
-          <img className="hero-img" src={hero} alt="drawing sample" />
+          <img className="hero-img tablet-hide" src={theme === "light" ? heroLight : heroDark} alt="drawing sample" />
         </div>
       </div>
 

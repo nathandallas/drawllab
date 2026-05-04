@@ -1,21 +1,20 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect } from "react";
 
 const useTheme = () => {
-  const [theme, setTheme] = useState('light');
+  const [theme, setTheme] = useState("light");
 
   useEffect(() => {
-    const saved = localStorage.getItem('theme');
-    if (saved) {
-      setTheme(saved);
-      document.documentElement.setAttribute('data-theme', saved);
-    }
+    const saved = localStorage.getItem("theme");
+    const initialTheme = saved || "light";
+    setTheme(initialTheme);
+    document.documentElement.setAttribute("data-theme", initialTheme);
   }, []);
 
   const toggleTheme = () => {
-    const newTheme = theme === 'light' ? 'dark' : 'light';
-    setTheme(newTheme);
-    document.documentElement.setAttribute('data-theme', newTheme);
-    localStorage.setItem('theme', newTheme);
+    const newTheme = theme === "light" ? "dark" : "light";
+    setTheme(newTheme); // This must be called to trigger re-render
+    document.documentElement.setAttribute("data-theme", newTheme);
+    localStorage.setItem("theme", newTheme);
   };
 
   return { theme, toggleTheme };
