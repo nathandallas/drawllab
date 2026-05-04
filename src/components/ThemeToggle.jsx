@@ -1,13 +1,21 @@
-
-import useTheme from '../hooks/useTheme';
+import useTheme from "../hooks/useTheme";
+import "./ThemeToggle.css";
+import lightIcon from "../assets/images/light-mode.png";
+import darkIcon from "../assets/images/dark-mode.png";
 
 const ThemeToggle = () => {
   const { theme, toggleTheme } = useTheme();
 
   return (
-    <button onClick={toggleTheme}>
-      {theme === 'light' ? 'Dark Mode' : 'Light Mode'}
-    </button>
+    <div className="toggle">
+      <button className="btn" onClick={toggleTheme}>
+        <img
+          className="toggle-icon"
+          src={theme === "light" ? lightIcon : darkIcon}
+          alt={`Switch to ${theme === "light" ? "dark" : "light"} mode`}
+        />
+      </button>
+    </div>
   );
 };
 

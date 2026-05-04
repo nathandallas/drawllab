@@ -1,0 +1,19 @@
+@import "../styles/variables.css";
+
+.toggle {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+}
+
+.toggle button {
+  width: 3rem;
+  height: 3rem;
+  font-size: 0;
+  padding: 0;
+  margin: 0;
+}
+
+.toggle-icon {
+  width: 1.5rem;
+}
