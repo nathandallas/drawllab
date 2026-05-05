@@ -8,13 +8,13 @@ const ThemeToggle = () => {
 
   return (
     <div className="toggle">
-      <button className="btn" onClick={toggleTheme}>
+      <div className="box btn" onClick={toggleTheme}>
         <img
           className="toggle-icon"
           src={theme === "light" ? lightIcon : darkIcon}
           alt={`Switch to ${theme === "light" ? "dark" : "light"} mode`}
         />
-      </button>
+      </div>
     </div>
   );
 };

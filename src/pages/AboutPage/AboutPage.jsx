@@ -4,13 +4,11 @@ import { SocialIcon } from "react-social-icons";
 import "./AboutPage.css";
 
 // ----- icons -----
-import home from "../../assets/images/home.png";
 import back from "../../assets/images/arrow.png";
 import paintbrush from "../../assets/images/paintbrush.svg";
 import line from "../../assets/images/draw-line.svg";
 import square from "../../assets/images/rectangle.svg";
 import selection from "../../assets/images/select.svg";
-import about from "../../assets/images/about.png";
 import ThemeToggle from "../../components/ThemeToggle";
 // import deleteicon from '../../assets/images/delete.png';
 // import colorpicker from '../../assets/images/color-picker.svg';
@@ -23,133 +21,87 @@ export default function AboutPage() {
     <div className="about-page">
       <ThemeToggle />
       <div className="about-nav">
-        <div className="about-nav__link">
-          <Link to="/">
-            <button className="btn">
-              <img src={back} alt="home button" className="about-nav__icon" />
-            </button>
-          </Link>
-        </div>
+        <Link to="/">
+          <button className="btn">
+            <img src={back} alt="home button" className="about-nav__icon" />
+          </button>
+        </Link>
       </div>
-      <h1>About Drawllab</h1>
-      <div className="about-page__container">
-        <section className="key">
-          <h3>Key:</h3>
+      <h2>
+        ABOUT <span className="highlight">DRAWLLAB</span>
+      </h2>
+      <div className="about-container">
+        <section className="about-details box">
+          <h4>a tiny drawing application.</h4>
+          <p>
+            Drawllab is a lightweight, user-friendly alternative to modern drawing apps. With its minimalist interface and a small set of
+            focused tools, you can jump right in and start creating.
+          </p>
+        </section>
+
+        <section className="tools">
+          <h5>TOOLS</h5>
           <ul>
             <li>
-              <img src={paintbrush} alt="key" className="key__icon" />
+              <img src={paintbrush} alt="key" />
               <p>Pen/Brush</p>
             </li>
-            {/* <li className="key__li">
-                        <img src="https://via.placeholder.com/50" alt="key" className="key__icon" />
-                        <p>Eraser</p>
-                    </li> */}
-            <li className="key__li">
-              <img src={line} alt="key" className="key__icon" />
+            <li>
+              <img src={line} alt="key" />
               <p>Draw Straight Line</p>
             </li>
-            <li className="key__li">
-              <img src={square} alt="key" className="key__icon" />
+            <li>
+              <img src={square} alt="key" />
               <p>Draw Quadrilateral</p>
             </li>
-            {/* <li className="key__li">
-                        <img src="https://via.placeholder.com/50" alt="key" className="key__icon" />
-                        <p>Create Circle</p>
-                    </li> */}
-            <li className="key__li">
-              <img src={selection} alt="key" className="key__icon" />
+            <li>
+              <img src={selection} alt="key" />
               <p>Move / Resize</p>
-            </li>
-            {/*  <li className="key__li">
-                        <img src={collab} alt="key" className="key__icon" />
-                        <p>Generate Collab Link</p>
-                    </li>
-                    <li className="key__li">
-                        <img src={layers} alt="key" className="key__icon" />
-                        <p>New/Manage Layers</p>
-                    </li>
-                    <li className="key__li">
-                        <img src={light} alt="key" className="key__icon" />
-                        <p>Toggle Dark/Light Mode</p>
-                    </li> 
-                    <li className="key__li">
-                        <img src={deleteicon} alt="key" className="key__icon" />
-                        <p>Clear Canvas</p>
-                    </li>*/}
-            <li className="key__li">
-              <img src={home} alt="key" className="key__icon" />
-              <p>Home</p>
-            </li>
-            <li className="key__li">
-              <img src={about} alt="key" className="key__icon" />
-              <p>About</p>
             </li>
           </ul>
         </section>
-
-        <section className="about">
-          <div className="about__project">
-            <h3>a tiny drawing application</h3>
-            <p>
-              Drawllab was created to be a lightweight and user-friendly alternative to modern-day drawing applications. Using a minimalist
-              design and easy to learn interface, Drawllab makes it easy for any user to jump in and start creating without having a huge
-              learning curve. Use it to make wireframes, sketch out ideas and jump start your creative projects!
-            </p>
-
+      </div>
+      <div>
+        <section className="credits">
+          <div className="credits-container">
             <h2>libraries used</h2>
             <ul>
               <li>
-                <a className="library" href="https://roughjs.com/">
-                  roughJS
-                </a>
+                <a href="https://roughjs.com/">roughJS</a>
               </li>
               <li>
-                <a className="library" href="https://www.npmjs.com/package/perfect-freehand">
-                  perfect freehand
-                </a>
+                <a href="https://www.npmjs.com/package/perfect-freehand">perfect-freehand</a>
               </li>
               <li>
-                <a className="library" href="https://casesandberg.github.io/react-color/">
-                  react color
-                </a>
+                <a href="https://casesandberg.github.io/react-color/">react color</a>
               </li>
               <li>
-                <a className="library" href="https://developer.mozilla.org/en-US/docs/Web/API/Canvas_API">
-                  html canvas
-                </a>
+                <a href="https://developer.mozilla.org/en-US/docs/Web/API/Canvas_API">html canvas</a>
               </li>
             </ul>
           </div>
 
-          <div className="about__details">
-            <div className="about__container info">
+          <div>
+            <div>
               <h2>created by</h2>
               <p>
                 <span>Nathan Challender | </span>
-                <a className="portfolio-link" href="https://nathandallas.github.io/portfolio/">
-                  Portfolio
-                </a>
+                <a href="https://nathandallas.github.io/portfolio/">Portfolio</a>
               </p>
             </div>
 
-            <div className="about__container">
-              <div className="about__icon-container">
-                <div className="about__icon">
-                  <SocialIcon url="https://codepen.io/nathandallas" bgColor="#96bbbf" style={{ height: 75, width: 75 }} />
-                </div>
-                <div className="about__icon">
-                  <SocialIcon url="https://github.com/nathandallas" bgColor="#96bbbf" style={{ height: 75, width: 75 }} />
-                </div>
-              </div>
+            <div>
+              <SocialIcon url="https://codepen.io/nathandallas" bgColor="#96bbbf" style={{ height: 75, width: 75 }} />
+              <SocialIcon url="https://github.com/nathandallas" bgColor="#96bbbf" style={{ height: 75, width: 75 }} />
             </div>
           </div>
         </section>
       </div>
 
-      <div className="about-nav__link--canvas">
-        <Link to="/canvas" className="about-nav__link">
+      <div>
+        <Link to="/canvas">
           <img src={back} alt="back button" className="about-nav__icon" />
-          <h2 className="about-nav__h2">Back to Canvas</h2>
+          <h2>Back to Canvas</h2>
         </Link>
       </div>
     </div>

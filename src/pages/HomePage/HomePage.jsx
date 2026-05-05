@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Link } from "wouter";
 import "./HomePage.css";
 import ThemeToggle from "../../components/ThemeToggle";
@@ -9,6 +9,11 @@ import heroDark from "../../assets/images/hero-image-dark.png";
 
 export default function HomePage() {
   const { theme } = useTheme();
+
+  useEffect(() => {
+    document.body.classList.add("no-scroll");
+    return () => document.body.classList.remove("no-scroll");
+  }, []);
 
   return (
     <div className="home">
