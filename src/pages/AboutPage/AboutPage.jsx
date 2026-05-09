@@ -48,7 +48,7 @@ export default function AboutPage() {
             </li>
             <li>
               <img src={line} alt="key" />
-              <p>Draw Straight Line</p>
+              <p>Straight Line</p>
             </li>
             <li>
               <img src={square} alt="key" />

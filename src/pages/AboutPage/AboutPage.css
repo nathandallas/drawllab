@@ -39,6 +39,7 @@ p {
 .about-details {
   margin: 1rem 0;
   padding: 1.5rem;
+  transform: rotate(-1deg);
 }
 
 .credits-container ul {
@@ -82,6 +83,7 @@ p {
   background-color: var(--color-secondary);
   box-shadow: 0.5rem 0.5rem 0 var(--color-primary);
   border: 3px solid var(--color-primary);
+  transform: rotate(1deg);
 }
 
 .tools h5 {
@@ -92,6 +94,34 @@ p {
   margin: 1rem;
   width: fit-content;
   transform: rotate(-3deg);
+}
+
+.tools p {
+  font-family: "Permanent Marker";
+  font-size: 1.4rem;
+}
+
+.tools ul {
+  margin: 1.5rem;
+}
+
+.tools li {
+  display: flex;
+  border: 3px solid var(--color-primary);
+  background-color: var(--text-inverse);
+  font-family: "Permanent Marker";
+}
+
+.tools li:not(:last-child) {
+  margin-bottom: 10px;
+}
+
+.tools img {
+  width: 2rem;
+  height: 2rem;
+  padding: 0.25rem;
+  margin: 0.5rem 1rem;
+  border: 3px solid var(--color-primary);
 }
 
 /* Tablet */
@@ -112,4 +142,19 @@ p {
 
 /* Desktop */
 @media (min-width: 1024px) {
+  .about-container {
+    margin-top: 2rem;
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    max-width: 80vw;
+  }
+
+  .about-details {
+    max-width: 65%;
+
+    margin: 1rem 0;
+    padding: 1.5rem;
+    transform: rotate(-2deg);
+  }
 }

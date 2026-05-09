@@ -11,7 +11,6 @@ export default function HomePage() {
   const { theme } = useTheme();
 
   useEffect(() => {
-    document.body.classList.add("no-scroll");
     return () => document.body.classList.remove("no-scroll");
   }, []);
 
@@ -35,8 +34,20 @@ export default function HomePage() {
             or press <span>N</span> for new canvas
           </h5>
         </div>
-        <div className="container">
-          <img className="hero-img tablet-hide" src={theme === "light" ? heroLight : heroDark} alt="drawing sample" />
+        <div className="box hero-graphic tablet-hide">
+          <svg className="brut-draw" viewBox="0 0 420 320" width="100%" style={{ display: "block" }} aria-hidden="true">
+            <rect x="10" y="10" width="400" height="300" fill="none" stroke="var(--text-primary)" strokeWidth="3" />
+            <rect x="28" y="28" width="130" height="22" fill="var(--color-secondary)" stroke="var(--text-primary)" strokeWidth="2.5" />
+            <rect x="28" y="68" width="364" height="100" fill="none" stroke="var(--text-primary)" strokeWidth="2.5" />
+            <circle cx="72" cy="118" r="22" fill="var(--color-primary)" stroke="var(--text-primary)" strokeWidth="2.5" />
+            <line x1="108" y1="106" x2="370" y2="106" stroke="var(--text-primary)" strokeWidth="2.5" />
+            <line x1="108" y1="124" x2="370" y2="124" stroke="var(--text-primary)" strokeWidth="2.5" />
+            <line x1="108" y1="142" x2="370" y2="142" stroke="var(--text-primary)" strokeWidth="2.5" />
+            <rect x="28" y="190" width="110" height="100" fill="var(--color-highlight)" stroke="var(--text-primary)" strokeWidth="2.5" />
+            <rect x="154" y="190" width="110" height="100" fill="none" stroke="var(--text-primary)" strokeWidth="2.5" />
+            <rect x="280" y="190" width="110" height="100" fill="none" stroke="var(--text-primary)" strokeWidth="2.5" />
+            <line x1="28" y1="300" x2="392" y2="300" stroke="var(--text-primary)" strokeWidth="2" strokeDasharray="6 5" />
+          </svg>
         </div>
       </div>
 
