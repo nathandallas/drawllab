@@ -9,6 +9,10 @@
   padding: 0;
 }
 
+body:has(.home) {
+  overflow: hidden;
+}
+
 body {
   height: 100vh;
   width: 100%;
