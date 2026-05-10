@@ -3,9 +3,8 @@ import { Link } from "wouter";
 import "./HomePage.css";
 import ThemeToggle from "../../components/ThemeToggle";
 import useTheme from "../../hooks/useTheme";
-
-import heroLight from "../../assets/images/hero-image.png";
-import heroDark from "../../assets/images/hero-image-dark.png";
+import Button from "../../components/ui/Button/Button";
+import { ArrowUpRight } from "lucide-react";
 
 export default function HomePage() {
   const { theme } = useTheme();
@@ -24,10 +23,10 @@ export default function HomePage() {
           <h3>A browser-based drawing app for wireframes, diagrams, and quick sketches.</h3>
           <div className="home-nav">
             <Link to="/canvas">
-              <button className="btn btn-primary">start drawing</button>
+              <Button variant="primary">start drawing</Button>
             </Link>
             <Link to="/about">
-              <button className="btn">about</button>
+              <Button>about</Button>
             </Link>
           </div>
           <h5 className="tablet-hide">
@@ -35,7 +34,7 @@ export default function HomePage() {
           </h5>
         </div>
         <div className="box hero-graphic tablet-hide">
-          <svg className="brut-draw" viewBox="0 0 420 320" width="100%" style={{ display: "block" }} aria-hidden="true">
+          <svg className="hero-draw" viewBox="0 0 420 320" width="100%" style={{ display: "block" }} aria-hidden="true">
             <rect x="10" y="10" width="400" height="300" fill="none" stroke="var(--text-primary)" strokeWidth="3" />
             <rect x="28" y="28" width="130" height="22" fill="var(--color-secondary)" stroke="var(--text-primary)" strokeWidth="2.5" />
             <rect x="28" y="68" width="364" height="100" fill="none" stroke="var(--text-primary)" strokeWidth="2.5" />
@@ -56,6 +55,7 @@ export default function HomePage() {
       <div className="footer">
         <h5>
           BY <a href="https://nathandallas.github.io/portfolio/">NATHAN CHALLENDER</a>
+          <ArrowUpRight />
         </h5>
       </div>
     </div>

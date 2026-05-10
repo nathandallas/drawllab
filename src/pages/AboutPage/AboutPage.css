@@ -22,20 +22,6 @@ p {
   left: 1rem;
 }
 
-.about-nav button {
-  width: 3rem;
-  height: 3rem;
-  font-size: 0;
-  padding: 0;
-  margin: 0;
-  transition: all 0.2s ease;
-  cursor: pointer;
-}
-
-.about-nav__icon {
-  width: 1.5rem;
-}
-
 .about-details {
   margin: 1rem 0;
   padding: 1.5rem;
@@ -52,13 +38,9 @@ p {
 .credits li {
   display: inline-block;
   padding: 10px 20px;
-  background: var(--text-inverse);
   min-width: 300px;
   font-family: "Permanent Marker";
   font-size: 1.7rem;
-  border: 3px solid var(--text-primary);
-  box-shadow: 4px 4px 0 var(--text-primary);
-  transition: all 0.2s ease;
   margin-right: 4rem;
   text-align: center;
 }
@@ -66,17 +48,6 @@ p {
 .credits a {
   color: var(--text-primary);
   text-decoration: none;
-}
-
-.credits li:hover {
-  color: var(--text-secondary);
-  transform: translate(-2px, -2px);
-  box-shadow: 0.5rem 0.5rem 0 var(--text-primary);
-}
-
-.credits li:active {
-  transform: translate(3px, 3px);
-  box-shadow: 2px 2px 0 0 var(--text-primary);
 }
 
 .tools {

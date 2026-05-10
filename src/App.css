@@ -45,58 +45,11 @@ h5 {
   font-family: "JetBrains Mono";
 }
 
-.box,
-button {
+.box {
   display: inline-block;
   background: var(--text-inverse);
   color: var(--text-primary);
   border: 3px solid var(--text-primary);
-  box-shadow: 0.5rem 0.5rem 0 var(--text-primary);
-  transition: all 0.2s ease;
-}
-
-button {
-  font-family: "Permanent Marker";
-  font-size: 1.8rem;
-  text-decoration: none;
-  padding: 8px 14px;
-  margin-right: 1rem;
-  width: 90vw;
   box-shadow: 3px 3px 0 var(--text-primary);
-}
-
-.btn-primary {
-  background: var(--color-primary);
-  color: var(--text-inverse);
-  margin-bottom: 1rem;
-}
-
-.btn:hover {
-  transform: translate(-2px, -2px);
-  box-shadow: 5px 5px 0 var(--text-primary);
-}
-
-.btn:active {
-  transform: translate(3px, 3px);
-  box-shadow: 2px 2px 0 0 var(--text-primary);
-}
-
-/* Tablet */
-@media (min-width: 751px) {
-  button {
-    width: 18rem;
-    font-size: 2rem;
-    padding: 8px 16px;
-    margin-right: 4rem;
-    box-shadow: 0.5rem 0.5rem 0 var(--text-primary);
-  }
-}
-
-/* Desktop */
-@media (min-width: 1025px) {
-  button {
-    width: auto;
-    font-size: 2.25rem;
-    padding: 10px 20px;
-  }
+  transition: all 0.2s ease;
 }

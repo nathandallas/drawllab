@@ -2,32 +2,30 @@
 @import "../../styles/animations.css";
 
 h1 {
-  font-size: 4rem;
-  line-height: 3rem;
+  font-size: clamp(3.7rem, 6.5vw, 6.5rem);
+  line-height: clamp(3.6rem, 6.7vw, 6.7rem);
   text-shadow: 3px 3px 0 var(--color-secondary);
   transform: scaleY(1.4);
-  margin-top: 10vh;
-  margin-bottom: 0.75rem;
 }
 
 h2 {
-  font-size: 3.2rem;
-  line-height: 3.1rem;
+  font-size: clamp(2.9rem, 5.5vw, 5.5rem);
+  line-height: clamp(2.8rem, 4.6vw, 4.5rem);
   transform: scaleY(1.1);
-  margin: 0;
 }
 
 h3 {
-  font-size: 1.6rem;
+  font-size: 1.5rem;
   font-weight: 300;
   margin: 1rem 0 0;
+  max-width: inherit;
 }
 
 h5 {
   font-size: 0.95rem;
   font-weight: 300;
   color: var(--text-primary);
-  padding: 1rem 0;
+  padding: 0.5rem 1rem;
 }
 
 h5 span {
@@ -63,26 +61,33 @@ h2:not(.highlight) {
 }
 
 .home {
-  margin: 5rem auto 0;
-  max-width: 98vw;
+  margin: 10rem auto 0;
+  max-width: 1560px;
 }
 
 /* Hero */
 .hero {
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
   padding-bottom: 3rem;
 }
 
 .container {
-  padding: 0 1.5rem;
+  margin: 0 auto;
   width: 100%;
+  min-width: 390px;
+  max-width: 390px;
+  padding: 0 1.5rem;
 }
 
 .home-nav {
   margin-top: 1.5rem;
-  display: block;
+  width: inherit;
+  min-width: 335px;
+}
+
+.home-nav button {
+  width: 100%;
 }
 
 .tablet-hide {
@@ -93,7 +98,7 @@ h2:not(.highlight) {
 .footer {
   position: fixed;
   left: 0;
-  bottom: 0;
+  bottom: 2rem;
   width: 100%;
   height: 2.5rem;
   display: flex;
@@ -106,18 +111,24 @@ h2:not(.highlight) {
   color: var(--text-primary);
 }
 
+.footer h5 {
+  display: flex;
+  gap: 0.25rem;
+  align-items: center;
+}
+
 /* Tablet */
 @media (min-width: 751px) {
   h1 {
-    font-size: 7.5rem;
-    line-height: 7.7rem;
+    font-size: 6.9rem;
+    line-height: 6.7rem;
     text-shadow: 6px 6px 0 var(--color-secondary);
     margin-top: 0;
     margin-bottom: 0.5rem;
   }
 
   h2 {
-    font-size: 5.8rem;
+    font-size: 5.5rem;
     line-height: 4.5rem;
   }
 
@@ -133,8 +144,8 @@ h2:not(.highlight) {
   }
 
   .container {
-    padding: 0 2.5rem;
-    width: 100%;
+    max-width: 700px;
+    padding: 0;
   }
 
   .footer {
@@ -144,52 +155,35 @@ h2:not(.highlight) {
 
 /* Desktop */
 @media (min-width: 1024px) {
-  h1 {
-    font-size: clamp(5rem, 6.5vw, 7.5rem);
-    line-height: clamp(5.2rem, 6.7vw, 7.7rem);
-  }
-
-  h2 {
-    font-size: clamp(3.5rem, 5.5vw, 5.8rem);
-    line-height: clamp(3rem, 4.6vw, 4.5rem);
-  }
-
   h3 {
     font-size: 2.1rem;
     margin-top: 1.5rem;
-  }
-
-  h5 {
-    font-size: 1.1rem;
-  }
-
-  .home {
-    margin: 10rem auto 0;
-    max-width: 90vw;
+    max-width: 640px;
   }
 
   .hero {
     flex-direction: row;
-    align-items: flex-start;
+    align-items: center;
+    justify-content: space-around;
     gap: 0;
-    padding-bottom: 3rem;
+    max-width: 1500px;
   }
 
   .container {
     flex: 1 1 0;
-    min-width: 0;
-    padding: 2rem;
+    margin: 2rem;
+    min-width: max-content;
   }
 
   .hero-graphic {
     flex: 1 1 0;
     min-width: 0;
-    padding: 2rem 2rem 3rem;
     display: flex;
     align-items: flex-start;
+    margin-right: 2rem;
   }
 
-  .brut-draw {
+  .hero-draw {
     width: 100%;
     height: auto;
   }

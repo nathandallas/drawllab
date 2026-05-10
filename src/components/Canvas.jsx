@@ -1,6 +1,5 @@
 import "./Canvas.css";
 import { useEffect, useLayoutEffect, useState } from "react";
-import { Link } from "wouter";
 import rough from "roughjs/bundled/rough.esm";
 import { SketchPicker } from "react-color";
 
@@ -15,19 +14,8 @@ import {
   computeSelectionBBox,
 } from "../utils/geometry";
 import useHistory from "../hooks/useHistory";
-
-// -----------------------------
-// ----- icons for toolbar -----
-// -----------------------------
-
-import paintbrush from "../assets/images/paintbrush.svg";
-import eraser from "../assets/images/eraser.png";
-import line from "../assets/images/draw-line.svg";
-import square from "../assets/images/rectangle.svg";
-import select from "../assets/images/select.svg";
-import move from "../assets/images/move.png";
-import home from "../assets/images/home.png";
-import about from "../assets/images/about.png";
+import NavBar from "./NavBar/NavBar";
+import Toolbar from "./canvas/Toolbar/Toolbar";
 
 // ---------------------------
 // ----------- PAGE ----------
@@ -73,7 +61,6 @@ const CanvasPage = () => {
     const elementsCopy = [...elements];
     const index = elementsCopy.findIndex(el => el.id === id);
     switch (type) {
-      case "line":
       case "rectangle":
         elementsCopy[index] = createElement(x1, y1, x2, y2, type, elementsCopy[index].color, id);
         break;
@@ -87,7 +74,7 @@ const CanvasPage = () => {
   };
 
   useEffect(() => {
-    if (tool !== "select") {
+    if (tool !== "pointer" && tool !== "marquee") {
       setSelectedElementIds([]);
       setMarquee(null);
     }
@@ -113,7 +100,7 @@ const CanvasPage = () => {
 
   const handleMouseDown = e => {
     const { clientX, clientY } = e;
-    if (tool === "select") {
+    if (tool === "pointer") {
       const element = getElementAtPosition(clientX, clientY, elements);
       if (element) {
         const isAlreadySelected = selectedElementIds.includes(element.id);
@@ -154,44 +141,49 @@ const CanvasPage = () => {
           setAction("move");
         }
       } else {
-        const insideExistingMarquee =
-          marquee &&
-          clientX >= Math.min(marquee.x1, marquee.x2) &&
-          clientX <= Math.max(marquee.x1, marquee.x2) &&
-          clientY >= Math.min(marquee.y1, marquee.y2) &&
-          clientY <= Math.max(marquee.y1, marquee.y2);
-        if (insideExistingMarquee && selectedElementIds.length > 0) {
-          const data = {};
-          elements
-            .filter(el => selectedElementIds.includes(el.id))
-            .forEach(el => {
-              if (el.type === "paintbrush") {
-                data[el.id] = {
-                  type: "paintbrush",
-                  originalPoints: el.points,
-                  xOffsets: el.points.map(p => clientX - p.x),
-                  yOffsets: el.points.map(p => clientY - p.y),
-                };
-              } else {
-                data[el.id] = {
-                  type: el.type,
-                  color: el.color,
-                  offsetX: clientX - el.x1,
-                  offsetY: clientY - el.y1,
-                  width: el.x2 - el.x1,
-                  height: el.y2 - el.y1,
-                };
-              }
-            });
-          setMoveData(data);
-          setElements(prevState => prevState);
-          setAction("move");
-          return;
-        }
         setSelectedElementIds([]);
-        setMarquee({ x1: clientX, y1: clientY, x2: clientX, y2: clientY, isDragging: true });
-        setAction("marquee");
+        setMarquee(null);
       }
+    } else if (tool === "marquee") {
+      const insideExistingMarquee =
+        marquee &&
+        clientX >= Math.min(marquee.x1, marquee.x2) &&
+        clientX <= Math.max(marquee.x1, marquee.x2) &&
+        clientY >= Math.min(marquee.y1, marquee.y2) &&
+        clientY <= Math.max(marquee.y1, marquee.y2);
+      if (insideExistingMarquee && selectedElementIds.length > 0) {
+        const data = {};
+        elements
+          .filter(el => selectedElementIds.includes(el.id))
+          .forEach(el => {
+            if (el.type === "paintbrush") {
+              data[el.id] = {
+                type: "paintbrush",
+                originalPoints: el.points,
+                xOffsets: el.points.map(p => clientX - p.x),
+                yOffsets: el.points.map(p => clientY - p.y),
+              };
+            } else {
+              data[el.id] = {
+                type: el.type,
+                color: el.color,
+                offsetX: clientX - el.x1,
+                offsetY: clientY - el.y1,
+                width: el.x2 - el.x1,
+                height: el.y2 - el.y1,
+              };
+            }
+          });
+        setMoveData(data);
+        setElements(prevState => prevState);
+        setAction("move");
+        return;
+      }
+      setSelectedElementIds([]);
+      setMarquee({ x1: clientX, y1: clientY, x2: clientX, y2: clientY, isDragging: true });
+      setAction("marquee");
+    } else if (tool === "circle") {
+      // circle drawing not yet implemented
     } else if (tool === "move") {
       const element = getElementAtPosition(clientX, clientY, elements);
       if (element) {
@@ -229,7 +221,7 @@ const CanvasPage = () => {
   const handleMouseMove = e => {
     const { clientX, clientY } = e;
 
-    if (tool === "select") {
+    if (tool === "pointer") {
       const element = getElementAtPosition(clientX, clientY, elements);
       if (element && selectedElementIds.includes(element.id)) {
         e.target.style.cursor = "move";
@@ -238,8 +230,10 @@ const CanvasPage = () => {
       } else if (element) {
         e.target.style.cursor = "move";
       } else {
-        e.target.style.cursor = "crosshair";
+        e.target.style.cursor = "default";
       }
+    } else if (tool === "marquee") {
+      e.target.style.cursor = "crosshair";
     } else if (tool === "move") {
       const element = getElementAtPosition(clientX, clientY, elements);
       e.target.style.cursor = element ? "move" : "default";
@@ -343,35 +337,7 @@ const CanvasPage = () => {
         />
       </div>
 
-      {/* Toolbar Component */}
-      <div className="toolbar">
-        <input type="radio" id="paintbrush" checked={tool === "paintbrush"} onChange={() => setTool("paintbrush")} className="tool" />
-        <label htmlFor="paintbrush" className="tool__label">
-          <img src={paintbrush} alt="paintbrush icon" className="toolbar__icon" />
-        </label>
-        <input type="radio" id="eraser" checked={tool === "eraser"} onChange={() => setTool("eraser")} className="tool" />
-        <label htmlFor="eraser" className="tool__label">
-          <img src={eraser} alt="eraser icon" className="toolbar__icon" />
-        </label>
-        <input type="radio" id="line" checked={tool === "line"} onChange={() => setTool("line")} className="tool" />
-        <label htmlFor="line" className="tool__label">
-          <img src={line} alt="line icon" className="toolbar__icon" />
-        </label>
-        <input type="radio" id="rectangle" checked={tool === "rectangle"} onChange={() => setTool("rectangle")} className="tool" />
-        <label htmlFor="rectangle" className="tool__label">
-          <img src={square} alt="rectangle icon" className="toolbar__icon" />
-        </label>
-        <input type="radio" id="select" checked={tool === "select"} onChange={() => setTool("select")} className="tool" />
-        <label htmlFor="select" className="tool__label">
-          <img src={select} alt="select icon" className="toolbar__icon" />
-        </label>
-        <input type="radio" id="move" checked={tool === "move"} onChange={() => setTool("move")} className="tool" />
-        <label htmlFor="move" className="tool__label">
-          <img src={move} alt="move icon" className="toolbar__icon" />
-        </label>
-
-        <div className="tool__divider"></div>
-      </div>
+      <Toolbar tool={tool} setTool={setTool} />
 
       {/* Undo/Redo/Clear Buttons */}
       <div className="canvas-tools">
@@ -394,15 +360,7 @@ const CanvasPage = () => {
         </div>
       </div>
 
-      {/* Nav Bar Component */}
-      <nav className="nav">
-        <Link to="/">
-          <img src={home} alt="home icon" className="nav__icon click" />
-        </Link>
-        <Link to="/about">
-          <img src={about} alt="about icon" className="nav__icon click" />
-        </Link>
-      </nav>
+      <NavBar />
 
       {/* Canvas Component */}
       <canvas
