@@ -8,11 +8,17 @@ button {
   font-family: "Permanent Marker";
   font-size: 1.8rem;
   padding: 8px 14px;
+  
 }
 
 .btn-primary {
   background: var(--color-primary);
   color: var(--text-inverse);
+  margin-bottom: 1rem;
+}
+
+.btn-accent {
+  background: var(--color-highlight);
   margin-bottom: 1rem;
 }
 

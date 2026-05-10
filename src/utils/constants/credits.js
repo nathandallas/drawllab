@@ -17,10 +17,4 @@ export const CREDITS = [
     url: "https://casesandberg.github.io/react-color/",
     description: "color picker",
   },
-  {
-    id: "html-canvas",
-    name: "html canvas",
-    url: "https://developer.mozilla.org/en-US/docs/Web/API/Canvas_API",
-    description: "native canvas api",
-  },
 ];
