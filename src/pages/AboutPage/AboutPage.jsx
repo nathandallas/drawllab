@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useMemo } from "react";
 import { Link } from "wouter";
 import { SocialIcon } from "react-social-icons";
 import { ArrowLeft, ArrowUpRight } from "lucide-react";
@@ -7,8 +7,14 @@ import ThemeToggle from "../../components/ThemeToggle";
 import IconButton from "../../components/ui/IconButton/IconButton";
 import Panel from "../../components/ui/Panel/Panel";
 import { TOOLS } from "../../utils/constants/tools.js";
+import { CREDITS } from "../../utils/constants/credits.js";
 
 export default function AboutPage({ tool, setTool }) {
+  const creditRotations = useMemo(
+    () => CREDITS.map(() => Math.random() * 6 - 3),
+    []
+  );
+
   return (
     <div className="about-page">
       <ThemeToggle />
@@ -47,44 +53,33 @@ export default function AboutPage({ tool, setTool }) {
       <div>
         <section className="credits">
           <div className="credits-container">
-            <h2>libraries used</h2>
+            <h4>libraries used</h4>
             <ul>
-              <li className="box btn">
-                <a href="https://roughjs.com/">roughJS</a>
-              </li>
-              <li className="box btn">
-                <a href="https://www.npmjs.com/package/perfect-freehand">perfect-freehand</a>
-              </li>
-              <li className="box btn">
-                <a href="https://casesandberg.github.io/react-color/">react color</a>
-              </li>
-              <li className="box btn">
-                <a href="https://developer.mozilla.org/en-US/docs/Web/API/Canvas_API">html canvas</a>
-              </li>
+              {CREDITS.map(({ id, name, url, description }, i) => (
+                <li key={id} className="box btn" style={{ transform: `rotate(${creditRotations[i]}deg)` }}>
+                  <div style={{ transform: `rotate(${-creditRotations[i]}deg)` }}>
+                    <a href={url}>{name}</a>
+                    <p>{description}</p>
+                  </div>
+                </li>
+              ))}
             </ul>
           </div>
 
           <div>
-            <div>
-              <h2>created by</h2>
-              <p>
-                <span>Nathan Challender | </span>
-                <a href="https://nathandallas.github.io/portfolio/">Portfolio</a>
-              </p>
-            </div>
-
-            <div>
-              <SocialIcon url="https://codepen.io/nathandallas" bgColor="#96bbbf" style={{ height: 75, width: 75 }} />
-              <SocialIcon url="https://github.com/nathandallas" bgColor="#96bbbf" style={{ height: 75, width: 75 }} />
-            </div>
+            <h4>created by</h4>
+            <p>
+              <span>Nathan Challender | </span>
+              <a href="https://nathandallas.github.io/portfolio/">Portfolio</a>
+            </p>
           </div>
         </section>
       </div>
 
       <div>
         <Link to="/canvas">
-          <ArrowUpRight size={20} className="about-nav__icon" />
-          <h2>Back to Canvas</h2>
+          <ArrowLeft size={20} className="about-nav__icon" />
+          <p>Back to Canvas</p>
         </Link>
       </div>
     </div>

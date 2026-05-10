@@ -181,6 +181,8 @@ h2:not(.highlight) {
     display: flex;
     align-items: flex-start;
     margin-right: 2rem;
+    transform: rotate(2deg);
+    box-shadow: 8px 8px 0 var(--text-primary);
   }
 
   .hero-draw {
@@ -189,9 +191,6 @@ h2:not(.highlight) {
   }
 
   .home-nav {
-    display: flex;
-    justify-content: flex-start;
-    gap: 1rem;
     margin-top: 2rem;
   }
 

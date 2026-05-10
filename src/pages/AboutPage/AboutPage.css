@@ -2,8 +2,8 @@
 @import "../../styles/animations.css";
 
 h4 {
-  font-size: 2rem;
-  line-height: 1.8rem;
+  font-size: clamp(2.4rem, 8.5vw, 3.5rem);
+  line-height: clamp(2rem, 7.5vw, 3.5rem);
 }
 
 p {
@@ -14,6 +14,7 @@ p {
 
 .about-page {
   margin: 6rem 2rem 0 2rem;
+  max-width: 1560px;
 }
 
 .about-nav {
@@ -29,20 +30,34 @@ p {
 }
 
 .credits-container ul {
+  margin: auto 0;
+  padding-top: 2rem;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: space-around;
+  gap: 2rem;
+  width: 100%;
+}
+.credits h4 {
+  margin-top: 2rem;
 }
 
 .credits li {
+  font-size: clamp(2rem, 6.5vw, 2.8rem);
   display: inline-block;
   padding: 10px 20px;
-  min-width: 300px;
   font-family: "Permanent Marker";
-  font-size: 1.7rem;
-  margin-right: 4rem;
   text-align: center;
+  width: inherit;
+}
+
+.credits li p {
+  font-family: "Jetbrains Mono";
+  text-transform: uppercase;
+  font-size: clamp(1.2rem, 3.5vw, 1.4rem);
+  font-weight: 300;
+  color: var(--text-primary);
 }
 
 .credits a {
@@ -127,5 +142,20 @@ p {
     margin: 1rem 0;
     padding: 1.5rem;
     transform: rotate(-2deg);
+  }
+  .credits ul {
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    width: inherit;
+  }
+  .credits li {
+    max-width: 23%;
+    min-width: 360px;
+    font-size: 1.8rem;
+    padding: 10px 0px;
+  }
+  .credits li p {
+    font-size: 1.2rem;
   }
 }
