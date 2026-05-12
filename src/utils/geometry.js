@@ -27,7 +27,7 @@ export const positionInElement = (x, y, element) => {
       const bottomRight = nearPoint(x, y, x2, y2, "br");
       const inside = x >= x1 && x <= x2 && y >= y1 && y <= y2 ? "inside" : null;
       return topLeft || topRight || bottomLeft || bottomRight || inside;
-    case "paintbrush":
+    case "pen":
       const betweenAnyPoint = element.points.some((point, index) => {
         const nextPoint = element.points[index + 1];
         if (!nextPoint) return false;
@@ -113,7 +113,7 @@ export const elementInMarquee = (element, mx1, my1, mx2, my2) => {
         Math.min(element.y1, element.y2) >= top &&
         Math.max(element.y1, element.y2) <= bottom
       );
-    case "paintbrush":
+    case "pen":
       return element.points.some(p => inBounds(p.x, p.y));
     default:
       return false;
@@ -123,7 +123,7 @@ export const elementInMarquee = (element, mx1, my1, mx2, my2) => {
 export const computeSelectionBBox = selectedElements => {
   let minX = Infinity, minY = Infinity, maxX = -Infinity, maxY = -Infinity;
   selectedElements.forEach(el => {
-    if (el.type === "paintbrush") {
+    if (el.type === "pen") {
       el.points.forEach(p => {
         minX = Math.min(minX, p.x); minY = Math.min(minY, p.y);
         maxX = Math.max(maxX, p.x); maxY = Math.max(maxY, p.y);

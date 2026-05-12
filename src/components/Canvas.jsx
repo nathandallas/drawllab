@@ -24,7 +24,7 @@ import Toolbar from "./canvas/Toolbar/Toolbar";
 const CanvasPage = () => {
   const [elements, setElements, undo, redo, clear] = useHistory([]);
   const [action, setAction] = useState("none");
-  const [tool, setTool] = useState("paintbrush");
+  const [tool, setTool] = useState("pen");
   const [selectedElement, setSelectedElement] = useState(null); // only used for resize
   const [selectedElementIds, setSelectedElementIds] = useState([]);
   const [marquee, setMarquee] = useState(null);
@@ -64,7 +64,7 @@ const CanvasPage = () => {
       case "rectangle":
         elementsCopy[index] = createElement(x1, y1, x2, y2, type, elementsCopy[index].color, id);
         break;
-      case "paintbrush":
+      case "pen":
         elementsCopy[index].points = [...elementsCopy[index].points, { x: x2, y: y2 }];
         break;
       default:
@@ -116,9 +116,9 @@ const CanvasPage = () => {
           elements
             .filter(el => idsToMove.includes(el.id))
             .forEach(el => {
-              if (el.type === "paintbrush") {
+              if (el.type === "pen") {
                 data[el.id] = {
-                  type: "paintbrush",
+                  type: "pen",
                   originalPoints: el.points,
                   xOffsets: el.points.map(p => clientX - p.x),
                   yOffsets: el.points.map(p => clientY - p.y),
@@ -156,9 +156,9 @@ const CanvasPage = () => {
         elements
           .filter(el => selectedElementIds.includes(el.id))
           .forEach(el => {
-            if (el.type === "paintbrush") {
+            if (el.type === "pen") {
               data[el.id] = {
-                type: "paintbrush",
+                type: "pen",
                 originalPoints: el.points,
                 xOffsets: el.points.map(p => clientX - p.x),
                 yOffsets: el.points.map(p => clientY - p.y),
@@ -182,15 +182,15 @@ const CanvasPage = () => {
       setSelectedElementIds([]);
       setMarquee({ x1: clientX, y1: clientY, x2: clientX, y2: clientY, isDragging: true });
       setAction("marquee");
-    } else if (tool === "circle") {
-      // circle drawing not yet implemented
+    } else if (tool === "circle" || tool === "eraser") {
+      // not yet implemented
     } else if (tool === "move") {
       const element = getElementAtPosition(clientX, clientY, elements);
       if (element) {
         const data = {};
-        if (element.type === "paintbrush") {
+        if (element.type === "pen") {
           data[element.id] = {
-            type: "paintbrush",
+            type: "pen",
             originalPoints: element.points,
             xOffsets: element.points.map(p => clientX - p.x),
             yOffsets: element.points.map(p => clientY - p.y),

@@ -231,7 +231,7 @@ p {
 }
 
 /* Desktop */
-@media (min-width: 1024px) {
+@media (min-width: 1200px) {
   .about-page {
     margin: 6rem auto;
   }

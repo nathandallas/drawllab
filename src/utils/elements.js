@@ -14,7 +14,7 @@ export const createElement = (x1, y1, x2, y2, type, color = "#363636", existingI
           ? generator.line(x1, y1, x2, y2, { bowing: 2, strokeWidth: 3, stroke: color })
           : generator.rectangle(x1, y1, x2 - x1, y2 - y1, { bowing: 2, strokeWidth: 3, stroke: color });
       return { id, x1, y1, x2, y2, type, roughElement, color };
-    case "paintbrush":
+    case "pen":
       return { id, type, points: [{ x: x1, y: y1 }], color };
     default:
       throw new Error(`unrecognized: ${type}`);
@@ -41,7 +41,7 @@ export const drawElement = (roughCanvas, context, element) => {
     case "rectangle":
       roughCanvas.draw(element.roughElement);
       break;
-    case "paintbrush":
+    case "pen":
       const stroke = SVGpathData(
         getStroke(element.points, {
           size: 8,
