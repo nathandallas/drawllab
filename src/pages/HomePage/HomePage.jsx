@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { Link } from "wouter";
+import { Link, useLocation } from "wouter";
 import "./HomePage.css";
 import ThemeToggle from "../../components/ThemeToggle";
 import useTheme from "../../hooks/useTheme";
@@ -8,10 +8,18 @@ import { ArrowUpRight } from "lucide-react";
 
 export default function HomePage() {
   const { theme } = useTheme();
+  const [, navigate] = useLocation();
 
   useEffect(() => {
-    return () => document.body.classList.remove("no-scroll");
-  }, []);
+    const handleKey = e => {
+      if (e.key === "n" || e.key === "N") navigate("/canvas");
+    };
+    document.addEventListener("keydown", handleKey);
+    return () => {
+      document.removeEventListener("keydown", handleKey);
+      document.body.classList.remove("no-scroll");
+    };
+  }, [navigate]);
 
   return (
     <div className="home">
