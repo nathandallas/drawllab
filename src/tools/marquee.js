@@ -1,23 +1,27 @@
-import { computeSelectionBBox, elementInMarquee } from "../utils/geometry";
-import { buildMoveData } from "./shared";
+import { computeSelectionBBox, elementInMarquee, cursorForPosition } from "../utils/geometry";
+import { buildMoveData, isInsideBounds, cornerHit, buildScaleData } from "./shared";
 
 export const onMouseDown = (ctx, clientX, clientY) => {
-  const { marquee, selectedElementIds, elements, setSelectedElementIds, setMarquee, setMoveData, setElements, setAction } = ctx;
+  const { marquee, selectedElementIds, elements, setSelectedElement, setSelectedElementIds, setMarquee, setMoveData, setElements, setAction } = ctx;
 
-  const insideExisting =
-    marquee &&
-    clientX >= Math.min(marquee.x1, marquee.x2) &&
-    clientX <= Math.max(marquee.x1, marquee.x2) &&
-    clientY >= Math.min(marquee.y1, marquee.y2) &&
-    clientY <= Math.max(marquee.y1, marquee.y2);
+  if (marquee && selectedElementIds.length > 0) {
+    const corner = cornerHit(marquee, clientX, clientY);
+    if (corner) {
+      const targets = elements.filter(el => selectedElementIds.includes(el.id));
+      setSelectedElement({ position: corner, x1: marquee.x1, y1: marquee.y1, x2: marquee.x2, y2: marquee.y2 });
+      setMoveData(buildScaleData(targets));
+      setElements(prev => prev);
+      setAction("marquee-resize");
+      return;
+    }
 
-  if (insideExisting && selectedElementIds.length > 0) {
-    const targets = elements.filter(el => selectedElementIds.includes(el.id));
-    const data = buildMoveData(targets, clientX, clientY);
-    setMoveData(data);
-    setElements(prev => prev);
-    setAction("move");
-    return;
+    if (isInsideBounds(marquee, clientX, clientY)) {
+      const targets = elements.filter(el => selectedElementIds.includes(el.id));
+      setMoveData(buildMoveData(targets, clientX, clientY));
+      setElements(prev => prev);
+      setAction("move");
+      return;
+    }
   }
 
   setSelectedElementIds([]);
@@ -25,14 +29,27 @@ export const onMouseDown = (ctx, clientX, clientY) => {
   setAction("marquee");
 };
 
-export const getCursor = () => "crosshair";
+export const getCursor = ({ marquee, selectedElementIds }, clientX, clientY) => {
+  if (marquee && selectedElementIds.length > 0) {
+    const corner = cornerHit(marquee, clientX, clientY);
+    if (corner) return cursorForPosition(corner);
+    if (isInsideBounds(marquee, clientX, clientY)) return "move";
+  }
+  return "crosshair";
+};
 
-export const onMouseUp = ({ action, marquee, elements, setSelectedElementIds, setMarquee }) => {
-  if (action !== "marquee" || !marquee) return;
-  const selectedIds = elements
-    .filter(el => elementInMarquee(el, marquee.x1, marquee.y1, marquee.x2, marquee.y2))
-    .map(el => el.id);
-  setSelectedElementIds(selectedIds);
-  const bbox = computeSelectionBBox(elements.filter(el => selectedIds.includes(el.id)));
-  setMarquee(bbox ? { x1: bbox.minX - 8, y1: bbox.minY - 8, x2: bbox.maxX + 8, y2: bbox.maxY + 8 } : null);
+export const onMouseUp = ({ action, marquee, elements, selectedElementIds, setSelectedElement, setSelectedElementIds, setMarquee }) => {
+  if (!marquee) return;
+  if (action === "marquee") {
+    const selectedIds = elements
+      .filter(el => elementInMarquee(el, marquee.x1, marquee.y1, marquee.x2, marquee.y2))
+      .map(el => el.id);
+    setSelectedElementIds(selectedIds);
+    const bbox = computeSelectionBBox(elements.filter(el => selectedIds.includes(el.id)));
+    setMarquee(bbox ? { x1: bbox.minX - 8, y1: bbox.minY - 8, x2: bbox.maxX + 8, y2: bbox.maxY + 8 } : null);
+  } else if (action === "marquee-resize") {
+    const bbox = computeSelectionBBox(elements.filter(el => selectedElementIds.includes(el.id)));
+    setMarquee(bbox ? { x1: bbox.minX - 8, y1: bbox.minY - 8, x2: bbox.maxX + 8, y2: bbox.maxY + 8 } : null);
+    setSelectedElement(null);
+  }
 };

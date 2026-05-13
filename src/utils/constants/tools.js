@@ -2,6 +2,12 @@ import { MousePointer, Pencil, Eraser, Square, Circle, SquareDashed, Move } from
 
 export const TOOLS = [
   {
+    id: "colorpicker",
+    icon: Circle,
+    name: "Color Picker",
+    description: "Choose a drawing color",
+  },
+  {
     id: "pen",
     icon: Pencil,
     name: "Pen",

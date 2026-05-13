@@ -1,3 +1,31 @@
+import { nearPoint, computeSelectionBBox } from "../utils/geometry";
+
+export const getBounds = ({ x1, y1, x2, y2 }) => ({
+  x: Math.min(x1, x2),
+  y: Math.min(y1, y2),
+  w: Math.abs(x2 - x1),
+  h: Math.abs(y2 - y1),
+});
+
+export const isInsideBounds = ({ x1, y1, x2, y2 }, clientX, clientY) =>
+  clientX >= Math.min(x1, x2) &&
+  clientX <= Math.max(x1, x2) &&
+  clientY >= Math.min(y1, y2) &&
+  clientY <= Math.max(y1, y2);
+
+export const cornerHit = (bbox, clientX, clientY) =>
+  nearPoint(clientX, clientY, bbox.x1, bbox.y1, "tl") ||
+  nearPoint(clientX, clientY, bbox.x2, bbox.y1, "tr") ||
+  nearPoint(clientX, clientY, bbox.x1, bbox.y2, "bl") ||
+  nearPoint(clientX, clientY, bbox.x2, bbox.y2, "br");
+
+export const buildScaleData = targets => ({
+  origBbox: computeSelectionBBox(targets),
+  origElements: Object.fromEntries(
+    targets.map(el => [el.id, el.type === "pen" ? { ...el, points: el.points.map(p => ({ ...p })) } : { ...el }])
+  ),
+});
+
 export const buildMoveData = (elements, clientX, clientY) => {
   const data = {};
   elements.forEach(el => {

@@ -9,11 +9,15 @@ export const createElement = (x1, y1, x2, y2, type, color = "#363636", existingI
   switch (type) {
     case "line":
     case "rectangle":
+    case "circle": {
       const roughElement =
         type === "line"
           ? generator.line(x1, y1, x2, y2, { bowing: 2, strokeWidth: 3, stroke: color })
-          : generator.rectangle(x1, y1, x2 - x1, y2 - y1, { bowing: 2, strokeWidth: 3, stroke: color });
+          : type === "rectangle"
+            ? generator.rectangle(x1, y1, x2 - x1, y2 - y1, { bowing: 2, strokeWidth: 3, stroke: color })
+            : generator.ellipse((x1 + x2) / 2, (y1 + y2) / 2, Math.abs(x2 - x1), Math.abs(y2 - y1), { bowing: 2, strokeWidth: 3, stroke: color });
       return { id, x1, y1, x2, y2, type, roughElement, color };
+    }
     case "pen":
       return { id, type, points: [{ x: x1, y: y1 }], color };
     default:
@@ -39,6 +43,7 @@ export const drawElement = (roughCanvas, context, element) => {
   switch (element.type) {
     case "line":
     case "rectangle":
+    case "circle":
       roughCanvas.draw(element.roughElement);
       break;
     case "pen":

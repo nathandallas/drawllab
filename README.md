@@ -25,6 +25,7 @@ Use it to make wireframes, sketch out ideas and jump start your creative project
 
 ## Updates to Come 
 
+- Eraser with animation 
 - Add Text
 - Backgrounds
 - File Saving

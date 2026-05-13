@@ -7,25 +7,17 @@
   z-index: 1;
 }
 
-.color {
-  position: fixed;
-  bottom: 1.5rem;
-  left: 5rem;
-  z-index: 10;
-}
-
 .canvas-tools {
   position: fixed;
-  top: 1rem;
-  left: 50%;
-  transform: translateX(-50%);
+  bottom: 1rem;
+  left: 1rem;
   display: flex;
   align-items: center;
   gap: 0.5rem;
   z-index: 10;
 }
 
-.canvas-tools-container {
+.canvas-tools div {
   display: flex;
   gap: 0.5rem;
 }

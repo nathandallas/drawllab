@@ -1,7 +1,6 @@
 import "./Canvas.css";
 import { useEffect, useLayoutEffect, useState } from "react";
 import rough from "roughjs/bundled/rough.esm";
-import { SketchPicker } from "react-color";
 
 import { createElement, drawElement } from "../utils/elements";
 import { resizedCoordinates, computeSelectionBBox } from "../utils/geometry";
@@ -9,33 +8,8 @@ import useHistory from "../hooks/useHistory";
 import NavBar from "./NavBar/NavBar";
 import Toolbar from "./canvas/Toolbar/Toolbar";
 import { TOOLS } from "../tools";
-
-const PRESET_COLORS = [
-  "#8b3a35",
-  "#bc5953",
-  "#e67f6e",
-  "#e8a09a",
-  "#c47fa0",
-  "#ed5689",
-  "#f384a9",
-  "#7b75da",
-  "#a5abe7",
-  "#3984a3",
-  "#6fb7da",
-  "#598b7f",
-  "#7a9e5e",
-  "#aebc89",
-  "#d4753a",
-  "#f1b376",
-  "#d4a832",
-  "#f1d896",
-  "#363636",
-  "#666",
-  "#818589",
-  "#A9A9A9",
-  "#ccc",
-  "#fff",
-];
+import { getBounds } from "../tools/shared";
+import { Redo2, Undo2 } from "lucide-react";
 
 const CanvasPage = () => {
   const [elements, setElements, undo, redo, clear] = useHistory([]);
@@ -60,15 +34,12 @@ const CanvasPage = () => {
       context.strokeStyle = "#4a90d9";
       context.lineWidth = 1;
       context.setLineDash([4, 3]);
-      const mx = Math.min(marquee.x1, marquee.x2);
-      const my = Math.min(marquee.y1, marquee.y2);
-      const mw = Math.abs(marquee.x2 - marquee.x1);
-      const mh = Math.abs(marquee.y2 - marquee.y1);
+      const { x, y, w, h } = getBounds(marquee);
       if (marquee.isDragging) {
         context.fillStyle = "rgba(74, 144, 217, 0.08)";
-        context.fillRect(mx, my, mw, mh);
+        context.fillRect(x, y, w, h);
       }
-      context.strokeRect(mx, my, mw, mh);
+      context.strokeRect(x, y, w, h);
       context.restore();
     }
   }, [elements, marquee]);
@@ -78,6 +49,7 @@ const CanvasPage = () => {
     const index = elementsCopy.findIndex(el => el.id === id);
     switch (type) {
       case "rectangle":
+      case "circle":
         elementsCopy[index] = createElement(x1, y1, x2, y2, type, elementsCopy[index].color, id);
         break;
       case "pen":
@@ -90,7 +62,7 @@ const CanvasPage = () => {
   };
 
   useEffect(() => {
-    if (tool !== "pointer" && tool !== "marquee") {
+    if (tool !== "pointer" && tool !== "marquee" && tool !== "move") {
       setSelectedElementIds([]);
       setMarquee(null);
     }
@@ -159,6 +131,49 @@ const CanvasPage = () => {
       setElements(elementsCopy, true);
       const bbox = computeSelectionBBox(elementsCopy.filter(el => selectedElementIds.includes(el.id)));
       if (bbox) setMarquee({ x1: bbox.minX - 8, y1: bbox.minY - 8, x2: bbox.maxX + 8, y2: bbox.maxY + 8 });
+    } else if (action === "marquee-resize" && selectedElement && moveData) {
+      const { position, x1, y1, x2, y2 } = selectedElement;
+      const coords = resizedCoordinates(clientX, clientY, position, { x1, y1, x2, y2 });
+      if (!coords) return;
+      setMarquee(prev => ({ ...prev, ...coords }));
+
+      const { origBbox, origElements } = moveData;
+      if (origBbox) {
+        const newMinX = Math.min(coords.x1, coords.x2) + 8;
+        const newMinY = Math.min(coords.y1, coords.y2) + 8;
+        const newMaxX = Math.max(coords.x1, coords.x2) - 8;
+        const newMaxY = Math.max(coords.y1, coords.y2) - 8;
+        const origW = origBbox.maxX - origBbox.minX;
+        const origH = origBbox.maxY - origBbox.minY;
+        if (origW === 0 || origH === 0) return;
+        const sx = (newMaxX - newMinX) / origW;
+        const sy = (newMaxY - newMinY) / origH;
+        const scaleX = v => newMinX + (v - origBbox.minX) * sx;
+        const scaleY = v => newMinY + (v - origBbox.minY) * sy;
+
+        const elementsCopy = [...elements];
+        Object.entries(origElements).forEach(([id, origEl]) => {
+          const idx = elementsCopy.findIndex(el => el.id === id);
+          if (idx === -1) return;
+          if (origEl.type === "pen") {
+            elementsCopy[idx] = {
+              ...elementsCopy[idx],
+              points: origEl.points.map(p => ({ x: scaleX(p.x), y: scaleY(p.y) })),
+            };
+          } else {
+            elementsCopy[idx] = createElement(
+              scaleX(origEl.x1),
+              scaleY(origEl.y1),
+              scaleX(origEl.x2),
+              scaleY(origEl.y2),
+              origEl.type,
+              origEl.color,
+              id,
+            );
+          }
+        });
+        setElements(elementsCopy, true);
+      }
     } else if (action === "resize" && selectedElement) {
       const { id, type, position, ...coordinates } = selectedElement;
       const { x1, y1, x2, y2 } = resizedCoordinates(clientX, clientY, position, coordinates);
@@ -174,19 +189,14 @@ const CanvasPage = () => {
 
   return (
     <>
-      <div className="color">
-        <SketchPicker disableAlpha presetColors={PRESET_COLORS} color={selectedColor} onChange={color => setSelectedColor(color.hex)} />
-      </div>
-
-      <Toolbar tool={tool} setTool={setTool} />
-
+      <Toolbar tool={tool} setTool={setTool} selectedColor={selectedColor} onColorChange={color => setSelectedColor(color.hex)} />
       <div className="canvas-tools">
-        <div className="canvas-tools-container">
+        <div>
           <div onClick={undo} className="canvas-tools__button">
-            <h2>undo</h2>
+            <Undo2 />
           </div>
           <div onClick={redo} className="canvas-tools__button">
-            <h2>redo</h2>
+            <Redo2 />
           </div>
         </div>
         <div

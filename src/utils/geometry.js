@@ -27,6 +27,16 @@ export const positionInElement = (x, y, element) => {
       const bottomRight = nearPoint(x, y, x2, y2, "br");
       const inside = x >= x1 && x <= x2 && y >= y1 && y <= y2 ? "inside" : null;
       return topLeft || topRight || bottomLeft || bottomRight || inside;
+    case "circle": {
+      const tlC = nearPoint(x, y, x1, y1, "tl");
+      const trC = nearPoint(x, y, x2, y1, "tr");
+      const blC = nearPoint(x, y, x1, y2, "bl");
+      const brC = nearPoint(x, y, x2, y2, "br");
+      const cx = (x1 + x2) / 2, cy = (y1 + y2) / 2;
+      const rx = Math.abs(x2 - x1) / 2, ry = Math.abs(y2 - y1) / 2;
+      const insideC = rx > 0 && ry > 0 && ((x - cx) / rx) ** 2 + ((y - cy) / ry) ** 2 <= 1 ? "inside" : null;
+      return tlC || trC || blC || brC || insideC;
+    }
     case "pen":
       const betweenAnyPoint = element.points.some((point, index) => {
         const nextPoint = element.points[index + 1];
@@ -47,7 +57,7 @@ export const getElementAtPosition = (x, y, elements) => {
 
 export const adjustElementCoordinates = element => {
   const { type, x1, y1, x2, y2 } = element;
-  if (type === "rectangle") {
+  if (type === "rectangle" || type === "circle") {
     const minX = Math.min(x1, x2);
     const maxX = Math.max(x1, x2);
     const minY = Math.min(y1, y2);
@@ -95,7 +105,7 @@ export const resizedCoordinates = (clientX, clientY, position, coordinates) => {
   }
 };
 
-export const adjustmentRequired = type => ["line", "rectangle"].includes(type);
+export const adjustmentRequired = type => ["line", "rectangle", "circle"].includes(type);
 
 export const elementInMarquee = (element, mx1, my1, mx2, my2) => {
   const left = Math.min(mx1, mx2);
@@ -107,6 +117,7 @@ export const elementInMarquee = (element, mx1, my1, mx2, my2) => {
     case "line":
       return inBounds(element.x1, element.y1) && inBounds(element.x2, element.y2);
     case "rectangle":
+    case "circle":
       return (
         Math.min(element.x1, element.x2) >= left &&
         Math.max(element.x1, element.x2) <= right &&
