@@ -40,9 +40,10 @@ I originally created Drawllab in 2021 as my capstone project for Brainstation's 
 
 ## Updates to Come
 
-- Local Storage
 - Page Load Animations
 - Text Tool
+- Upload or paste image tool
+- Layers
 - Change stroke size
 - Change Canvas Background and Grid
 - Keyboard tool selection and navigation

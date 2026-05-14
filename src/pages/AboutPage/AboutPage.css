@@ -1,4 +1,3 @@
-@import "../../styles/variables.css";
 @import "../../styles/animations.css";
 
 h4 {
@@ -152,9 +151,9 @@ p {
 }
 
 .tools {
+  --surface-color: var(--color-primary);
+  --surface-shadow-offset: 0.5rem;
   background-color: var(--color-secondary);
-  box-shadow: 0.5rem 0.5rem 0 var(--color-primary);
-  border: 3px solid var(--color-primary);
   transform: rotate(1deg);
   margin: 2rem auto;
   width: 100%;
@@ -183,6 +182,7 @@ p {
 }
 
 .tools li {
+  position: relative;
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -190,6 +190,10 @@ p {
   background-color: var(--text-inverse);
   font-family: "Permanent Marker";
   height: 5rem;
+}
+
+[data-style="rough"] .tools li {
+  border: none;
 }
 
 .tools li:not(:last-child) {

@@ -1,22 +1,21 @@
 import React, { useMemo } from "react";
-import { Link } from "wouter";
-import { SocialIcon } from "react-social-icons";
-import { ArrowLeft, ArrowUpRight } from "lucide-react";
 import Button from "../../components/ui/Button/Button";
 import "./AboutPage.css";
 import ThemeToggle from "../../components/ThemeToggle";
-import IconButton from "../../components/ui/IconButton/IconButton";
+import RoughToggle from "../../components/RoughToggle";
 import Panel from "../../components/ui/Panel/Panel";
+import RoughBorder from "../../components/ui/RoughBorder";
 import { TOOLS } from "../../utils/constants/tools.js";
 import { CREDITS } from "../../utils/constants/credits.js";
 import NavBar from "../../components/NavBar/NavBar.jsx";
 
-export default function AboutPage({ tool, setTool }) {
+export default function AboutPage() {
   const creditRotations = useMemo(() => CREDITS.map(() => Math.random() * 4 - 2), []);
 
   return (
     <div className="about-page">
       <ThemeToggle />
+      <RoughToggle />
       <NavBar className="about-nav" />
       <h2>
         ABOUT <span className="highlight">DRAWLLAB</span>
@@ -48,11 +47,13 @@ export default function AboutPage({ tool, setTool }) {
           </div>
         </Panel>
 
-        <section className="tools">
+        <section className="tools surface">
+          <RoughBorder color="var(--surface-color)" strokeWidth={3} />
           <h5>TOOLS</h5>
           <ul>
             {TOOLS.map(({ id, icon: Icon, name: name }) => (
               <li key={id}>
+                <RoughBorder color="var(--color-primary)" strokeWidth={3} />
                 <Icon className="tool-icon" />
                 <p>{name}</p>
               </li>
@@ -65,7 +66,8 @@ export default function AboutPage({ tool, setTool }) {
             <h4>libraries used</h4>
             <ul>
               {CREDITS.map(({ id, name, url, description }, i) => (
-                <li key={id} className="box btn" style={{ transform: `rotate(${creditRotations[i]}deg)` }}>
+                <li key={id} className="box lift" style={{ transform: `rotate(${creditRotations[i]}deg)` }}>
+                  <RoughBorder color="var(--surface-color)" strokeWidth={3} />
                   <div style={{ transform: `rotate(${-creditRotations[i]}deg)` }}>
                     <a href={url}>{name}</a>
                     <p>{description}</p>

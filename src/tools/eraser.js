@@ -30,19 +30,25 @@ const hitTest = (el, x, y) => {
   );
 };
 
-const eraseAtPoint = ({ elements, setElements }, clientX, clientY) => {
+const eraseAtPoint = ({ elements, setElements, setFadingIds }, clientX, clientY) => {
   const hit = [...elements].reverse().find(el => !fadingIds.has(el.id) && hitTest(el, clientX, clientY));
   if (!hit) return;
 
   fadingIds.add(hit.id);
+  setFadingIds(prev => {
+    const next = new Set(prev);
+    next.add(hit.id);
+    return next;
+  });
 
-  // Dims erased element to 50% opacity
-  setElements(prev => prev.map(el => el.id === hit.id ? { ...el, opacity: 0.5 } : el), true);
-
-  // Remove element after .25 seconds
   setTimeout(() => {
     setElements(prev => prev.filter(el => el.id !== hit.id));
     fadingIds.delete(hit.id);
+    setFadingIds(prev => {
+      const next = new Set(prev);
+      next.delete(hit.id);
+      return next;
+    });
   }, 250);
 };
 

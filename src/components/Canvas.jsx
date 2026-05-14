@@ -9,6 +9,7 @@ import Toolbar from "./canvas/Toolbar/Toolbar";
 import { TOOLS } from "../tools";
 import { getBounds } from "../tools/shared";
 import { Redo2, Undo2 } from "lucide-react";
+import RoughBorder from "./ui/RoughBorder";
 
 const STORAGE_KEY = "drawllab-elements";
 
@@ -32,6 +33,7 @@ const CanvasPage = () => {
   const [marquee, setMarquee] = useState(null);
   const [moveData, setMoveData] = useState(null);
   const [selectedColor, setSelectedColor] = useState("#363636");
+  const [fadingIds, setFadingIds] = useState(() => new Set());
 
   useEffect(() => {
     try {
@@ -46,7 +48,10 @@ const CanvasPage = () => {
     context.clearRect(0, 0, canvas.width, canvas.height);
     const roughCanvas = rough.canvas(canvas);
 
-    elements.forEach(element => drawElement(roughCanvas, context, element));
+    elements.forEach(element => {
+      const display = fadingIds.has(element.id) ? { ...element, opacity: 0.5 } : element;
+      drawElement(roughCanvas, context, display);
+    });
 
     if (marquee) {
       context.save();
@@ -61,7 +66,7 @@ const CanvasPage = () => {
       context.strokeRect(x, y, w, h);
       context.restore();
     }
-  }, [elements, marquee]);
+  }, [elements, marquee, fadingIds]);
 
   const updateElement = (id, x1, y1, x2, y2, type) => {
     const elementsCopy = [...elements];
@@ -121,6 +126,7 @@ const CanvasPage = () => {
     setSelectedElementIds,
     setMarquee,
     setMoveData,
+    setFadingIds,
     updateElement,
   });
 
@@ -230,10 +236,12 @@ const CanvasPage = () => {
       <Toolbar tool={tool} setTool={setTool} selectedColor={selectedColor} onColorChange={color => setSelectedColor(color.hex)} />
       <div className="canvas-tools">
         <div>
-          <div onClick={undo} className="canvas-tools__button">
+          <div onClick={undo} className="canvas-tools__button surface lift">
+            <RoughBorder color="var(--surface-color)" strokeWidth={3} />
             <Undo2 />
           </div>
-          <div onClick={redo} className="canvas-tools__button">
+          <div onClick={redo} className="canvas-tools__button surface lift">
+            <RoughBorder color="var(--surface-color)" strokeWidth={3} />
             <Redo2 />
           </div>
         </div>
@@ -242,7 +250,8 @@ const CanvasPage = () => {
             setElements([]);
             setSelectedElementIds([]);
           }}
-          className="canvas-tools__button">
+          className="canvas-tools__button surface lift">
+          <RoughBorder color="var(--surface-color)" strokeWidth={3} />
           <h2>clear</h2>
         </div>
       </div>

@@ -1,8 +1,7 @@
 import { Link, useLocation } from "wouter";
-import { Home, CircleHelp, ArrowLeft, CircleQuestionMark } from "lucide-react";
+import { Home, CircleQuestionMark } from "lucide-react";
 import "./NavBar.css";
 import Button from "../ui/Button/Button";
-import IconButton from "../ui/IconButton/IconButton";
 
 export default function NavBar({ className = "" }) {
   const [location] = useLocation();

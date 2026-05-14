@@ -50,5 +50,3 @@ export const TOOLS = [
     description: "Reposition elements on the canvas.",
   },
 ];
-
-export const getToolById = id => TOOLS.find(tool => tool.id === id);

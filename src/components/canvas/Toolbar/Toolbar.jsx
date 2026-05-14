@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { SketchPicker } from "react-color";
 import { TOOLS } from "../../../utils/constants/tools";
+import RoughBorder from "../../ui/RoughBorder";
 import "./Toolbar.css";
 
 const PRESET_COLORS = [
@@ -58,7 +59,8 @@ export default function Toolbar({ tool, setTool, selectedColor, onColorChange })
   };
 
   return (
-    <div className="toolbar">
+    <div className="toolbar surface">
+      <RoughBorder color="var(--surface-color)" strokeWidth={3} />
       {TOOLS.map(({ id, icon: Icon }) => (
         <div key={id}>
           <input type="radio" id={id} checked={tool === id} onChange={() => handleSetTool(id)} className="tool" />

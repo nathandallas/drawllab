@@ -19,7 +19,7 @@
 .env.production.local
 .DS_Store
 **/.DS_Store
-.claude/
+functions_summary.md
 
 npm-debug.log*
 yarn-debug.log*

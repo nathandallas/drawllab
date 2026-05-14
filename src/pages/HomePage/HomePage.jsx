@@ -2,8 +2,10 @@ import React, { useEffect } from "react";
 import { Link, useLocation } from "wouter";
 import "./HomePage.css";
 import ThemeToggle from "../../components/ThemeToggle";
+import RoughToggle from "../../components/RoughToggle";
 import useTheme from "../../hooks/useTheme";
 import Button from "../../components/ui/Button/Button";
+import RoughBorder from "../../components/ui/RoughBorder";
 import { ArrowUpRight } from "lucide-react";
 import NavBar from "../../components/NavBar/NavBar";
 
@@ -32,10 +34,11 @@ export default function HomePage() {
           <h3>A browser-based drawing app for wireframes, diagrams, and quick sketches.</h3>
           <NavBar className="home-nav"/>
           <h5 className="tablet-hide">
-            or press <span>N</span> for new canvas
+            or press <span><RoughBorder color="var(--text-primary)" strokeWidth={3} />N</span> for new canvas
           </h5>
         </div>
         <div className="box hero-graphic tablet-hide">
+          <RoughBorder color="var(--text-primary)" strokeWidth={3} />
           <svg className="hero-draw" viewBox="0 0 420 320" width="100%" style={{ display: "block" }} aria-hidden="true">
             <rect x="10" y="10" width="400" height="300" fill="none" stroke="var(--text-primary)" strokeWidth="3" />
             <rect x="28" y="28" width="130" height="22" fill="var(--color-secondary)" stroke="var(--text-primary)" strokeWidth="2.5" />
@@ -53,6 +56,7 @@ export default function HomePage() {
       </div>
 
       <ThemeToggle />
+      <RoughToggle />
 
       <div className="footer">
         <h5>
