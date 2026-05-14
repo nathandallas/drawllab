@@ -69,6 +69,16 @@ const CanvasPage = () => {
   }, [tool]);
 
   useEffect(() => {
+    const root = document.documentElement;
+    const previous = root.getAttribute("data-theme");
+    root.setAttribute("data-theme", "light");
+    return () => {
+      if (previous === null) root.removeAttribute("data-theme");
+      else root.setAttribute("data-theme", previous);
+    };
+  }, []);
+
+  useEffect(() => {
     const onKeyDown = e => {
       if ((e.metaKey || e.ctrlKey) && e.key === "z") undo();
       if ((e.metaKey || e.ctrlKey) && e.key === "y") redo();
