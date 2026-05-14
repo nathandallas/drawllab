@@ -17,9 +17,9 @@ export default function AboutPage({ tool, setTool }) {
   return (
     <div className="about-page">
       <ThemeToggle />
-      <NavBar />
-      
-{/*       <div className="about-nav">
+      <NavBar className="about-nav" />
+
+      {/*       <div className="about-nav">
         <Link to="/">
           <IconButton>
             <ArrowLeft size={20} />

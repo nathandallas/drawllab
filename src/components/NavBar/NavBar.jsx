@@ -1,16 +1,48 @@
-import { Link } from "wouter";
-import { Home, CircleHelp } from "lucide-react";
+import { Link, useLocation } from "wouter";
+import { Home, CircleHelp, ArrowLeft, CircleQuestionMark } from "lucide-react";
 import "./NavBar.css";
+import Button from "../ui/Button/Button";
+import IconButton from "../ui/IconButton/IconButton";
 
-export default function NavBar() {
-  return (
-    <nav className="nav">
-      <Link to="/">
-        <Home size={24} className="nav__icon click" />
-      </Link>
-      <Link to="/about">
-        <CircleHelp size={24} className="nav__icon click" />
-      </Link>
-    </nav>
-  );
+export default function NavBar({ className = "" }) {
+  const [location] = useLocation();
+
+  const navConfig = {
+    "/": (
+      <>
+        <Link to="/canvas">
+          <Button variant="primary">start drawing</Button>
+        </Link>
+        <Link to="/about">
+          <Button>about</Button>
+        </Link>
+      </>
+    ),
+    "/about": (
+      <>
+        <Link to="/">
+          <Button>Home</Button>
+        </Link>
+        <Link to="/canvas">
+          <Button variant="primary">start drawing</Button>
+        </Link>
+      </>
+    ),
+    "/canvas": (
+      <>
+        <Link to="/">
+          <Button className="canvas-tools__button">
+            <Home />
+          </Button>
+        </Link>
+        <Link to="/about">
+          <Button className="canvas-tools__button">
+            <CircleQuestionMark />
+          </Button>
+        </Link>
+      </>
+    ),
+  };
+
+  return <nav className={`${className}`.trim()}>{navConfig[location] || navConfig["/"]}</nav>;
 }

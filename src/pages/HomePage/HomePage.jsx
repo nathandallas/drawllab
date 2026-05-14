@@ -5,6 +5,7 @@ import ThemeToggle from "../../components/ThemeToggle";
 import useTheme from "../../hooks/useTheme";
 import Button from "../../components/ui/Button/Button";
 import { ArrowUpRight } from "lucide-react";
+import NavBar from "../../components/NavBar/NavBar";
 
 export default function HomePage() {
   const { theme } = useTheme();
@@ -29,14 +30,7 @@ export default function HomePage() {
           <h2>sketch faster,</h2>
           <h2 className="highlight">think clearer.</h2>
           <h3>A browser-based drawing app for wireframes, diagrams, and quick sketches.</h3>
-          <div className="home-nav">
-            <Link to="/canvas">
-              <Button variant="primary">start drawing</Button>
-            </Link>
-            <Link to="/about">
-              <Button>about</Button>
-            </Link>
-          </div>
+          <NavBar className="home-nav"/>
           <h5 className="tablet-hide">
             or press <span>N</span> for new canvas
           </h5>

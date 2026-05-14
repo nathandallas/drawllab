@@ -26,10 +26,10 @@ Use it to make wireframes, sketch out ideas and jump start your creative project
 ## Updates to Come 
 
 - Eraser with animation 
-- Add Text
+- Add Text Tool
 - Backgrounds
+- Keyboard tool selection and navigation
 - File Saving
-- Dark Mode
 - Web Sockets for Collaboration
 
 

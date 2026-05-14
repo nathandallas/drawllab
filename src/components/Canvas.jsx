@@ -1,7 +1,6 @@
 import "./Canvas.css";
 import { useEffect, useLayoutEffect, useState } from "react";
 import rough from "roughjs/bundled/rough.esm";
-
 import { createElement, drawElement } from "../utils/elements";
 import { resizedCoordinates, computeSelectionBBox } from "../utils/geometry";
 import useHistory from "../hooks/useHistory";
@@ -209,7 +208,7 @@ const CanvasPage = () => {
         </div>
       </div>
 
-      <NavBar />
+      <NavBar className="canvas-nav"/>
 
       <canvas
         id="canvas"

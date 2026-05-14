@@ -27,6 +27,16 @@ p {
   position: absolute;
   top: 1rem;
   left: 1rem;
+  display: flex;
+
+  gap: 1rem;
+}
+
+.about-nav button {
+  padding: 0 0.75rem;
+  height: 3rem;
+  font-size: 1.5rem;
+  margin-left: inherit;
 }
 
 .about-container {
@@ -216,16 +226,16 @@ p {
     font-weight: 300;
   }
 
+  .about-page {
+    margin: 8rem 0;
+  }
+
   .about-page h2 {
     max-width: unset;
   }
 
   .about-details {
     margin: 3rem 0;
-  }
-
-  .about-divider {
-    margin: 4rem 0;
   }
 
   .made-by {
@@ -246,7 +256,10 @@ p {
 /* Desktop */
 @media (min-width: 1200px) {
   .about-page {
-    margin: 6rem auto;
+    margin: 8rem auto;
+  }
+  .about-nav {
+    padding: 1.5rem;
   }
 
   .about-container {
@@ -259,6 +272,9 @@ p {
     max-width: 1560px;
   }
 
+  .about-divider {
+    margin: 3rem 0;
+  }
   .about-details {
     margin: 2rem 0;
     padding: 1.5rem;

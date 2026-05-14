@@ -34,6 +34,21 @@ button:active,
   box-shadow: 2px 2px 0 0 var(--text-primary);
 }
 
+/* Mobile + Tablet */
+@media (max-width: 1024px) {
+  button:hover,
+  .btn:hover {
+    transform: none;
+    box-shadow: 3px 3px 0 var(--text-primary);
+  }
+
+  button:active,
+  .btn:active {
+    transform: translate(2px, 2px);
+    box-shadow: 1px 1px 0 var(--text-primary);
+  }
+}
+
 /* Tablet */
 @media (min-width: 751px) {
   button {
