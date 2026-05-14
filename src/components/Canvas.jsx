@@ -10,8 +10,21 @@ import { TOOLS } from "../tools";
 import { getBounds } from "../tools/shared";
 import { Redo2, Undo2 } from "lucide-react";
 
+const STORAGE_KEY = "drawllab-elements";
+
+const loadElements = () => {
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY);
+    if (!raw) return [];
+    return JSON.parse(raw).map(el => (el.type === "pen" ? el : createElement(el.x1, el.y1, el.x2, el.y2, el.type, el.color, el.id)));
+  } catch {
+    return [];
+  }
+};
+
 const CanvasPage = () => {
-  const [elements, setElements, undo, redo, clear] = useHistory([]);
+  const [initialElements] = useState(loadElements);
+  const [elements, setElements, undo, redo] = useHistory(initialElements);
   const [action, setAction] = useState("none");
   const [tool, setTool] = useState("pen");
   const [selectedElement, setSelectedElement] = useState(null);
@@ -19,6 +32,13 @@ const CanvasPage = () => {
   const [marquee, setMarquee] = useState(null);
   const [moveData, setMoveData] = useState(null);
   const [selectedColor, setSelectedColor] = useState("#363636");
+
+  useEffect(() => {
+    try {
+      const serializable = elements.map(({ roughElement, ...rest }) => rest);
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(serializable));
+    } catch {}
+  }, [elements]);
 
   useLayoutEffect(() => {
     const canvas = document.getElementById("canvas");
@@ -219,7 +239,7 @@ const CanvasPage = () => {
         </div>
         <div
           onClick={() => {
-            clear();
+            setElements([]);
             setSelectedElementIds([]);
           }}
           className="canvas-tools__button">
@@ -227,7 +247,7 @@ const CanvasPage = () => {
         </div>
       </div>
 
-      <NavBar className="canvas-nav"/>
+      <NavBar className="canvas-nav" />
 
       <canvas
         id="canvas"
