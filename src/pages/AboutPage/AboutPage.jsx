@@ -18,14 +18,6 @@ export default function AboutPage({ tool, setTool }) {
     <div className="about-page">
       <ThemeToggle />
       <NavBar className="about-nav" />
-
-      {/*       <div className="about-nav">
-        <Link to="/">
-          <IconButton>
-            <ArrowLeft size={20} />
-          </IconButton>
-        </Link>
-      </div> */}
       <h2>
         ABOUT <span className="highlight">DRAWLLAB</span>
       </h2>

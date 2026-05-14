@@ -47,6 +47,7 @@ const CanvasPage = () => {
     const elementsCopy = [...elements];
     const index = elementsCopy.findIndex(el => el.id === id);
     switch (type) {
+      case "line":
       case "rectangle":
       case "circle":
         elementsCopy[index] = createElement(x1, y1, x2, y2, type, elementsCopy[index].color, id);
@@ -103,7 +104,15 @@ const CanvasPage = () => {
 
     e.target.style.cursor = TOOLS[tool]?.getCursor(getCtx(), clientX, clientY) ?? "default";
 
-    if (action === "draw") {
+    if (e.buttons === 0 && action !== "none") {
+      setAction("none");
+      setMoveData(null);
+      return;
+    }
+
+    if (action === "erase") {
+      TOOLS[tool]?.onMouseMove?.(getCtx(), clientX, clientY);
+    } else if (action === "draw") {
       const { id, x1, y1 } = elements[elements.length - 1];
       updateElement(id, x1, y1, clientX, clientY, tool);
     } else if (action === "marquee") {

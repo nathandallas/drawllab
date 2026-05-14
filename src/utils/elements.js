@@ -40,6 +40,10 @@ const SVGpathData = stroke => {
 };
 
 export const drawElement = (roughCanvas, context, element) => {
+  const opacity = element.opacity ?? 1;
+  context.save();
+  context.globalAlpha = opacity;
+
   switch (element.type) {
     case "line":
     case "rectangle":
@@ -61,4 +65,6 @@ export const drawElement = (roughCanvas, context, element) => {
     default:
       throw new Error(`unrecognised: ${element.type}`);
   }
+
+  context.restore();
 };

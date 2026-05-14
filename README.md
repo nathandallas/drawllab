@@ -25,9 +25,11 @@ Use it to make wireframes, sketch out ideas and jump start your creative project
 
 ## Updates to Come 
 
-- Eraser with animation 
-- Add Text Tool
-- Backgrounds
+- Local Storage
+- Page Load Animations
+- Text Tool
+- Change stroke size
+- Change Canvas Background and Grid
 - Keyboard tool selection and navigation
 - File Saving
 - Web Sockets for Collaboration
