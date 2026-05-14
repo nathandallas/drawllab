@@ -1,4 +1,4 @@
-![Drawllab Logo](https://imgur.com/HgFZrxO.png)
+![Drawllab Logo](https://i.imgur.com/ZrAtjzr.png)
 
 # Drawllab
 
@@ -6,24 +6,28 @@ Drawllab is a browser based whiteboard and drawing application. This program was
 
 Use it to make wireframes, sketch out ideas and jump start your creative projects!
 
-I originally created Drawllab in 2021 as my capstone project for Brainstation's Web Development bootcamp. In 2026, I redesigned the website with a fresh new look, dark mode, responsive breakpoints for all device sizes, and upgraded tools. 
+I originally created Drawllab in 2021 as my capstone project for Brainstation's Web Development bootcamp. In 2026, I redesigned the website with a fresh new look, dark mode, responsive breakpoints for all device sizes, and upgraded tools.
 
-## New Design 
-![Drawllab Home Page]()
+## Images
 
-![Drawllab Canvas]()
+![Drawllab Home Page](https://i.imgur.com/POPXHpb.jpeg)
 
-![Drawllab About Page]()
+![Drawllab Canvas](https://i.imgur.com/DPOy4LM.jpeg)
 
-## Old Design
+![Drawllab About Page](https://i.imgur.com/yXmjgrs.png)
 
-![Drawllab Home Page](https://i.imgur.com/vUuPRgq.jpeg)
+![Drawllab Mobile View](https://i.imgur.com/zxS0r2u.png)
 
-![Drawllab Canvas](https://i.imgur.com/58tr5PR.jpeg)
+![Drawllab Tablet View](https://i.imgur.com/gxlvDOy.png)
 
-![Drawllab About Page](https://i.imgur.com/cJg95y4.jpeg)
+<details>
+<summary>Click for original design</summary>
 
+![Drawllab Old Home Page](https://i.imgur.com/vUuPRgq.jpeg)
 
+![Drawllab Old Canvas](https://i.imgur.com/58tr5PR.jpeg)
+
+![Drawllab Old About Page](https://i.imgur.com/cJg95y4.jpeg)</details>
 
 ## Tech Stack
 
@@ -34,7 +38,7 @@ I originally created Drawllab in 2021 as my capstone project for Brainstation's 
 - **React Color**
 - **HTML Canvas**
 
-## Updates to Come 
+## Updates to Come
 
 - Local Storage
 - Page Load Animations
@@ -44,7 +48,6 @@ I originally created Drawllab in 2021 as my capstone project for Brainstation's 
 - Keyboard tool selection and navigation
 - File Saving
 - Web Sockets for Collaboration
-
 
 ## How to Install
 
@@ -64,13 +67,8 @@ $ npm install
 
 $ npm run dev
 
-Runs the app in the development mode.
-
 
 ## Authors
 
-- **Nathan Challender** - [GitHub](https://github.com/nathandallas) 
+- **Nathan Challender** - [GitHub](https://github.com/nathandallas)
 
-## Acknowledgements
-
-- The amazing educators and July 2021 Web Dev Cohort for their endless knowledge and encouragement.
