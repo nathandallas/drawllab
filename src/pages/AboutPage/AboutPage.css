@@ -235,7 +235,8 @@ p {
   }
 
   .about-details {
-    margin: 3rem 0;
+    margin: 3rem auto;
+    max-width: 750px;
   }
 
   .made-by {
@@ -280,6 +281,7 @@ p {
     margin: 2rem 0;
     padding: 1.5rem;
     transform: rotate(-2deg);
+    max-width: unset;
   }
 
   .tools {

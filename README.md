@@ -6,6 +6,17 @@ Drawllab is a browser based whiteboard and drawing application. This program was
 
 Use it to make wireframes, sketch out ideas and jump start your creative projects!
 
+I originally created Drawllab in 2021 as my capstone project for Brainstation's Web Development bootcamp. In 2026, I redesigned the website with a fresh new look, dark mode, responsive breakpoints for all device sizes, and upgraded tools. 
+
+## New Design 
+![Drawllab Home Page]()
+
+![Drawllab Canvas]()
+
+![Drawllab About Page]()
+
+## Old Design
+
 ![Drawllab Home Page](https://i.imgur.com/vUuPRgq.jpeg)
 
 ![Drawllab Canvas](https://i.imgur.com/58tr5PR.jpeg)

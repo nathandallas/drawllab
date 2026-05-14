@@ -63,10 +63,10 @@ h2:not(.highlight) {
 
 .home {
   margin: 0 auto;
-  max-width: 1560px;
+  max-width: max-content;
   overflow-x: hidden;
   height: 100vh;
- margin-top: 20vh;
+  margin-top: 20vh;
 }
 
 /* Hero */
@@ -85,7 +85,6 @@ h2:not(.highlight) {
 
 .home-nav {
   margin-top: 1.5rem;
-  width: inherit;
   min-width: 335px;
 }
 
@@ -125,8 +124,7 @@ h2:not(.highlight) {
 @media (min-width: 751px) {
   h3 {
     margin-top: 1.25rem;
-    max-width: inherit;
-    min-width: fit-content;
+    max-width: 100%;
   }
 
   .hero {
@@ -147,9 +145,11 @@ h2:not(.highlight) {
   }
 
   .container {
-    flex: 1 1 0;
+    flex: 0 0 auto;
     margin: 2rem;
-    min-width: max-content;
+    width: min-content;
+    min-width: 0;
+    max-width: none;
     padding: 0;
   }
 
