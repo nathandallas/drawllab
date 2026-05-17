@@ -1,5 +1,4 @@
 .toolbar {
-  --surface-shadow-offset: 4px;
   position: fixed;
   left: 50%;
   bottom: 1rem;

@@ -50,13 +50,11 @@ h5 {
 
 .surface,
 .box {
-  --surface-color: var(--text-primary);
-  --surface-shadow-offset: 3px;
   position: relative;
   background: var(--text-inverse);
   color: var(--text-primary);
-  border: 3px solid var(--surface-color);
-  box-shadow: var(--surface-shadow-offset) var(--surface-shadow-offset) 0 var(--surface-color);
+  border: 3px solid var(--text-primary);
+  box-shadow: 3px 3px 0 var(--text-primary);
   transition: all 0.2s ease;
 }
 
@@ -80,17 +78,17 @@ h5 {
 
 .lift {
   --lift-hover-translate: -2px;
-  --lift-hover-shadow: calc(var(--surface-shadow-offset, 3px) + 2px);
+  --lift-hover-shadow: 5px;
   --lift-active-translate: 3px;
-  --lift-active-shadow: calc(var(--surface-shadow-offset, 3px) - 1px);
+  --lift-active-shadow: 2px;
 }
 
 .lift:hover {
   transform: translate(var(--lift-hover-translate), var(--lift-hover-translate));
-  box-shadow: var(--lift-hover-shadow) var(--lift-hover-shadow) 0 var(--surface-color, var(--text-primary));
+  box-shadow: var(--lift-hover-shadow) var(--lift-hover-shadow) 0 var(--text-primary);
 }
 
 .lift:active {
   transform: translate(var(--lift-active-translate), var(--lift-active-translate));
-  box-shadow: var(--lift-active-shadow) var(--lift-active-shadow) 0 var(--surface-color, var(--text-primary));
+  box-shadow: var(--lift-active-shadow) var(--lift-active-shadow) 0 var(--text-primary);
 }

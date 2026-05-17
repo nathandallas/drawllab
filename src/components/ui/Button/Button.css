@@ -21,7 +21,7 @@ button {
 @media (max-width: 1024px) {
   button:hover {
     transform: none;
-    box-shadow: var(--surface-shadow-offset, 3px) var(--surface-shadow-offset, 3px) 0 var(--text-primary);
+    box-shadow: 3px 3px 0 var(--text-primary);
   }
   button:active {
     transform: translate(2px, 2px);
@@ -34,7 +34,6 @@ button {
   button {
     font-size: 2rem;
     padding: 8px 16px;
-    --surface-shadow-offset: 0.5rem;
   }
 }
 

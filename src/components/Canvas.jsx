@@ -1,5 +1,5 @@
 import "./Canvas.css";
-import { useEffect, useLayoutEffect, useState } from "react";
+import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import rough from "roughjs/bundled/rough.esm";
 import { createElement, drawElement } from "../utils/elements";
 import { resizedCoordinates, computeSelectionBBox } from "../utils/geometry";
@@ -8,10 +8,16 @@ import NavBar from "./NavBar/NavBar";
 import Toolbar from "./canvas/Toolbar/Toolbar";
 import { TOOLS } from "../tools";
 import { getBounds } from "../tools/shared";
-import { Redo2, Undo2 } from "lucide-react";
+import { Minus, Plus, Redo2, Undo2 } from "lucide-react";
 import RoughBorder from "./ui/RoughBorder";
 
 const STORAGE_KEY = "drawllab-elements";
+
+export const WORLD_WIDTH = 4000;
+export const WORLD_HEIGHT = 4000;
+const MIN_ZOOM = 0.1;
+const MAX_ZOOM = 5;
+const clampZoom = z => Math.max(MIN_ZOOM, Math.min(MAX_ZOOM, z));
 
 const loadElements = () => {
   try {
@@ -35,6 +41,23 @@ const CanvasPage = () => {
   const [selectedColor, setSelectedColor] = useState("#363636");
   const [fadingIds, setFadingIds] = useState(() => new Set());
 
+  const canvasRef = useRef(null);
+  const [windowSize, setWindowSize] = useState({ w: window.innerWidth, h: window.innerHeight });
+  const [viewport, setViewport] = useState(() => ({
+    panX: window.innerWidth / 2 - WORLD_WIDTH / 2,
+    panY: window.innerHeight / 2 - WORLD_HEIGHT / 2,
+    zoom: 1,
+  }));
+  const [isSpaceDown, setIsSpaceDown] = useState(false);
+  const [zoomInputValue, setZoomInputValue] = useState("");
+  const [isEditingZoom, setIsEditingZoom] = useState(false);
+  const panStateRef = useRef(null);
+
+  const screenToWorld = (sx, sy) => ({
+    x: (sx - viewport.panX) / viewport.zoom,
+    y: (sy - viewport.panY) / viewport.zoom,
+  });
+
   useEffect(() => {
     try {
       const serializable = elements.map(({ roughElement, ...rest }) => rest);
@@ -43,9 +66,23 @@ const CanvasPage = () => {
   }, [elements]);
 
   useLayoutEffect(() => {
-    const canvas = document.getElementById("canvas");
+    const canvas = canvasRef.current;
+    if (!canvas) return;
     const context = canvas.getContext("2d");
+
+    context.setTransform(1, 0, 0, 1, 0, 0);
     context.clearRect(0, 0, canvas.width, canvas.height);
+    context.fillStyle = "#e8e8ea";
+    context.fillRect(0, 0, canvas.width, canvas.height);
+
+    context.setTransform(viewport.zoom, 0, 0, viewport.zoom, viewport.panX, viewport.panY);
+
+    context.fillStyle = "#ffffff";
+    context.fillRect(0, 0, WORLD_WIDTH, WORLD_HEIGHT);
+    context.strokeStyle = "#bbbbbb";
+    context.lineWidth = 2 / viewport.zoom;
+    context.strokeRect(0, 0, WORLD_WIDTH, WORLD_HEIGHT);
+
     const roughCanvas = rough.canvas(canvas);
 
     elements.forEach(element => {
@@ -56,8 +93,8 @@ const CanvasPage = () => {
     if (marquee) {
       context.save();
       context.strokeStyle = "#4a90d9";
-      context.lineWidth = 1;
-      context.setLineDash([4, 3]);
+      context.lineWidth = 1 / viewport.zoom;
+      context.setLineDash([4 / viewport.zoom, 3 / viewport.zoom]);
       const { x, y, w, h } = getBounds(marquee);
       if (marquee.isDragging) {
         context.fillStyle = "rgba(74, 144, 217, 0.08)";
@@ -66,7 +103,7 @@ const CanvasPage = () => {
       context.strokeRect(x, y, w, h);
       context.restore();
     }
-  }, [elements, marquee, fadingIds]);
+  }, [elements, marquee, fadingIds, viewport, windowSize]);
 
   const updateElement = (id, x1, y1, x2, y2, type) => {
     const elementsCopy = [...elements];
@@ -104,13 +141,79 @@ const CanvasPage = () => {
   }, []);
 
   useEffect(() => {
+    const isEditable = el => el && (el.tagName === "INPUT" || el.tagName === "TEXTAREA" || el.isContentEditable);
     const onKeyDown = e => {
       if ((e.metaKey || e.ctrlKey) && e.key === "z") undo();
       if ((e.metaKey || e.ctrlKey) && e.key === "y") redo();
+      if (e.code === "Space" && !e.repeat && !isEditable(e.target)) {
+        e.preventDefault();
+        setIsSpaceDown(true);
+      }
+    };
+    const onKeyUp = e => {
+      if (e.code === "Space") setIsSpaceDown(false);
     };
     document.addEventListener("keydown", onKeyDown);
-    return () => document.removeEventListener("keydown", onKeyDown);
+    document.addEventListener("keyup", onKeyUp);
+    return () => {
+      document.removeEventListener("keydown", onKeyDown);
+      document.removeEventListener("keyup", onKeyUp);
+    };
   }, [undo, redo]);
+
+  useEffect(() => {
+    const onResize = () => setWindowSize({ w: window.innerWidth, h: window.innerHeight });
+    window.addEventListener("resize", onResize);
+    return () => window.removeEventListener("resize", onResize);
+  }, []);
+
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+    const onWheel = e => {
+      e.preventDefault();
+      if (e.ctrlKey || e.metaKey) {
+        const { clientX, clientY } = e;
+        setViewport(v => {
+          const newZoom = clampZoom(v.zoom * Math.exp(-e.deltaY * 0.0025));
+          const worldX = (clientX - v.panX) / v.zoom;
+          const worldY = (clientY - v.panY) / v.zoom;
+          return { zoom: newZoom, panX: clientX - worldX * newZoom, panY: clientY - worldY * newZoom };
+        });
+      } else {
+        const dx = e.deltaX,
+          dy = e.deltaY;
+        setViewport(v => ({ ...v, panX: v.panX - dx, panY: v.panY - dy }));
+      }
+    };
+    canvas.addEventListener("wheel", onWheel, { passive: false });
+    return () => canvas.removeEventListener("wheel", onWheel);
+  }, []);
+
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+    if (action === "pan") canvas.style.cursor = "grabbing";
+    else if (isSpaceDown) canvas.style.cursor = "grab";
+  }, [action, isSpaceDown]);
+
+  const zoomAtPoint = (computeNewZoom, anchorX, anchorY) => {
+    setViewport(v => {
+      const newZoom = clampZoom(computeNewZoom(v.zoom));
+      if (newZoom === v.zoom) return v;
+      const worldX = (anchorX - v.panX) / v.zoom;
+      const worldY = (anchorY - v.panY) / v.zoom;
+      return { zoom: newZoom, panX: anchorX - worldX * newZoom, panY: anchorY - worldY * newZoom };
+    });
+  };
+
+  const zoomByFactor = factor => zoomAtPoint(z => z * factor, windowSize.w / 3, windowSize.h / 3);
+
+  const commitZoomInput = () => {
+    const parsed = parseFloat(zoomInputValue);
+    if (!isNaN(parsed)) zoomAtPoint(() => parsed / 100, windowSize.w / 3, windowSize.h / 3);
+    setIsEditingZoom(false);
+  };
 
   const getCtx = () => ({
     elements,
@@ -132,27 +235,49 @@ const CanvasPage = () => {
 
   const handleMouseDown = e => {
     const { clientX, clientY } = e;
-    TOOLS[tool]?.onMouseDown(getCtx(), clientX, clientY);
+
+    if (isSpaceDown || e.button === 1) {
+      panStateRef.current = { startX: clientX, startY: clientY, origPanX: viewport.panX, origPanY: viewport.panY };
+      setAction("pan");
+      return;
+    }
+
+    const { x, y } = screenToWorld(clientX, clientY);
+    TOOLS[tool]?.onMouseDown(getCtx(), x, y);
   };
 
   const handleMouseMove = e => {
     const { clientX, clientY } = e;
 
-    e.target.style.cursor = TOOLS[tool]?.getCursor(getCtx(), clientX, clientY) ?? "default";
-
     if (e.buttons === 0 && action !== "none") {
       setAction("none");
       setMoveData(null);
+      panStateRef.current = null;
       return;
     }
 
+    if (action === "pan" && panStateRef.current) {
+      e.target.style.cursor = "grabbing";
+      const { startX, startY, origPanX, origPanY } = panStateRef.current;
+      setViewport(v => ({ ...v, panX: origPanX + (clientX - startX), panY: origPanY + (clientY - startY) }));
+      return;
+    }
+
+    if (isSpaceDown) {
+      e.target.style.cursor = "grab";
+      return;
+    }
+
+    const { x, y } = screenToWorld(clientX, clientY);
+    e.target.style.cursor = TOOLS[tool]?.getCursor(getCtx(), x, y) ?? "default";
+
     if (action === "erase") {
-      TOOLS[tool]?.onMouseMove?.(getCtx(), clientX, clientY);
+      TOOLS[tool]?.onMouseMove?.(getCtx(), x, y);
     } else if (action === "draw") {
       const { id, x1, y1 } = elements[elements.length - 1];
-      updateElement(id, x1, y1, clientX, clientY, tool);
+      updateElement(id, x1, y1, x, y, tool);
     } else if (action === "marquee") {
-      setMarquee(prev => ({ ...prev, x2: clientX, y2: clientY, isDragging: true }));
+      setMarquee(prev => ({ ...prev, x2: x, y2: y, isDragging: true }));
     } else if (action === "move" && moveData) {
       const elementsCopy = [...elements];
       Object.entries(moveData).forEach(([id, data]) => {
@@ -162,13 +287,13 @@ const CanvasPage = () => {
           elementsCopy[idx] = {
             ...elementsCopy[idx],
             points: data.originalPoints.map((_, i) => ({
-              x: clientX - data.xOffsets[i],
-              y: clientY - data.yOffsets[i],
+              x: x - data.xOffsets[i],
+              y: y - data.yOffsets[i],
             })),
           };
         } else {
-          const newX1 = clientX - data.offsetX;
-          const newY1 = clientY - data.offsetY;
+          const newX1 = x - data.offsetX;
+          const newY1 = y - data.offsetY;
           elementsCopy[idx] = createElement(newX1, newY1, newX1 + data.width, newY1 + data.height, data.type, data.color, id);
         }
       });
@@ -177,7 +302,7 @@ const CanvasPage = () => {
       if (bbox) setMarquee({ x1: bbox.minX - 8, y1: bbox.minY - 8, x2: bbox.maxX + 8, y2: bbox.maxY + 8 });
     } else if (action === "marquee-resize" && selectedElement && moveData) {
       const { position, x1, y1, x2, y2 } = selectedElement;
-      const coords = resizedCoordinates(clientX, clientY, position, { x1, y1, x2, y2 });
+      const coords = resizedCoordinates(x, y, position, { x1, y1, x2, y2 });
       if (!coords) return;
       setMarquee(prev => ({ ...prev, ...coords }));
 
@@ -220,12 +345,17 @@ const CanvasPage = () => {
       }
     } else if (action === "resize" && selectedElement) {
       const { id, type, position, ...coordinates } = selectedElement;
-      const { x1, y1, x2, y2 } = resizedCoordinates(clientX, clientY, position, coordinates);
+      const { x1, y1, x2, y2 } = resizedCoordinates(x, y, position, coordinates);
       updateElement(id, x1, y1, x2, y2, type);
     }
   };
 
   const handleMouseUp = () => {
+    if (action === "pan") {
+      panStateRef.current = null;
+      setAction("none");
+      return;
+    }
     TOOLS[tool]?.onMouseUp(getCtx());
     setAction("none");
     setMoveData(null);
@@ -237,11 +367,11 @@ const CanvasPage = () => {
       <div className="canvas-tools">
         <div>
           <div onClick={undo} className="canvas-tools__button surface lift">
-            <RoughBorder color="var(--surface-color)" strokeWidth={3} />
+            <RoughBorder color="var(--text-primary)" strokeWidth={3} />
             <Undo2 />
           </div>
           <div onClick={redo} className="canvas-tools__button surface lift">
-            <RoughBorder color="var(--surface-color)" strokeWidth={3} />
+            <RoughBorder color="var(--text-primary)" strokeWidth={3} />
             <Redo2 />
           </div>
         </div>
@@ -251,8 +381,35 @@ const CanvasPage = () => {
             setSelectedElementIds([]);
           }}
           className="canvas-tools__button surface lift">
-          <RoughBorder color="var(--surface-color)" strokeWidth={3} />
+          <RoughBorder color="var(--text-primary)" strokeWidth={3} />
           <h2>clear</h2>
+        </div>
+      </div>
+
+      <div className="canvas-tools-zoom">
+        <div onClick={() => zoomByFactor(1 / 1.1)} className="canvas-tools__button surface lift">
+          <Minus />
+        </div>
+        <input
+          className="canvas-tools-zoom__input"
+          value={isEditingZoom ? zoomInputValue : `${Math.round(viewport.zoom * 100)}%`}
+          onFocus={e => {
+            setZoomInputValue(`${Math.round(viewport.zoom * 100)}`);
+            setIsEditingZoom(true);
+            setTimeout(() => e.target.select(), 0);
+          }}
+          onChange={e => setZoomInputValue(e.target.value)}
+          onBlur={commitZoomInput}
+          onKeyDown={e => {
+            if (e.key === "Enter") e.target.blur();
+            if (e.key === "Escape") {
+              setIsEditingZoom(false);
+              e.target.blur();
+            }
+          }}
+        />
+        <div onClick={() => zoomByFactor(1.1)} className="canvas-tools__button surface lift">
+          <Plus />
         </div>
       </div>
 
@@ -260,8 +417,9 @@ const CanvasPage = () => {
 
       <canvas
         id="canvas"
-        width={window.innerWidth}
-        height={window.innerHeight}
+        ref={canvasRef}
+        width={windowSize.w}
+        height={windowSize.h}
         onPointerDown={handleMouseDown}
         onPointerMove={handleMouseMove}
         onPointerUp={handleMouseUp}

@@ -48,7 +48,7 @@ export default function AboutPage() {
         </Panel>
 
         <section className="tools surface">
-          <RoughBorder color="var(--surface-color)" strokeWidth={3} />
+          <RoughBorder color="var(--text-primary)" strokeWidth={3} />
           <h5>TOOLS</h5>
           <ul>
             {TOOLS.map(({ id, icon: Icon, name: name }) => (
@@ -67,7 +67,7 @@ export default function AboutPage() {
             <ul>
               {CREDITS.map(({ id, name, url, description }, i) => (
                 <li key={id} className="box lift" style={{ transform: `rotate(${creditRotations[i]}deg)` }}>
-                  <RoughBorder color="var(--surface-color)" strokeWidth={3} />
+                  <RoughBorder color="var(--text-primary)" strokeWidth={3} />
                   <div style={{ transform: `rotate(${-creditRotations[i]}deg)` }}>
                     <a href={url}>{name}</a>
                     <p>{description}</p>

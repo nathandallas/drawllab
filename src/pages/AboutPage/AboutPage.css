@@ -151,8 +151,6 @@ p {
 }
 
 .tools {
-  --surface-color: var(--color-primary);
-  --surface-shadow-offset: 0.5rem;
   background-color: var(--color-secondary);
   transform: rotate(1deg);
   margin: 2rem auto;

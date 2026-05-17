@@ -5,7 +5,7 @@ export default function Button({ children, variant = "default", onClick, classNa
   const variantClass = variant === "primary" ? "btn-primary" : variant === "accent" ? "btn-accent" : "";
   return (
     <button className={`surface lift ${variantClass} ${className}`.trim()} onClick={onClick}>
-      <RoughBorder color="var(--surface-color)" strokeWidth={3} />
+      <RoughBorder color="var(--text-primary)" strokeWidth={3} />
       {children}
     </button>
   );

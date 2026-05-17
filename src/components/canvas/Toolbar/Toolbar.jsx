@@ -60,7 +60,7 @@ export default function Toolbar({ tool, setTool, selectedColor, onColorChange })
 
   return (
     <div className="toolbar surface">
-      <RoughBorder color="var(--surface-color)" strokeWidth={3} />
+      <RoughBorder color="var(--text-primary)" strokeWidth={3} />
       {TOOLS.map(({ id, icon: Icon }) => (
         <div key={id}>
           <input type="radio" id={id} checked={tool === id} onChange={() => handleSetTool(id)} className="tool" />

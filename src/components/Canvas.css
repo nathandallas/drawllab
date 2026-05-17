@@ -30,9 +30,42 @@
   gap: 0.5rem;
 }
 
+.canvas-tools-zoom {
+  position: fixed;
+  bottom: 1rem;
+  left: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  z-index: 10;
+}
+
+.canvas-tools-zoom__input {
+  width: 4rem;
+  height: 3rem;
+  background: var(--color-background);
+  border: none;
+  text-align: center;
+  font-size: 1.4rem;
+  font-family: inherit;
+  color: inherit;
+  padding: 0;
+  cursor: text;
+  user-select: text;
+}
+
+.canvas-tools-zoom__input:hover {
+  background: var(--color-secondary);
+}
+
+.canvas-tools-zoom__input:focus {
+  outline: none;
+  background: var(--color-secondary);
+}
+
 .canvas-tools__button {
   --lift-hover-translate: 0;
-  --lift-hover-shadow: var(--surface-shadow-offset);
+  --lift-hover-shadow: 3px;
   --lift-active-translate: 2px;
   --lift-active-shadow: 1px;
   display: flex;
