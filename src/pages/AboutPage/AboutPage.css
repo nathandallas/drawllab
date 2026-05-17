@@ -157,7 +157,7 @@ p {
   transform: rotate(1deg);
   margin: 2rem auto;
   width: 100%;
-  max-width: 500px;
+  max-width: 500px; 
 }
 
 .tools h5 {
