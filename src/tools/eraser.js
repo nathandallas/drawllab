@@ -10,6 +10,7 @@ const distToSegment = (px, py, x1, y1, x2, y2) => {
   return Math.hypot(px - (x1 + t * dx), py - (y1 + t * dy));
 };
 
+// check if within eraser radius of element 
 const hitTest = (el, x, y) => {
   if (el.type === "pen") {
     if (!el.points?.length) return false;
@@ -30,6 +31,7 @@ const hitTest = (el, x, y) => {
   );
 };
 
+// erase the top-most element under the cursor
 const eraseAtPoint = ({ elements, setElements, setFadingIds }, clientX, clientY) => {
   const hit = [...elements].reverse().find(el => !fadingIds.has(el.id) && hitTest(el, clientX, clientY));
   if (!hit) return;
@@ -52,11 +54,13 @@ const eraseAtPoint = ({ elements, setElements, setFadingIds }, clientX, clientY)
   }, 250);
 };
 
+// erase on mousedown
 export const onMouseDown = (ctx, clientX, clientY) => {
   ctx.setAction("erase");
   eraseAtPoint(ctx, clientX, clientY);
 };
 
+// continuous erase
 export const onMouseMove = (ctx, clientX, clientY) => {
   if (ctx.action !== "erase") return;
   eraseAtPoint(ctx, clientX, clientY);

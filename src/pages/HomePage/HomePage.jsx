@@ -60,8 +60,7 @@ export default function HomePage() {
 
       <div className="footer">
         <h5>
-          BY <a href="https://nathandallas.github.io/portfolio/">NATHAN CHALLENDER</a>
-          <ArrowUpRight />
+          BY <a href="https://nathandallas.github.io/portfolio/">NATHAN CHALLENDER</a>          
         </h5>
       </div>
     </div>

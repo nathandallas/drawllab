@@ -1,4 +1,4 @@
-import { MousePointer, Pencil, Eraser, Square, Circle, SquareDashed, Move, Slash } from "lucide-react";
+import { MousePointer, Pencil, Eraser, Square, Circle, SquareDashed, Move, Slash, Hand } from "lucide-react";
 
 export const TOOLS = [
   {
@@ -48,5 +48,11 @@ export const TOOLS = [
     icon: Move,
     name: "Move Tool",
     description: "Reposition elements on the canvas.",
+  },
+  {
+    id: "hand",
+    icon: Hand,
+    name: "Hand",
+    description: "Pan the canvas by clicking and dragging.",
   },
 ];

@@ -3,27 +3,23 @@ import { WORLD_WIDTH, WORLD_HEIGHT, MIN_ZOOM, MAX_ZOOM } from "../utils/constant
 
 const clampZoom = z => Math.max(MIN_ZOOM, Math.min(MAX_ZOOM, z));
 
-// owns viewport state (pan + zoom) and the math that goes with it. also attaches the
-// non-passive wheel listener so ctrl/cmd-wheel anchored zoom and trackpad pan work.
 const useViewport = canvasRef => {
-  // initial pan centres the world inside the visible window
+  // initial pan centers the canvas inside the visible window
   const [viewport, setViewport] = useState(() => ({
     panX: window.innerWidth / 2 - WORLD_WIDTH / 2,
     panY: window.innerHeight / 2 - WORLD_HEIGHT / 2,
     zoom: 1,
   }));
 
-  // ref (not state) so pan-drag updates don't trigger re-renders mid-gesture
+  // ref to avoidre-renders mid-gesture
   const panStateRef = useRef(null);
 
-  // convert a screen-space coord (mouse event) into world-space, undoing pan + zoom
   const screenToWorld = (sx, sy) => ({
     x: (sx - viewport.panX) / viewport.zoom,
     y: (sy - viewport.panY) / viewport.zoom,
   });
 
-  // anchored zoom: keep the world point under (anchorX, anchorY) fixed while zoom changes.
-  // computeNewZoom receives the current zoom and returns the desired one (clamped here).
+// manage zoom
   const zoomAtPoint = (computeNewZoom, anchorX, anchorY) => {
     setViewport(v => {
       const newZoom = clampZoom(computeNewZoom(v.zoom));
@@ -34,7 +30,7 @@ const useViewport = canvasRef => {
     });
   };
 
-  // snapshot starting pos at mouse-down so the drag can be computed as a delta
+// manage pan
   const beginPan = (startX, startY) => {
     panStateRef.current = { startX, startY, origPanX: viewport.panX, origPanY: viewport.panY };
   };
@@ -49,8 +45,6 @@ const useViewport = canvasRef => {
     panStateRef.current = null;
   };
 
-  // wheel: ctrl/cmd+wheel zooms around the cursor; plain wheel pans.
-  // non-passive listener so preventDefault suppresses the browser's native page zoom/scroll.
   useEffect(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;

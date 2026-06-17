@@ -1,8 +1,6 @@
 import { createElement } from "./elements";
 
-// translate every element listed in moveData to follow the cursor at (x, y).
-// pen strokes translate each point; shapes translate their top-left corner.
-// moveData is the snapshot built at mouse-down by tools/shared.buildMoveData.
+// translate every element listed in moveData
 export const applyGroupTranslate = (elements, moveData, x, y) =>
   elements.map(el => {
     const data = moveData[el.id];
@@ -21,10 +19,7 @@ export const applyGroupTranslate = (elements, moveData, x, y) =>
     return createElement(newX1, newY1, newX1 + data.width, newY1 + data.height, data.type, data.color, el.id);
   });
 
-// scale every element listed in origElements so it fills the new marquee rectangle.
-// origBbox/origElements are the snapshot built at mouse-down by tools/shared.buildScaleData;
-// marqueeCoords is the live marquee rectangle from resizedCoordinates.
-// padding compensates for the visual gap between the bbox and the marquee.
+// scale every element listed in origElements
 export const applyGroupScale = (elements, origElements, origBbox, marqueeCoords, padding) => {
   const newMinX = Math.min(marqueeCoords.x1, marqueeCoords.x2) + padding;
   const newMinY = Math.min(marqueeCoords.y1, marqueeCoords.y2) + padding;

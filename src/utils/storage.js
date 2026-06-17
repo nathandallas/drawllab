@@ -2,8 +2,6 @@ import { createElement } from "./elements";
 
 const STORAGE_KEY = "drawllab-elements";
 
-// pen strokes (point lists) are stored as-is; shapes are re-created via createElement so their
-// roughjs visuals are regenerated (the roughElement instance itself isn't serialisable).
 export const loadElements = () => {
   try {
     const raw = localStorage.getItem(STORAGE_KEY);
@@ -16,7 +14,6 @@ export const loadElements = () => {
   }
 };
 
-// roughElement is stripped before serialisation — it's regenerated on load via createElement
 export const saveElements = elements => {
   try {
     const serializable = elements.map(({ roughElement, ...rest }) => rest);

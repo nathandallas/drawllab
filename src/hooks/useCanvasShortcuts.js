@@ -2,9 +2,6 @@ import { useEffect, useState } from "react";
 
 const isEditable = el => el && (el.tagName === "INPUT" || el.tagName === "TEXTAREA" || el.isContentEditable);
 
-// global shortcuts: ctrl/cmd+z = undo, ctrl/cmd+y = redo, space = hold-to-pan.
-// shortcuts are suppressed while focus is inside an editable element so typing isn't hijacked.
-// isSpaceDown is returned so the canvas can switch tools/cursor while space is held.
 const useCanvasShortcuts = ({ undo, redo }) => {
   const [isSpaceDown, setIsSpaceDown] = useState(false);
 

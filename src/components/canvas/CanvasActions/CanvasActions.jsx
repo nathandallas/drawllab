@@ -1,7 +1,6 @@
 import { Redo2, Undo2 } from "lucide-react";
 import RoughBorder from "../../ui/RoughBorder";
 
-// undo / redo / clear button cluster shown in the top corner of the canvas
 const CanvasActions = ({ onUndo, onRedo, onClear }) => (
   <div className="canvas-tools">
     <div>

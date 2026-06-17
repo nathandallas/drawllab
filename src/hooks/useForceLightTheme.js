@@ -1,6 +1,5 @@
 import { useEffect } from "react";
 
-// pin the document to the light theme while mounted, restoring the previous theme on unmount
 const useForceLightTheme = () => {
   useEffect(() => {
     const root = document.documentElement;

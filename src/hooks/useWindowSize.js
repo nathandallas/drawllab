@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 
-// reactive window dimensions — consumers re-render on resize
+// re-render on resize
 const useWindowSize = () => {
   const [size, setSize] = useState({ w: window.innerWidth, h: window.innerHeight });
   useEffect(() => {

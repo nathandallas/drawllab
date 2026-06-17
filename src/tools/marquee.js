@@ -7,10 +7,12 @@ export const onMouseDown = (ctx, clientX, clientY) => {
   if (marquee && selectedElementIds.length > 0) {
     const corner = cornerHit(marquee, clientX, clientY);
     if (corner) {
+      // grab a snapshot of the selection's bbox and original geometry to
+      // proportionally scale every selected element while the corner is dragged
       const targets = elements.filter(el => selectedElementIds.includes(el.id));
       setSelectedElement({ position: corner, x1: marquee.x1, y1: marquee.y1, x2: marquee.x2, y2: marquee.y2 });
       setMoveData(buildScaleData(targets));
-      setElements(prev => prev);
+      setElements(prev => prev); // mark a history boundary so the resize is its own undo step
       setAction("marquee-resize");
       return;
     }
@@ -48,6 +50,7 @@ export const onMouseUp = ({ action, marquee, elements, selectedElementIds, setSe
     const bbox = computeSelectionBBox(elements.filter(el => selectedIds.includes(el.id)));
     setMarquee(bbox ? { x1: bbox.minX - 8, y1: bbox.minY - 8, x2: bbox.maxX + 8, y2: bbox.maxY + 8 } : null);
   } else if (action === "marquee-resize") {
+    // refresh the marquee
     const bbox = computeSelectionBBox(elements.filter(el => selectedElementIds.includes(el.id)));
     setMarquee(bbox ? { x1: bbox.minX - 8, y1: bbox.minY - 8, x2: bbox.maxX + 8, y2: bbox.maxY + 8 } : null);
     setSelectedElement(null);

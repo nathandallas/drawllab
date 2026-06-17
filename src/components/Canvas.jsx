@@ -84,13 +84,13 @@ const CanvasPage = () => {
     }
   }, [tool]);
 
-  // show a grab/grabbing cursor while panning or holding space
+  // show a grab/grabbing cursor while panning, holding space, or with the hand tool active
   useEffect(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
     if (action === "pan") canvas.style.cursor = "grabbing";
-    else if (isSpaceDown) canvas.style.cursor = "grab";
-  }, [action, isSpaceDown]);
+    else if (isSpaceDown || tool === "hand") canvas.style.cursor = "grab";
+  }, [action, isSpaceDown, tool]);
 
   // bundle everything a tool handler needs into one object. each tool module in ../tools
   // receives this and reads/mutates the relevant pieces of canvas state.
@@ -116,8 +116,8 @@ const CanvasPage = () => {
   const handleMouseDown = e => {
     const { clientX, clientY } = e;
 
-    // space-drag and middle mouse button always pan, regardless of selected tool
-    if (isSpaceDown || e.button === 1) {
+    // pan if space is held, middle-click, or the hand tool is active
+    if (isSpaceDown || e.button === 1 || tool === "hand") {
       beginPan(clientX, clientY);
       setAction("pan");
       return;
@@ -147,7 +147,7 @@ const CanvasPage = () => {
       return;
     }
 
-    // space held but mouse not yet down — hint that panning is available
+    // hint that panning is available on space
     if (isSpaceDown) {
       e.target.style.cursor = "grab";
       return;
@@ -158,20 +158,15 @@ const CanvasPage = () => {
     e.target.style.cursor = TOOLS[tool]?.getCursor(getCtx(), x, y) ?? "default";
 
     if (action === "erase") {
-      // eraser tool fades hovered elements; the actual delete happens on mouse-up
       TOOLS[tool]?.onMouseMove?.(getCtx(), x, y);
     } else if (action === "draw") {
-      // extend the in-progress shape/stroke by updating its end point to the current cursor
       const { id, x1, y1 } = elements[elements.length - 1];
       updateElement(id, x1, y1, x, y, tool);
     } else if (action === "marquee") {
-      // expand the marquee selection rectangle to follow the cursor
       setMarquee(prev => ({ ...prev, x2: x, y2: y, isDragging: true }));
     } else if (action === "move" && moveData) {
-      // group move: translate every selected element using offsets snapshotted at mouse-down
       const next = applyGroupTranslate(elements, moveData, x, y);
       setElements(next, true);
-      // recompute the marquee bbox so the selection rectangle follows the moved elements
       const bbox = computeSelectionBBox(next.filter(el => selectedElementIds.includes(el.id)));
       if (bbox) {
         setMarquee({
@@ -182,7 +177,6 @@ const CanvasPage = () => {
         });
       }
     } else if (action === "marquee-resize" && selectedElement && moveData) {
-      // resize a group selection by dragging a handle on the marquee — scales all contained elements
       const { position, x1, y1, x2, y2 } = selectedElement;
       const coords = resizedCoordinates(x, y, position, { x1, y1, x2, y2 });
       if (!coords) return;
@@ -193,14 +187,13 @@ const CanvasPage = () => {
         setElements(applyGroupScale(elements, origElements, origBbox, coords, MARQUEE_PADDING), true);
       }
     } else if (action === "resize" && selectedElement) {
-      // single-element resize: derive new coords from the dragged handle and apply directly
       const { id, type, position, ...coordinates } = selectedElement;
       const { x1, y1, x2, y2 } = resizedCoordinates(x, y, position, coordinates);
       updateElement(id, x1, y1, x2, y2, type);
     }
   };
 
-  // pointer-up: end pans cleanly, otherwise let the tool finalise its gesture and reset action state
+  // end pans cleanly
   const handleMouseUp = () => {
     if (action === "pan") {
       endPan();

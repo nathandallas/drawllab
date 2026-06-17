@@ -1,7 +1,6 @@
 import { useState } from "react";
 import { Minus, Plus } from "lucide-react";
 
-// zoom UI: -, an editable percentage textbox, +. all three anchor zooming at (anchorX, anchorY).
 const ZoomControls = ({ viewport, zoomAtPoint, anchorX, anchorY }) => {
   const [zoomInputValue, setZoomInputValue] = useState("");
   const [isEditingZoom, setIsEditingZoom] = useState(false);
@@ -21,10 +20,8 @@ const ZoomControls = ({ viewport, zoomAtPoint, anchorX, anchorY }) => {
       </div>
       <input
         className="canvas-tools-zoom__input"
-        // while editing the user sees raw input; otherwise the current zoom as a percentage
         value={isEditingZoom ? zoomInputValue : `${Math.round(viewport.zoom * 100)}%`}
         onFocus={e => {
-          // entering edit mode: pre-fill with current zoom and select for easy overwrite
           setZoomInputValue(`${Math.round(viewport.zoom * 100)}`);
           setIsEditingZoom(true);
           setTimeout(() => e.target.select(), 0);
@@ -32,9 +29,8 @@ const ZoomControls = ({ viewport, zoomAtPoint, anchorX, anchorY }) => {
         onChange={e => setZoomInputValue(e.target.value)}
         onBlur={commitZoomInput}
         onKeyDown={e => {
-          if (e.key === "Enter") e.target.blur(); // enter commits via the blur handler
+          if (e.key === "Enter") e.target.blur();
           if (e.key === "Escape") {
-            // escape cancels without committing
             setIsEditingZoom(false);
             e.target.blur();
           }

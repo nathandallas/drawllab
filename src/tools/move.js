@@ -1,3 +1,4 @@
+
 import { getElementAtPosition, computeSelectionBBox, cursorForPosition } from "../utils/geometry";
 import { buildMoveData, isInsideBounds, cornerHit, buildScaleData } from "./shared";
 
@@ -24,6 +25,7 @@ export const onMouseDown = (ctx, clientX, clientY) => {
     }
   }
 
+  
   const element = getElementAtPosition(clientX, clientY, elements);
   if (!element) {
     setSelectedElementIds([]);
@@ -38,9 +40,10 @@ export const onMouseDown = (ctx, clientX, clientY) => {
   const bbox = computeSelectionBBox(targets);
   if (bbox) setMarquee({ x1: bbox.minX - 8, y1: bbox.minY - 8, x2: bbox.maxX + 8, y2: bbox.maxY + 8 });
   setMoveData(buildMoveData(targets, clientX, clientY));
-  setElements(prev => prev);
+  setElements(prev => prev); 
   setAction("move");
 };
+
 
 export const getCursor = ({ elements, marquee, selectedElementIds }, clientX, clientY) => {
   if (marquee && selectedElementIds.length > 0) {
@@ -51,6 +54,7 @@ export const getCursor = ({ elements, marquee, selectedElementIds }, clientX, cl
   const element = getElementAtPosition(clientX, clientY, elements);
   return element ? "move" : "default";
 };
+
 
 export const onMouseUp = ({ action, elements, selectedElementIds, setSelectedElement, setMarquee }) => {
   if (action === "marquee-resize") {

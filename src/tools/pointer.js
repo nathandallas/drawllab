@@ -13,9 +13,10 @@ export const onMouseDown = (ctx, clientX, clientY) => {
 
   const isAlreadySelected = selectedElementIds.includes(element.id);
 
+  
   if (element.position !== "inside" && selectedElementIds.length === 1 && isAlreadySelected) {
     setSelectedElement({ ...element });
-    setElements(prev => prev);
+    setElements(prev => prev); 
     setAction("resize");
     return;
   }
@@ -39,6 +40,7 @@ export const getCursor = ({ elements, selectedElementIds }, clientX, clientY) =>
   if (element.position !== "inside") return cursorForPosition(element.position);
   return "move";
 };
+
 
 export const onMouseUp = ({ action, selectedElement, elements, setSelectedElement, updateElement }) => {
   if (action !== "resize" || !selectedElement) return;

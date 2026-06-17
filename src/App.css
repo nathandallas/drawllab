@@ -62,7 +62,6 @@ h5 {
   display: inline-block;
 }
 
-/* Rough-mode: hide CSS borders, reveal RoughBorder SVGs */
 .rough-border {
   display: none;
 }

@@ -17,7 +17,7 @@ button {
   margin-bottom: 1rem;
 }
 
-/* Mobile + Tablet — flatten hover, soften active */
+/* Mobile + Tablet */
 @media (max-width: 1024px) {
   button:hover {
     transform: none;

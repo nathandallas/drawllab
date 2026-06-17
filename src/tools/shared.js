@@ -13,18 +13,21 @@ export const isInsideBounds = ({ x1, y1, x2, y2 }, clientX, clientY) =>
   clientY >= Math.min(y1, y2) &&
   clientY <= Math.max(y1, y2);
 
+// decide whether a marquee click starts resize
 export const cornerHit = (bbox, clientX, clientY) =>
   nearPoint(clientX, clientY, bbox.x1, bbox.y1, "tl") ||
   nearPoint(clientX, clientY, bbox.x2, bbox.y1, "tr") ||
   nearPoint(clientX, clientY, bbox.x1, bbox.y2, "bl") ||
   nearPoint(clientX, clientY, bbox.x2, bbox.y2, "br");
 
+// snapshot at the start of a marquee-resize to compute scaled positions
 export const buildScaleData = targets => ({
   origBbox: computeSelectionBBox(targets),
   origElements: Object.fromEntries(
-    targets.map(el => [el.id, el.type === "pen" ? { ...el, points: el.points.map(p => ({ ...p })) } : { ...el }])
+    targets.map(el => [el.id, el.type === "pen" ? { ...el, points: el.points.map(p => ({ ...p })) } : { ...el }]),
   ),
 });
+
 
 export const buildMoveData = (elements, clientX, clientY) => {
   const data = {};
