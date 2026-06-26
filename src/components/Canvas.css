@@ -47,7 +47,7 @@
   border: none;
   text-align: center;
   font-size: 1.4rem;
-  font-family: inherit;
+  font-family: "Ubuntu";
   color: inherit;
   padding: 0;
   cursor: text;
@@ -86,4 +86,10 @@
 .canvas-tools__button h2 {
   font-size: 1.4rem;
   line-height: 1;
+}
+
+@media (max-width: 750px) {
+  .canvas-tools-zoom {
+    bottom: 5.5rem;
+  }
 }
