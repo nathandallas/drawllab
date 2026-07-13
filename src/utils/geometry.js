@@ -139,10 +139,7 @@ export const resizedCoordinates = (clientX, clientY, position, coordinates) => {
   }
 };
 
-// resize keeping the opposite corner fixed in world space: the new center is
-// the midpoint of the fixed corner and the pointer, so local coords can be
-// recovered exactly by inverse-rotating both about it. lockRatio snaps the
-// pointer onto the original aspect-ratio diagonal (shift held)
+
 export const resizedCoordinatesRotated = (px, py, position, coordinates, angle, lockRatio = false) => {
   if (!angle && !lockRatio) return resizedCoordinates(px, py, position, coordinates);
   const { x1, y1, x2, y2 } = coordinates;
